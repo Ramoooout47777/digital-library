@@ -1,0 +1,31 @@
+<?php
+// resources/lang/km/cart.php
+
+return [
+    'title' => 'កន្ត្រកទិញទំនិញ',
+    'items' => 'ធាតុ',
+    'in_your_cart' => 'ក្នុងកន្ត្រករបស់អ្នក',
+    'clear_cart' => 'លុបកន្ត្រក',
+    'confirm_clear' => 'តើអ្នកប្រាកដថាចង់លុបកន្ត្រក?',
+    'continue_shopping' => 'បន្តទិញ',
+    'remove' => 'យកចេញ',
+    'confirm_remove' => 'យកចេញពីកន្ត្រក?',
+    'order_summary' => 'សង្ខេបការកម្មង់',
+    'subtotal' => 'សរុបរង',
+    'shipping' => 'ថ្លៃដឹកជញ្ជូន',
+    'free' => 'ឥតគិតថ្លៃ',
+    'tax' => 'ពន្ធ',
+    'total' => 'សរុប',
+    'proceed_to_checkout' => 'ទៅកាន់ការបញ្ជាទិញ',
+    'login_to_checkout' => 'ចូលប្រើដើម្បីបញ្ជាទិញ',
+    'empty_title' => 'កន្ត្រករបស់អ្នកទទេ',
+    'empty_message' => 'អ្នកមិនទាន់បានបន្ថែមសៀវភៅណាមួយទៅក្នុងកន្ត្រកទេ',
+    'start_shopping' => 'ចាប់ផ្តើមទិញ',
+    'go_home' => 'ទៅទំព័រដើម',
+    'coupon' => 'ប័ណ្ណបញ្ចុះតម្លៃ',
+    'enter_coupon' => 'បញ្ចូលកូដប័ណ្ណ',
+    'apply' => 'អនុវត្ត',
+    'coupon_applied' => 'ប័ណ្ណត្រូវបានអនុវត្ត!',
+    'code' => 'កូដ',
+    'discount' => 'បញ្ចុះតម្លៃ',
+];

@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'title' => 'Checkout',
+    'items' => 'items',
+    'in_your_cart' => 'in your cart',
+    'back_to_cart' => 'Back to Cart',
+    'shipping_address' => 'Shipping Address',
+    'address' => 'Address',
+    'payment_method' => 'Payment Method',
+    'cash_on_delivery' => 'Cash on Delivery',
+    'credit_card' => 'Credit Card',
+    'qr_payment' => 'QR Payment',
+    'shipping_method' => 'Shipping Method',
+    'standard' => 'Standard',
+    'standard_desc' => '3-5 business days',
+    'express' => 'Express',
+    'express_desc' => '1-2 business days',
+    'order_summary' => 'Order Summary',
+    'subtotal' => 'Subtotal',
+    'shipping' => 'Shipping',
+    'free' => 'Free',
+    'total' => 'Total',
+    'place_order' => 'Place Order',
+];
