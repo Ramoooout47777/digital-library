@@ -87,10 +87,10 @@ require __DIR__.'/auth.php';
 // CUSTOMER ROUTES (Protected)
 // ============================================================
 Route::middleware(['auth', 'verified'])->group(function () {
-    
+
     // Dashboard
     Route::get('/customer/dashboard', CustomerDashboardController::class)->name('customer.dashboard');
-    
+
     // Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -98,30 +98,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
-    
+
     // Orders
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
-    
+
     // Favorites
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('/favorites', [FavoriteController::class, 'store'])->name('favorites.store');
     Route::delete('/favorites/{book}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
     Route::post('/favorites/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::get('/favorites/check/{book}', [FavoriteController::class, 'check'])->name('favorites.check');
-
-    //Banner
-    Route::resource('banners', AdminBannerController::class)->except(['show']);
 });
 
 // ============================================================
 // ADMIN ROUTES (Protected)
 // ============================================================
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin'])->group(function () {
-    
+
     // ============ DASHBOARD ============
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard/chart-data', [AdminController::class, 'chartData'])->name('dashboard.chart-data');
@@ -179,10 +176,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
 
     // ============ BANNERS MANAGEMENT ============
     Route::resource('banners', AdminBannerController::class);
-    Route::patch('banners/{banner}/toggle-status', [AdminBannerController::class, 'toggleStatus'])->name('banners.toggle-status');
+    Route::post('banners/{banner}/toggle-status', [AdminBannerController::class, 'toggleStatus'])->name('banners.toggle-status');
     Route::post('banners/reorder', [AdminBannerController::class, 'reorder'])->name('banners.reorder');
     Route::get('banners/export', [AdminBannerController::class, 'export'])->name('banners.export');
-    Route::post('banners/{banner}/toggle', [BannerController::class, 'toggleStatus'])->name('banners.toggle');
 
     // ============ NOTIFICATIONS MANAGEMENT ============
      Route::get('notifications', [AdminNotificationController::class, 'index'])->name('notifications.index');
@@ -191,42 +187,42 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::post('notifications/mark-all-read', [AdminNotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
     Route::delete('notifications/{notification}', [AdminNotificationController::class, 'destroy'])->name('notifications.destroy');
     Route::delete('notifications/delete-all', [AdminNotificationController::class, 'deleteAll'])->name('notifications.delete-all');
-    
+
 
     // ============ SETTINGS MANAGEMENT ============
     Route::get('/settings', [AdminSettingsController::class, 'index'])->name('settings');
     Route::get('/settings/{tab}', [AdminSettingsController::class, 'index'])->name('settings.tab');
-    
+
     // General Settings
     Route::put('/settings/general', [AdminSettingsController::class, 'updateGeneral'])->name('settings.general');
-    
+
     // Type Settings
     Route::post('/settings/types', [AdminSettingsController::class, 'storeType'])->name('settings.types.store');
     Route::put('/settings/types/{type}', [AdminSettingsController::class, 'updateType'])->name('settings.types.update');
     Route::delete('/settings/types/{type}', [AdminSettingsController::class, 'destroyType'])->name('settings.types.destroy');
-    
+
     // Author Settings
     Route::post('/settings/authors', [AdminSettingsController::class, 'storeAuthor'])->name('settings.authors.store');
     Route::put('/settings/authors/{author}', [AdminSettingsController::class, 'updateAuthor'])->name('settings.authors.update');
     Route::delete('/settings/authors/{author}', [AdminSettingsController::class, 'destroyAuthor'])->name('settings.authors.destroy');
-    
+
     // Publisher Settings
     Route::post('/settings/publishers', [AdminSettingsController::class, 'storePublisher'])->name('settings.publishers.store');
     Route::put('/settings/publishers/{publisher}', [AdminSettingsController::class, 'updatePublisher'])->name('settings.publishers.update');
     Route::delete('/settings/publishers/{publisher}', [AdminSettingsController::class, 'destroyPublisher'])->name('settings.publishers.destroy');
-    
+
     // Print Settings
     Route::put('/settings/print', [AdminSettingsController::class, 'updatePrint'])->name('settings.print');
-    
+
     // Order Settings
     Route::put('/settings/order', [AdminSettingsController::class, 'updateOrder'])->name('settings.order');
-    
+
     // Discount Settings
     Route::put('/settings/discount', [AdminSettingsController::class, 'updateDiscount'])->name('settings.discount');
-    
+
     // Coupon Settings
     Route::put('/settings/coupon', [AdminSettingsController::class, 'updateCoupon'])->name('settings.coupon');
-    
+
     // Notification Settings
     Route::put('/settings/notification', [AdminSettingsController::class, 'updateNotification'])->name('settings.notification');
 });

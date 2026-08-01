@@ -11,7 +11,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PermissionSeeder::class,
-            SettingsSeeder::class, // Add this
+            SettingsSeeder::class,
+            BannerSeeder::class,
         ]);
     }
 }

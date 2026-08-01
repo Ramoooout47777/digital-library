@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Author;
+use App\Models\Banner;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -96,7 +97,12 @@ class HomeController extends Controller
         // ============================================================
         $settings = Setting::where('group', 'general')->pluck('value', 'key')->toArray();
 
-        return view('home', compact('popularBooks', 'freeBooks', 'categories', 'stats', 'settings'));
+        // ============================================================
+        // BANNERS
+        // ============================================================
+        $banners = Banner::active()->byPosition('home')->ordered()->get();
+
+        return view('home', compact('popularBooks', 'freeBooks', 'categories', 'stats', 'settings', 'banners'));
     }
 
      // ============================================================
@@ -106,14 +112,14 @@ class HomeController extends Controller
     {
         // Check if locale is valid
         $availableLocales = ['km', 'en', 'zh'];
-        
+
         if (in_array($locale, $availableLocales)) {
             // Set session
             Session::put('locale', $locale);
             // Set app locale
             App::setLocale($locale);
         }
-        
+
         // Redirect back to previous page
         return redirect()->back();
     }

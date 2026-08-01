@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Services\CouponService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -28,14 +29,14 @@ class OrderController extends Controller
     public function checkout()
     {
         $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
-        
+
         if ($cart->items->count() === 0) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
         }
 
         // Get current coupon
         $currentCoupon = $this->couponService->getCurrentCoupon();
-        
+
         // Calculate discounted total
         $originalTotal = $cart->total;
         $discountedTotal = $this->couponService->getDiscountedTotal($originalTotal);
@@ -62,19 +63,28 @@ class OrderController extends Controller
             return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
         }
 
-        return DB::transaction(function () use ($request, $cart) {
+        // Get current coupon
+        $currentCoupon = $this->couponService->getCurrentCoupon();
+        $originalTotal = $cart->total;
+        $discountedTotal = $this->couponService->getDiscountedTotal($originalTotal);
+        $discountAmount = $originalTotal - $discountedTotal;
+
+        return DB::transaction(function () use ($request, $cart, $currentCoupon, $discountAmount, $discountedTotal) {
             // Create order
             $order = Order::create([
                 'user_id' => Auth::id(),
-                'order_number' => 'ORD-' . strtoupper(uniqid()),
+                'order_number' => 'ORD-' . strtoupper(Str::random(10)),
                 'subtotal' => $cart->total,
-                'total' => $cart->total,
+                'discount_amount' => $discountAmount,
+                'total' => $discountedTotal,
                 'payment_method' => $request->payment_method,
                 'payment_status' => 'pending',
                 'status' => 'pending',
                 'order_status' => Order::STATUS_PENDING,
                 'shipping_address' => $request->shipping_address,
                 'shipping_method' => $request->shipping_method,
+                'coupon_code' => $currentCoupon ? $currentCoupon['code'] : null,
+                'coupon_discount' => $discountAmount,
             ]);
 
             // Create order items
@@ -90,40 +100,32 @@ class OrderController extends Controller
 
                 // Reduce stock
                 $book = Book::find($item->book_id);
-                $book->decrement('stock', $item->quantity);
+                if ($book) {
+                    $book->decrement('stock', $item->quantity);
+                }
             }
 
             // Clear cart
             $cart->clear();
 
-            // If COD, complete order immediately
+            // Clear used coupon session
+            $this->couponService->removeCoupon();
+
+            // Increment coupon usage if exists
+            if ($currentCoupon && isset($currentCoupon['coupon'])) {
+                $currentCoupon['coupon']->incrementUsage();
+            }
+
+            // If COD, set status as confirmed
             if ($request->payment_method === 'cod') {
                 $order->update([
-                    'payment_status' => 'completed',
-                    'status' => 'completed',
                     'order_status' => Order::STATUS_CONFIRMED,
                     'confirmed_at' => now(),
-                    'completed_at' => now(),
                 ]);
-
-                // Create purchase records
-                foreach ($order->items as $item) {
-                    Purchase::create([
-                        'user_id' => Auth::id(),
-                        'book_id' => $item->book_id,
-                        'order_id' => $order->id,
-                        'price_paid' => $item->price,
-                        'status' => 'active',
-                        'expires_at' => now()->addYear(),
-                    ]);
-                }
-
-                return redirect()->route('orders.show', $order)
-                    ->with('success', 'Order placed successfully!');
             }
 
             return redirect()->route('orders.show', $order)
-                ->with('info', 'Order created! Please complete payment.');
+                ->with('success', 'Order placed successfully!');
         });
     }
 

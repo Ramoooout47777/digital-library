@@ -6,22 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ ('Digital Library') }} — {{ __('home.welcome') ?? 'Digital Library' }}</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Khmer+OS&display=swap" rel="stylesheet">
-    
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
     <style>
         * {
             font-family: 'Inter', 'Khmer OS', system-ui, sans-serif;
         }
-        
+
         /* ─── Scrollbar ─── */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         .dark ::-webkit-scrollbar-track { background: #0f172a; }
@@ -30,7 +33,7 @@
         .light ::-webkit-scrollbar-track { background: #f1f5f9; }
         .light ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .light ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
+
         /* ─── Theme Transitions ─── */
         .theme-transition,
         .theme-transition * {
@@ -40,11 +43,11 @@
                         box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                         transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         /* ─── Dark Mode ─── */
         .dark .cyber-bg {
             background: #0b1120;
-            background-image: 
+            background-image:
                 radial-gradient(ellipse at 15% 50%, rgba(56, 189, 248, 0.05) 0%, transparent 65%),
                 radial-gradient(ellipse at 85% 20%, rgba(168, 85, 247, 0.04) 0%, transparent 55%);
             min-height: 100vh;
@@ -165,11 +168,11 @@
             background: #0f172a;
             border: 1px solid rgba(51, 65, 85, 0.1);
         }
-        
+
         /* ─── Light Mode ─── */
         .light .cyber-bg {
             background: #f8fafc;
-            background-image: 
+            background-image:
                 radial-gradient(ellipse at 15% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 65%),
                 radial-gradient(ellipse at 85% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 55%);
             min-height: 100vh;
@@ -288,14 +291,14 @@
             background: #e8ecf1;
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        
+
         /* ─── Common Styles ─── */
         .neu-card, .neu-card-inset, .neu-book, .mobile-menu, .profile-dropdown {
             border-radius: 20px;
         }
         .neu-book { border-radius: 16px; }
         .neu-pill { border-radius: 100px; }
-        
+
         .gradient-text-animated {
             background: linear-gradient(135deg, #38bdf8 0%, #818cf8 35%, #a78bfa 65%, #38bdf8 100%);
             background-size: 300% 300%;
@@ -308,7 +311,7 @@
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
-        
+
         .heading-xl {
             font-size: clamp(3rem, 7vw, 5.5rem);
             font-weight: 900;
@@ -331,10 +334,10 @@
             letter-spacing: -0.04em;
             line-height: 1.05;
         }
-        
+
         .section-padding { padding: 6rem 0; }
         @media (max-width: 768px) { .section-padding { padding: 3.5rem 0; } }
-        
+
         .hero-container {
             position: relative;
             overflow: hidden;
@@ -358,7 +361,7 @@
             0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
             50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
         }
-        
+
         .nav-link {
             font-size: 0.9rem;
             font-weight: 500;
@@ -377,7 +380,7 @@
             transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .nav-link:hover::after { width: 100%; }
-        
+
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-24px) rotate(1deg); }
@@ -385,7 +388,7 @@
         .animate-float {
             animation: float 7s ease-in-out infinite;
         }
-        
+
         @keyframes slide-down {
             from { opacity: 0; transform: scale(0.95) translateY(-10px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
@@ -397,7 +400,7 @@
             transform-origin: top right;
             animation: slide-down 0.2s ease-out;
         }
-        
+
         /* ─── Language Select Custom Styles ─── */
         .lang-select {
             appearance: none;
@@ -440,7 +443,7 @@
         .lang-select-wrapper:hover .lang-arrow {
             transform: translateY(-50%) rotate(180deg);
         }
-        
+
         .neu-badge-free { color: #34d399; }
         .neu-badge-featured { color: #fbbf24; }
         .neu-badge-new { color: #38bdf8; }
@@ -464,7 +467,7 @@
             </div>
             <span class="text-xl font-bold tracking-tight dark:text-slate-100 light:text-slate-800">{{  __('home.hero_badge') }}</span>
         </a>
-        
+
         <!-- Desktop Nav -->
         <div class="hidden lg:flex items-center gap-8">
             <a href="{{ route('home') }}" class="nav-link active">{{ __('home.home') ?? 'Home' }}</a>
@@ -472,7 +475,7 @@
             <a href="#categories" class="nav-link">{{ __('home.categories') ?? 'Categories' }}</a>
             <a href="#about" class="nav-link">{{ __('home.about') ?? 'About' }}</a>
         </div>
-        
+
         <!-- Right Side -->
         <div class="flex items-center gap-3">
             @auth
@@ -481,19 +484,19 @@
                     <span class="hidden md:inline">{{ __('home.dashboard') ?? 'Dashboard' }}</span>
                 </a>
             @endauth
-            
+
             <!-- Theme Toggle -->
             <button onclick="toggleTheme()" class="neu-button w-11 h-11 rounded-xl flex items-center justify-center text-sm p-0 flex-shrink-0">
                 <i id="theme-icon" class="fas fa-moon text-lg"></i>
             </button>
-            
+
             <!-- ============================================================ -->
             <!-- DESKTOP: Language Select (hidden lg:flex) -->
             <!-- ============================================================ -->
             <div class="hidden lg:flex items-center gap-1">
                 <div class="lang-select-wrapper">
                     <span class="lang-icon">🌐</span>
-                    <select onchange="window.location.href = this.value;" 
+                    <select onchange="window.location.href = this.value;"
                             class="lang-select dark:lang-select light:lang-select pl-8 pr-8 py-1.5">
                         <option value="{{ route('switch-language', 'km') }}" {{ $currentLocale == 'km' ? 'selected' : '' }}>ខ្មែរ</option>
                         <option value="{{ route('switch-language', 'en') }}" {{ $currentLocale == 'en' ? 'selected' : '' }}>English</option>
@@ -506,7 +509,7 @@
                     </span>
                 </div>
             </div>
-            
+
             @guest
                 <a href="{{ route('login') }}" class="text-sm font-medium dark:text-slate-400 light:text-slate-600 hover:dark:text-slate-200 hover:light:text-slate-900 transition px-3 py-1.5 hidden sm:block">
                     {{ __('home.login') ?? 'Login' }}
@@ -517,15 +520,15 @@
             @else
                 <!-- Profile Dropdown -->
                 <div class="relative">
-                    <button onclick="toggleProfileDropdown()" 
+                    <button onclick="toggleProfileDropdown()"
                             class="flex items-center gap-2 hover:opacity-80 transition px-2 py-1 rounded-xl hover:bg-slate-700/10">
-                        <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3b82f6&color=fff&size=36' }}" 
-                             alt="{{ auth()->user()->name }}" 
+                        <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3b82f6&color=fff&size=36' }}"
+                             alt="{{ auth()->user()->name }}"
                              class="w-8 h-8 rounded-full border-2 border-cyan-500/30">
                         <span class="text-sm font-medium dark:text-slate-200 light:text-slate-800 hidden xl:block">{{ auth()->user()->name }}</span>
                         <i class="fas fa-chevron-down text-xs dark:text-slate-400 light:text-slate-500 hidden xl:block"></i>
                     </button>
-                    
+
                     <div id="profileDropdown" class="profile-dropdown hidden absolute right-0 mt-2 neu-card p-2 z-50">
                         <div class="px-3 py-3 border-b dark:border-slate-800/40 light:border-slate-200/60">
                             <p class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm">{{ auth()->user()->name }}</p>
@@ -551,13 +554,13 @@
                     </div>
                 </div>
             @endguest
-            
+
             <button id="mobile-toggle" class="lg:hidden dark:text-slate-400 light:text-slate-600 hover:dark:text-slate-200 hover:light:text-slate-900 transition p-2">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
         </div>
     </div>
-    
+
     <!-- ============================================================ -->
     <!-- MOBILE MENU -->
     <!-- ============================================================ -->
@@ -566,14 +569,14 @@
         <a href="#books" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.books') ?? 'Books' }}</a>
         <a href="#categories" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.categories') ?? 'Categories' }}</a>
         <a href="#about" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.about') ?? 'About' }}</a>
-        
+
         <!-- ============================================================ -->
         <!-- MOBILE: Language Select -->
         <!-- ============================================================ -->
         <div class="pt-4 border-t dark:border-slate-800/40 light:border-slate-200/60">
             <div class="lang-select-wrapper w-full">
                 <span class="lang-icon">🌐</span>
-                <select onchange="window.location.href = this.value;" 
+                <select onchange="window.location.href = this.value;"
                         class="lang-select w-full dark:lang-select light:lang-select pl-8 pr-8 py-2.5 text-base">
                     <option value="{{ route('switch-language', 'km') }}" {{ $currentLocale == 'km' ? 'selected' : '' }}>🇰🇭 ខ្មែរ</option>
                     <option value="{{ route('switch-language', 'en') }}" {{ $currentLocale == 'en' ? 'selected' : '' }}>🇺🇸 English</option>
@@ -586,7 +589,7 @@
                 </span>
             </div>
         </div>
-        
+
         @guest
             <div class="flex gap-3 pt-2 border-t dark:border-slate-800/40 light:border-slate-200/60">
                 <a href="{{ route('login') }}" class="flex-1 text-center neu-button text-sm py-3">{{ __('home.login') ?? 'Login' }}</a>
@@ -625,17 +628,43 @@
                     <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
                     <span class="text-sm font-medium text-cyan-400 tracking-[0.15em] uppercase">{{ __('home.hero_badge') ?? 'Digital Library' }}</span>
                 </div>
-                
+
                 <h1 class="heading-xl dark:text-slate-100 light:text-slate-900">
                     {{ __('home.hero_title') ?? 'Discover. Read.' }}
                     <br>
                     <span class="gradient-text-animated">{{ __('home.hero_title_highlight') ?? 'Without Limits.' }}</span>
                 </h1>
-                
+
                 <p class="text-lg dark:text-slate-400 light:text-slate-600 leading-relaxed max-w-lg">
                     {{ __('home.hero_subtitle') ?? 'A curated digital library with thousands of books. Read anywhere, anytime.' }}
                 </p>
-                
+
+                <!-- Mobile Slider (Only visible on mobile/tablet) -->
+                <div class="lg:hidden w-full mt-8">
+                    @if(isset($banners) && $banners->count() > 0)
+                        <div class="swiper heroSwiper rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50">
+                            <div class="swiper-wrapper">
+                                @foreach($banners as $banner)
+                                    <div class="swiper-slide relative aspect-[16/9]">
+                                        @if($banner->link)
+                                            <a href="{{ $banner->link }}" class="block w-full h-full">
+                                        @endif
+                                        <img src="{{ asset('storage/' . $banner->image) }}" alt="{{ $banner->title }}" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+                                        <div class="absolute bottom-4 left-4 right-4">
+                                            <h3 class="text-lg font-bold text-white">{{ $banner->title }}</h3>
+                                        </div>
+                                        @if($banner->link)
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    @endif
+                </div>
+
                 <div class="flex flex-wrap gap-4">
                     <a href="#books" class="neu-button-primary px-10 py-4 text-base font-semibold rounded-xl flex items-center gap-3">
                         <i class="fas fa-search text-lg"></i> {{ __('home.explore_books') ?? 'Explore Books' }}
@@ -644,7 +673,7 @@
                         <i class="fas fa-th-list text-lg"></i> {{ __('home.view_categories') ?? 'Categories' }}
                     </a>
                 </div>
-                
+
                 <div class="flex items-center gap-12 pt-8 border-t dark:border-slate-800/40 light:border-slate-200/60">
                     <div>
                         <div class="stat-digit stat-number">{{ $stats['total_books'] ?? 0 }}+</div>
@@ -660,20 +689,75 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="relative hidden lg:block animate-float">
                 <div class="neu-card p-4">
                     <div class="relative rounded-2xl overflow-hidden aspect-[4/3]">
-                        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&h=600&fit=crop&q=80" 
-                             alt="{{ __('home.hero_image_alt') ?? 'Reading' }}" 
-                             class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-cyan-500/5 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 right-4 neu-card-inset p-5 rounded-xl">
-                            <p class="text-sm font-medium dark:text-slate-300 light:text-slate-700 leading-relaxed">
-                                <i class="fas fa-quote-left text-cyan-400 mr-3 opacity-60"></i>
-                                {{ __('home.hero_quote') ?? 'Reading is to the mind what exercise is to the body.' }}
-                            </p>
-                        </div>
+                        @if(isset($banners) && $banners->count() > 0)
+                            <div class="swiper heroSwiperFull w-full h-full group">
+                                <div class="swiper-wrapper">
+                                    @foreach($banners as $banner)
+                                        <div class="swiper-slide relative">
+                                            @if($banner->link)
+                                                <a href="{{ $banner->link }}" class="block w-full h-full relative overflow-hidden">
+                                            @else
+                                                <div class="w-full h-full relative overflow-hidden">
+                                            @endif
+                                                <img src="{{ asset('storage/' . $banner->image) }}"
+                                                     alt="{{ $banner->title }}"
+                                                     class="w-full h-full object-cover transform transition-transform duration-[5000ms] hover:scale-110">
+
+                                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
+
+                                                <div class="absolute bottom-0 left-0 right-0 p-8">
+                                                    <div class="space-y-2">
+                                                        @if($banner->title)
+                                                            <h3 class="text-2xl font-bold text-white leading-tight">
+                                                                {{ $banner->title }}
+                                                            </h3>
+                                                        @endif
+                                                        @if($banner->description)
+                                                            <p class="text-base text-slate-200 line-clamp-2 opacity-90 max-w-md">
+                                                                {{ $banner->description }}
+                                                            </p>
+                                                        @endif
+                                                        @if($banner->link)
+                                                            <div class="pt-2">
+                                                                <span class="inline-flex items-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider group/link">
+                                                                    {{ __('home.learn_more') ?? 'Learn More' }}
+                                                                    <i class="fas fa-arrow-right transform group-hover/link:translate-x-1 transition-transform"></i>
+                                                                </span>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @if($banner->link)
+                                                </a>
+                                            @else
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <!-- Navigation Arrows -->
+                                <div class="swiper-button-prev !text-white/50 after:!text-xl hover:!text-white transition opacity-0 group-hover:opacity-100"></div>
+                                <div class="swiper-button-next !text-white/50 after:!text-xl hover:!text-white transition opacity-0 group-hover:opacity-100"></div>
+
+                                <div class="swiper-pagination !bottom-6 !text-right !px-8"></div>
+                            </div>
+                        @else
+                            <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&h=600&fit=crop&q=80"
+                                 alt="{{ __('home.hero_image_alt') ?? 'Reading' }}"
+                                 class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-cyan-500/5 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4 neu-card-inset p-5 rounded-xl">
+                                <p class="text-sm font-medium dark:text-slate-300 light:text-slate-700 leading-relaxed">
+                                    <i class="fas fa-quote-left text-cyan-400 mr-3 opacity-60"></i>
+                                    {{ __('home.hero_quote') ?? 'Reading is to the mind what exercise is to the body.' }}
+                                </p>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="absolute -bottom-20 -right-20 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl animate-float pointer-events-none"></div>
@@ -692,8 +776,8 @@
         <div class="neu-card p-6">
             <div class="flex flex-col md:flex-row items-center gap-6">
                 <div class="relative flex-shrink-0">
-                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3b82f6&color=fff&size=80' }}" 
-                         alt="{{ auth()->user()->name }}" 
+                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3b82f6&color=fff&size=80' }}"
+                         alt="{{ auth()->user()->name }}"
                          class="w-20 h-20 rounded-full object-cover border-2 border-cyan-500/30">
                     <span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-400 rounded-full border-2 border-slate-900"></span>
                 </div>
@@ -705,7 +789,7 @@
                             <i class="fas fa-check-circle mr-1"></i> {{ __('profile.verified') ?? 'Verified' }}
                         </span>
                         <span class="text-xs dark:text-slate-500 light:text-slate-500">
-                            <i class="fas fa-calendar-alt mr-1"></i> 
+                            <i class="fas fa-calendar-alt mr-1"></i>
                             {{ __('profile.member_since') ?? 'Member since' }} {{ auth()->user()->created_at->format('M Y') }}
                         </span>
                     </div>
@@ -737,7 +821,7 @@
             <h2 class="heading-lg dark:text-slate-100 light:text-slate-900">{{ __('home.why_choose_us') ?? 'Why Choose Us?' }}</h2>
             <p class="text-base dark:text-slate-400 light:text-slate-600 mt-3 max-w-lg mx-auto">{{ __('home.features_subtitle') ?? 'Designed for the modern reader.' }}</p>
         </div>
-        
+
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div class="neu-card p-8 text-center">
                 <div class="w-20 h-20 rounded-2xl neu-card-inset flex items-center justify-center mx-auto mb-4">
@@ -746,7 +830,7 @@
                 <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-base">{{ __('home.feature_books') ?? 'Vast Library' }}</h4>
                 <p class="text-sm dark:text-slate-500 light:text-slate-500 mt-2 leading-relaxed">{{ __('home.feature_books_desc') ?? 'Thousands of books across genres.' }}</p>
             </div>
-            
+
             <div class="neu-card p-8 text-center">
                 <div class="w-20 h-20 rounded-2xl neu-card-inset flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-mobile-alt text-emerald-400 text-3xl"></i>
@@ -754,7 +838,7 @@
                 <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-base">{{ __('home.feature_read_anywhere') ?? 'Read Anywhere' }}</h4>
                 <p class="text-sm dark:text-slate-500 light:text-slate-500 mt-2 leading-relaxed">{{ __('home.feature_read_anywhere_desc') ?? 'Any device, any location.' }}</p>
             </div>
-            
+
             <div class="neu-card p-8 text-center">
                 <div class="w-20 h-20 rounded-2xl neu-card-inset flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-download text-purple-400 text-3xl"></i>
@@ -762,7 +846,7 @@
                 <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-base">{{ __('home.feature_download') ?? 'Offline Ready' }}</h4>
                 <p class="text-sm dark:text-slate-500 light:text-slate-500 mt-2 leading-relaxed">{{ __('home.feature_download_desc') ?? 'Download and read offline.' }}</p>
             </div>
-            
+
             <div class="neu-card p-8 text-center">
                 <div class="w-20 h-20 rounded-2xl neu-card-inset flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-star text-amber-400 text-3xl"></i>
@@ -790,15 +874,15 @@
                 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
-        
+
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             @forelse($popularBooks ?? [] as $index => $book)
                 <div class="neu-book group">
                     <div class="relative">
                         <a href="{{ route('books.show', $book) }}" class="block">
                             @if($book->cover)
-                                <img src="{{ asset('storage/' . $book->cover) }}" 
-                                     alt="{{ $book->title }}" 
+                                <img src="{{ asset('storage/' . $book->cover) }}"
+                                     alt="{{ $book->title }}"
                                      class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition duration-500">
                             @else
                                 <div class="w-full aspect-[3/4] bg-slate-800/30 flex items-center justify-center">
@@ -806,13 +890,13 @@
                                 </div>
                             @endif
                         </a>
-                        
+
                         @auth
-                            <button onclick="toggleFavorite({{ $book->id }}, this)" 
+                            <button onclick="toggleFavorite({{ $book->id }}, this)"
                                     class="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm hover:bg-black/60 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg z-10"
                                     title="{{ auth()->user()->isFavorited($book->id) ? 'Remove from favorites' : 'Add to favorites' }}">
-                                <i class="fas fa-heart text-sm 
-                                    @if(auth()->user()->isFavorited($book->id)) 
+                                <i class="fas fa-heart text-sm
+                                    @if(auth()->user()->isFavorited($book->id))
                                         text-red-500
                                     @else
                                         text-white/60 hover:text-red-400
@@ -821,7 +905,7 @@
                                 </i>
                             </button>
                         @endauth
-                        
+
                         <div class="absolute top-3 left-3 flex flex-col gap-1">
                             @if($index < 2)
                                 <span class="neu-badge neu-badge-featured"><i class="fas fa-crown mr-1"></i> Featured</span>
@@ -832,7 +916,7 @@
                             @endif
                         </div>
                     </div>
-                    
+
                     <div class="p-4">
                         <a href="{{ route('books.show', $book) }}" class="block">
                             <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate">{{ $book->title }}</h4>
@@ -885,14 +969,14 @@
                 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
-        
+
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
             @forelse($categories ?? [] as $index => $category)
-                <a href="{{ route('categories.show', $category) }}" 
+                <a href="{{ route('categories.show', $category) }}"
                    class="neu-card p-5 text-center transition-all duration-300 hover:scale-105">
                     @if($category->image)
-                        <img src="{{ asset('storage/' . $category->image) }}" 
-                             alt="{{ $category->name }}" 
+                        <img src="{{ asset('storage/' . $category->image) }}"
+                             alt="{{ $category->name }}"
                              class="w-20 h-20 rounded-full object-cover mx-auto border-2 border-cyan-500/20">
                     @else
                         <div class="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500 to-indigo-500 flex items-center justify-center mx-auto">
@@ -931,15 +1015,15 @@
                 <i class="fas fa-arrow-right"></i>
             </a>
         </div>
-        
+
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             @foreach($freeBooks as $index => $book)
                 <div class="neu-book group border-emerald-500/10">
                     <div class="relative">
                         <a href="{{ route('books.show', $book) }}" class="block">
                             @if($book->cover)
-                                <img src="{{ asset('storage/' . $book->cover) }}" 
-                                     alt="{{ $book->title }}" 
+                                <img src="{{ asset('storage/' . $book->cover) }}"
+                                     alt="{{ $book->title }}"
                                      class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition duration-500">
                             @else
                                 <div class="w-full aspect-[3/4] bg-slate-800/30 flex items-center justify-center">
@@ -947,12 +1031,12 @@
                                 </div>
                             @endif
                         </a>
-                        
+
                         @auth
-                            <button onclick="toggleFavorite({{ $book->id }}, this)" 
+                            <button onclick="toggleFavorite({{ $book->id }}, this)"
                                     class="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm hover:bg-black/60 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg z-10">
-                                <i class="fas fa-heart text-sm 
-                                    @if(auth()->user()->isFavorited($book->id)) 
+                                <i class="fas fa-heart text-sm
+                                    @if(auth()->user()->isFavorited($book->id))
                                         text-red-500
                                     @else
                                         text-white/60 hover:text-red-400
@@ -961,12 +1045,12 @@
                                 </i>
                             </button>
                         @endauth
-                        
+
                         <div class="absolute top-3 left-3">
                             <span class="neu-badge neu-badge-free"><i class="fas fa-gift mr-1"></i> Free</span>
                         </div>
                     </div>
-                    
+
                     <div class="p-4">
                         <a href="{{ route('books.show', $book) }}" class="block">
                             <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate">{{ $book->title }}</h4>
@@ -1026,11 +1110,11 @@
                     </li>
                 </ul>
             </div>
-            
+
             <div class="neu-card p-3 relative">
                 <div class="rounded-2xl overflow-hidden aspect-[4/3]">
-                    <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&h=600&fit=crop&q=80" 
-                         alt="{{ __('home.about_image_alt') ?? 'Library' }}" 
+                    <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&h=600&fit=crop&q=80"
+                         alt="{{ __('home.about_image_alt') ?? 'Library' }}"
                          class="w-full h-full object-cover">
                 </div>
                 <div class="absolute -bottom-4 -right-4 neu-card-inset px-5 py-3 rounded-xl">
@@ -1085,10 +1169,10 @@
             <p class="text-base dark:text-slate-400 light:text-slate-600 mt-3 max-w-lg mx-auto">
                 {{ __('home.newsletter_subtitle') ?? 'Get the latest book releases and exclusive offers.' }}
             </p>
-            
+
             <form action="{{ route('newsletter.subscribe') }}" method="POST" class="mt-8 flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
                 @csrf
-                <input type="email" name="email" placeholder="{{ __('home.enter_email') ?? 'Enter your email' }}" 
+                <input type="email" name="email" placeholder="{{ __('home.enter_email') ?? 'Enter your email' }}"
                        class="neu-input flex-1 text-base" required>
                 <button type="submit" class="neu-button-primary px-8 py-4 text-base font-semibold whitespace-nowrap rounded-xl">
                     <i class="fas fa-paper-plane mr-2"></i> {{ __('home.subscribe') ?? 'Subscribe' }}
@@ -1120,7 +1204,7 @@
                     <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-discord text-lg"></i></a>
                 </div>
             </div>
-            
+
             <div>
                 <h4 class="text-sm font-semibold dark:text-slate-400 light:text-slate-600 uppercase tracking-wider mb-5">{{ __('home.quick_links') ?? 'Quick Links' }}</h4>
                 <ul class="space-y-3 text-sm">
@@ -1130,7 +1214,7 @@
                     <li><a href="#about" class="dark:text-slate-500 light:text-slate-500 hover:dark:text-slate-300 hover:light:text-slate-800 transition">{{ __('home.about') ?? 'About' }}</a></li>
                 </ul>
             </div>
-            
+
             <div>
                 <h4 class="text-sm font-semibold dark:text-slate-400 light:text-slate-600 uppercase tracking-wider mb-5">{{ __('home.support') ?? 'Support' }}</h4>
                 <ul class="space-y-3 text-sm">
@@ -1140,7 +1224,7 @@
                     <li><a href="#" class="dark:text-slate-500 light:text-slate-500 hover:dark:text-slate-300 hover:light:text-slate-800 transition">{{ __('home.terms') ?? 'Terms' }}</a></li>
                 </ul>
             </div>
-            
+
             <div>
                 <h4 class="text-sm font-semibold dark:text-slate-400 light:text-slate-600 uppercase tracking-wider mb-5">{{ __('home.contact_info') ?? 'Contact' }}</h4>
                 <ul class="space-y-3 text-sm dark:text-slate-500 light:text-slate-500">
@@ -1159,7 +1243,7 @@
                 </ul>
             </div>
         </div>
-        
+
         <div class="mt-12 pt-8 border-t dark:border-slate-800/40 light:border-slate-200/60 text-center text-sm dark:text-slate-500 light:text-slate-500">
             <p>&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('home.all_rights_reserved') ?? 'All rights reserved.' }}</p>
         </div>
@@ -1169,13 +1253,14 @@
 <!-- ============================================================ -->
 <!-- SCRIPTS -->
 <!-- ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     // ─── Theme Toggle ───
     function toggleTheme() {
         const html = document.documentElement;
         const body = document.getElementById('app');
         const icon = document.getElementById('theme-icon');
-        
+
         if (html.classList.contains('dark')) {
             html.classList.remove('dark');
             body.classList.remove('dark');
@@ -1192,14 +1277,14 @@
             localStorage.setItem('theme', 'dark');
         }
     }
-    
+
     // ─── Load Theme from LocalStorage ───
     document.addEventListener('DOMContentLoaded', function() {
         const savedTheme = localStorage.getItem('theme') || 'dark';
         const html = document.documentElement;
         const body = document.getElementById('app');
         const icon = document.getElementById('theme-icon');
-        
+
         if (savedTheme === 'light') {
             html.classList.remove('dark');
             body.classList.remove('dark');
@@ -1213,14 +1298,74 @@
             icon.classList.remove('fa-sun');
             icon.classList.add('fa-moon');
         }
+
+        // ─── Swiper Initializations ───
+        if (typeof Swiper !== 'undefined') {
+            // Desktop Slider
+            new Swiper('.heroSwiperFull', {
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                    renderBullet: function (index, className) {
+                        return '<span class="' + className + ' !w-2 !h-2 !rounded-full !bg-slate-400/50 transition-all duration-300"></span>';
+                    },
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                effect: 'fade',
+                fadeEffect: {
+                    crossFade: true
+                },
+                on: {
+                    init: function () {
+                        updateActiveBullet(this);
+                    },
+                    slideChange: function () {
+                        updateActiveBullet(this);
+                    }
+                }
+            });
+
+            // Mobile Slider
+            new Swiper('.heroSwiper', {
+                loop: true,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+        }
     });
-    
+
+    function updateActiveBullet(swiper) {
+        const bullets = swiper.pagination.bullets;
+        if (!bullets) return;
+
+        for (let i = 0; i < bullets.length; i++) {
+            bullets[i].classList.remove('!w-6', '!bg-cyan-400');
+            if (i === swiper.realIndex) {
+                bullets[i].classList.add('!w-6', '!bg-cyan-400');
+            }
+        }
+    }
+
     // ─── Profile Dropdown ───
     function toggleProfileDropdown() {
         const dropdown = document.getElementById('profileDropdown');
         dropdown.classList.toggle('hidden');
     }
-    
+
     document.addEventListener('click', function(event) {
         const dropdown = document.getElementById('profileDropdown');
         const button = event.target.closest('button');
@@ -1231,12 +1376,12 @@
             dropdown.classList.add('hidden');
         }
     });
-    
+
     // ─── Mobile Menu ───
     document.getElementById('mobile-toggle')?.addEventListener('click', function() {
         document.getElementById('mobile-menu').classList.toggle('hidden');
     });
-    
+
     // ─── Smooth Scroll ───
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
@@ -1248,7 +1393,7 @@
             }
         });
     });
-    
+
     document.addEventListener('click', function(e) {
         const menu = document.getElementById('mobile-menu');
         const toggle = document.getElementById('mobile-toggle');
@@ -1256,12 +1401,12 @@
             menu.classList.add('hidden');
         }
     });
-    
+
     // ─── Favorite Toggle ───
     function toggleFavorite(bookId, button) {
         const icon = button.querySelector('i');
         const isFavorited = icon.classList.contains('text-red-500');
-        
+
         if (isFavorited) {
             icon.classList.remove('text-red-500');
             icon.classList.add('text-white/60');
@@ -1269,7 +1414,7 @@
             icon.classList.remove('text-white/60');
             icon.classList.add('text-red-500');
         }
-        
+
         fetch('{{ route("favorites.toggle") }}', {
             method: 'POST',
             headers: {

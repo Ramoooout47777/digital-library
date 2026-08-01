@@ -22,10 +22,10 @@
             @endif
         </a>
     </div>
-    
+
     <form action="{{ route('admin.orders.index') }}" method="GET" class="flex gap-2">
-        <input type="text" name="search" value="{{ request('search') }}" 
-               placeholder="{{ __('admin.search') }}..." 
+        <input type="text" name="search" value="{{ request('search') }}"
+               placeholder="{{ __('admin.search') }}..."
                class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition">
             <i class="fas fa-search"></i>
@@ -46,7 +46,7 @@
                 <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>{{ __('admin.cancelled') }}</option>
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.payment_status') }}</label>
             <select name="payment_status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -57,13 +57,13 @@
                 <option value="refunded" {{ request('payment_status') == 'refunded' ? 'selected' : '' }}>{{ __('admin.refunded') }}</option>
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.date_range') ?? 'កាលបរិច្ឆេទ' }}</label>
-            <input type="date" name="date_from" value="{{ request('date_from') }}" 
+            <input type="date" name="date_from" value="{{ request('date_from') }}"
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
-        
+
         <div class="flex items-end gap-2">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition w-full">
                 <i class="fas fa-filter mr-2"></i>{{ __('admin.filter') }}
@@ -118,7 +118,7 @@
                             @endif
                         </td>
                         <td class="px-4 py-3">
-                            <span class="px-2 py-1 text-xs rounded-full 
+                            <span class="px-2 py-1 text-xs rounded-full
                                 @if($order->payment_status == 'completed') bg-green-100 text-green-800
                                 @elseif($order->payment_status == 'pending') bg-yellow-100 text-yellow-800
                                 @elseif($order->payment_status == 'failed') bg-red-100 text-red-800
@@ -128,20 +128,16 @@
                             </span>
                         </td>
                         <td class="px-4 py-3">
-                            <span class="px-2 py-1 text-xs rounded-full 
-                                @if($order->status == 'completed') bg-green-100 text-green-800
-                                @elseif($order->status == 'pending') bg-yellow-100 text-yellow-800
-                                @elseif($order->status == 'processing') bg-blue-100 text-blue-800
-                                @elseif($order->status == 'cancelled') bg-red-100 text-red-800
-                                @endif">
-                                {{ __('admin.' . $order->status) }}
+                            <span class="px-2 py-1 text-xs rounded-full {{ $order->status_badge }}">
+                                <i class="fas {{ $order->status_icon }} mr-1"></i>
+                                {{ $order->status_label }}
                             </span>
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-500">{{ $order->created_at->format('d/m/Y H:i') }}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
-                                <a href="{{ route('admin.orders.show', $order) }}" 
-                                   class="text-blue-600 hover:text-blue-800 transition" 
+                                <a href="{{ route('admin.orders.show', $order) }}"
+                                   class="text-blue-600 hover:text-blue-800 transition"
                                    title="{{ __('admin.view') }}">
                                     <i class="fas fa-eye"></i>
                                 </a>
@@ -150,7 +146,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="status" value="completed">
-                                        <button type="submit" class="text-green-600 hover:text-green-800 transition" 
+                                        <button type="submit" class="text-green-600 hover:text-green-800 transition"
                                                 title="{{ __('admin.complete') ?? 'បញ្ចប់' }}"
                                                 onclick="return confirm('{{ __('admin.confirm_complete') ?? 'តើអ្នកចង់បញ្ចប់ការកម្មង់នេះ?' }}')">
                                             <i class="fas fa-check-circle"></i>
@@ -160,7 +156,7 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="status" value="cancelled">
-                                        <button type="submit" class="text-red-600 hover:text-red-800 transition" 
+                                        <button type="submit" class="text-red-600 hover:text-red-800 transition"
                                                 title="{{ __('admin.cancel') ?? 'បោះបង់' }}"
                                                 onclick="return confirm('{{ __('admin.confirm_cancel') ?? 'តើអ្នកចង់បោះបង់ការកម្មង់នេះ?' }}')">
                                             <i class="fas fa-times-circle"></i>
@@ -181,10 +177,10 @@
             </tbody>
         </table>
     </div>
-    
+
     <div class="px-4 py-3 border-t flex justify-between items-center flex-wrap gap-2">
         <div class="text-sm text-gray-500">
-            {{ __('admin.showing') }} {{ $orders->firstItem() ?? 0 }} - {{ $orders->lastItem() ?? 0 }} 
+            {{ __('admin.showing') }} {{ $orders->firstItem() ?? 0 }} - {{ $orders->lastItem() ?? 0 }}
             {{ __('admin.of') }} {{ $orders->total() }} {{ __('admin.items') }}
         </div>
         {{ $orders->links() }}

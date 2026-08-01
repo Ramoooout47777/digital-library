@@ -9,7 +9,7 @@
     <form action="{{ route('admin.banners.update', $banner) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Left Column -->
             <div class="space-y-4">
@@ -18,35 +18,35 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">
                         {{ __('admin.banner_title') }} <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="title" value="{{ old('title', $banner->title) }}" 
+                    <input type="text" name="title" value="{{ old('title', $banner->title) }}"
                            class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('title') border-red-500 @enderror"
                            required>
                     @error('title')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Description -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.description') }}</label>
-                    <textarea name="description" rows="3" 
+                    <textarea name="description" rows="3"
                               class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('description') border-red-500 @enderror">{{ old('description', $banner->description) }}</textarea>
                     @error('description')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Link -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.banner_link') }}</label>
-                    <input type="url" name="link" value="{{ old('link', $banner->link) }}" 
+                    <input type="url" name="link" value="{{ old('link', $banner->link) }}"
                            class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('link') border-red-500 @enderror"
                            placeholder="https://example.com">
                     @error('link')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Position -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -63,22 +63,22 @@
                     @enderror
                 </div>
             </div>
-            
+
             <!-- Right Column -->
             <div class="space-y-4">
                 <!-- Current Image -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.current_image') }}</label>
                     @if($banner->image)
-                        <img src="{{ asset('storage/' . $banner->image) }}" 
-                             alt="{{ $banner->title }}" 
+                        <img src="{{ asset('storage/' . $banner->image) }}"
+                             alt="{{ $banner->title }}"
                              class="w-full h-48 object-cover rounded-lg shadow mb-2">
                     @else
                         <div class="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center mb-2">
                             <i class="fas fa-image text-gray-400 text-4xl"></i>
                         </div>
                     @endif
-                    
+
                     <label class="block text-sm font-medium text-gray-700 mb-1 mt-2">{{ __('admin.change_image') }}</label>
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-500 transition cursor-pointer"
                          onclick="document.getElementById('image').click()">
@@ -97,7 +97,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Order -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.order') }}</label>
@@ -107,7 +107,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Start Date -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.starts_at') }}</label>
@@ -117,7 +117,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- End Date -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.ends_at') }}</label>
@@ -127,7 +127,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Status -->
                 <div>
                     <label class="flex items-center gap-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer">
@@ -139,7 +139,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Submit Buttons -->
         <div class="flex items-center gap-3 mt-8 pt-6 border-t">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition">
@@ -148,16 +148,17 @@
             <a href="{{ route('admin.banners.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
                 <i class="fas fa-times mr-2"></i>{{ __('admin.cancel') }}
             </a>
-            
-            <form action="{{ route('admin.banners.destroy', $banner) }}" method="POST" class="inline ml-auto">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition"
-                        onclick="return confirm('{{ __('admin.confirm_delete') }}')">
-                    <i class="fas fa-trash mr-2"></i>{{ __('admin.delete') }}
-                </button>
-            </form>
+
+            <button type="button" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition ml-auto"
+                    onclick="if(confirm('{{ __('admin.confirm_delete') ?? 'Are you sure you want to delete this banner?' }}')) document.getElementById('delete-banner-form').submit();">
+                <i class="fas fa-trash mr-2"></i>{{ __('admin.delete') }}
+            </button>
         </div>
+    </form>
+
+    <form id="delete-banner-form" action="{{ route('admin.banners.destroy', $banner) }}" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
     </form>
 </div>
 
@@ -173,7 +174,7 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-    
+
     function removeImage() {
         document.getElementById('image').value = '';
         document.getElementById('image-preview').classList.add('hidden');

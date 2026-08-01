@@ -84,8 +84,8 @@
                                 <td class="px-4 py-3">
                                     <div class="flex items-center gap-3">
                                         @if($item->book && $item->book->cover)
-                                            <img src="{{ asset('storage/' . $item->book->cover) }}" 
-                                                 alt="{{ $item->book_title }}" 
+                                            <img src="{{ asset('storage/' . $item->book->cover) }}"
+                                                 alt="{{ $item->book_title }}"
                                                  class="w-12 h-16 object-cover rounded">
                                         @else
                                             <div class="w-12 h-16 bg-gray-200 rounded flex items-center justify-center">
@@ -141,19 +141,29 @@
                 <i class="fas fa-tasks mr-2 text-blue-500"></i>
                 {{ __('admin.order_status') }}
             </h3>
-            
+
             <form action="{{ route('admin.orders.update-status', $order) }}" method="POST" class="space-y-3">
                 @csrf
                 @method('PATCH')
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.status') }}</label>
                     <select name="status" class="form-input w-full">
-                        <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>{{ __('admin.pending') }}</option>
-                        <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>{{ __('admin.processing') }}</option>
-                        <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>{{ __('admin.completed') }}</option>
-                        <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>{{ __('admin.cancelled') }}</option>
+                        @foreach(App\Models\Order::getStatuses() as $key => $label)
+                            <option value="{{ $key }}" {{ $order->order_status == $key ? 'selected' : '' }}>
+                                {{ $label }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
+
+                @if(in_array($order->order_status, ['packed', 'shipped']))
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.tracking_number') ?? 'លេខតាមដាន' }}</label>
+                        <input type="text" name="tracking_number" value="{{ old('tracking_number', $order->tracking_number) }}"
+                               class="form-input w-full" placeholder="Ex: ABC123456789">
+                    </div>
+                @endif
+
                 <button type="submit" class="btn btn-primary w-full">
                     <i class="fas fa-save mr-2"></i> {{ __('admin.update') }}
                 </button>
@@ -166,7 +176,7 @@
                 <i class="fas fa-credit-card mr-2 text-blue-500"></i>
                 {{ __('admin.payment_status') }}
             </h3>
-            
+
             <form action="{{ route('admin.orders.update-payment', $order) }}" method="POST" class="space-y-3">
                 @csrf
                 @method('PATCH')
@@ -235,7 +245,7 @@
                             <i class="fas fa-check-circle mr-2"></i> {{ __('admin.complete_order') ?? 'បញ្ចប់ការកម្មង់' }}
                         </button>
                     </form>
-                    
+
                     <form action="{{ route('admin.orders.update-status', $order) }}" method="POST">
                         @csrf
                         @method('PATCH')
@@ -245,11 +255,11 @@
                         </button>
                     </form>
                 @endif
-                
+
                 <a href="{{ route('admin.orders.index') }}" class="btn btn-gray w-full">
                     <i class="fas fa-arrow-left mr-2"></i> {{ __('admin.back_to_list') }}
                 </a>
-                
+
                 <form action="{{ route('admin.orders.destroy', $order) }}" method="POST" class="inline w-full">
                     @csrf
                     @method('DELETE')
