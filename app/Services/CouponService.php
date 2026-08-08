@@ -43,7 +43,7 @@ class CouponService
     public function removeCoupon()
     {
         session()->forget(['coupon_code', 'coupon_discount', 'coupon_data']);
-        
+
         return [
             'success' => true,
             'message' => 'Coupon removed successfully',
@@ -56,13 +56,16 @@ class CouponService
     public function getCurrentCoupon()
     {
         if (session()->has('coupon_code')) {
-            return [
-                'code' => session('coupon_code'),
-                'discount' => session('coupon_discount'),
-                'coupon' => session('coupon_data'),
-            ];
+            $coupon = Coupon::findByCode(session('coupon_code'));
+            if ($coupon && $coupon->isValid()) {
+                return [
+                    'code' => $coupon->code,
+                    'coupon' => $coupon,
+                ];
+            }
+            $this->removeCoupon();
         }
-        
+
         return null;
     }
 
@@ -71,10 +74,25 @@ class CouponService
      */
     public function getDiscountedTotal($originalTotal)
     {
-        if (session()->has('coupon_discount')) {
-            return max(0, $originalTotal - session('coupon_discount'));
+        $current = $this->getCurrentCoupon();
+        if ($current && isset($current['coupon'])) {
+            $discount = $current['coupon']->calculateDiscount($originalTotal);
+            return max(0, $originalTotal - $discount);
         }
-        
+
         return $originalTotal;
+    }
+
+    /**
+     * Get discount amount.
+     */
+    public function getDiscountAmount($originalTotal)
+    {
+        $current = $this->getCurrentCoupon();
+        if ($current && isset($current['coupon'])) {
+            return $current['coupon']->calculateDiscount($originalTotal);
+        }
+
+        return 0;
     }
 }

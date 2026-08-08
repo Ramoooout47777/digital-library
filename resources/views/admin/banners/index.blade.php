@@ -15,11 +15,21 @@
             <i class="fas fa-file-export mr-2"></i>
             {{ __('admin.export') }}
         </a>
+
+        <!-- Bulk Actions -->
+        <div id="bulk-actions" class="hidden flex gap-2">
+            <button onclick="bulkStatus(true)" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg transition flex items-center">
+                <i class="fas fa-eye mr-2"></i> {{ __('admin.activate_all') ?? 'បើកទាំងអស់' }}
+            </button>
+            <button onclick="bulkStatus(false)" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition flex items-center">
+                <i class="fas fa-eye-slash mr-2"></i> {{ __('admin.deactivate_all') ?? 'បិទទាំងអស់' }}
+            </button>
+        </div>
     </div>
-    
+
     <form action="{{ route('admin.banners.index') }}" method="GET" class="flex gap-2">
-        <input type="text" name="search" value="{{ request('search') }}" 
-               placeholder="{{ __('admin.search') }}..." 
+        <input type="text" name="search" value="{{ request('search') }}"
+               placeholder="{{ __('admin.search') }}..."
                class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition">
             <i class="fas fa-search"></i>
@@ -38,7 +48,7 @@
                 <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>{{ __('admin.inactive') }}</option>
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.banner_position') }}</label>
             <select name="position" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -49,13 +59,13 @@
                 <option value="popup" {{ request('position') == 'popup' ? 'selected' : '' }}>{{ __('admin.popup') ?? 'ប៉ុបអាប់' }}</option>
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.date_range') }}</label>
-            <input type="date" name="date_from" value="{{ request('date_from') }}" 
+            <input type="date" name="date_from" value="{{ request('date_from') }}"
                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
-        
+
         <div class="flex items-end gap-2">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition w-full">
                 <i class="fas fa-filter mr-2"></i>{{ __('admin.filter') }}
@@ -68,28 +78,38 @@
 </div>
 
 <!-- Banners Grid -->
+<div class="mb-4 flex items-center gap-2">
+    <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+    <label for="select-all" class="text-sm font-medium text-gray-700 cursor-pointer">{{ __('admin.select_all') ?? 'ជ្រើសរើសទាំងអស់' }}</label>
+</div>
+
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @forelse($banners as $banner)
-        <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition group">
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition group relative">
+            <!-- Select Checkbox -->
+            <div class="absolute top-2 left-2 z-10">
+                <input type="checkbox" name="ids[]" value="{{ $banner->id }}" class="banner-checkbox w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer bg-white shadow-sm">
+            </div>
+
             <!-- Banner Image -->
             <div class="relative h-48 bg-gray-100 overflow-hidden">
                 @if($banner->image)
-                    <img src="{{ asset('storage/' . $banner->image) }}" 
-                         alt="{{ $banner->title }}" 
+                    <img src="{{ asset('storage/' . $banner->image) }}"
+                         alt="{{ $banner->title }}"
                          class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
                 @else
                     <div class="w-full h-full flex items-center justify-center bg-gray-200">
                         <i class="fas fa-image text-gray-400 text-4xl"></i>
                     </div>
                 @endif
-                
+
                 <!-- Status Badge -->
                 <div class="absolute top-2 right-2">
                     <span class="px-2 py-1 text-xs rounded-full {{ $banner->status ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
                         {{ $banner->status ? __('admin.active') : __('admin.inactive') }}
                     </span>
                 </div>
-                
+
                 <!-- Position Badge -->
                 <div class="absolute bottom-2 left-2">
                     <span class="px-2 py-1 text-xs rounded-full bg-black bg-opacity-50 text-white">
@@ -97,14 +117,14 @@
                     </span>
                 </div>
             </div>
-            
+
             <!-- Banner Content -->
             <div class="p-4">
                 <h3 class="font-semibold text-gray-800 text-lg">{{ $banner->title }}</h3>
                 @if($banner->description)
                     <p class="text-sm text-gray-500 mt-1 line-clamp-2">{{ $banner->description }}</p>
                 @endif
-                
+
                 <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
                     <span>
                         <i class="fas fa-calendar-alt mr-1"></i>
@@ -119,7 +139,7 @@
                         </span>
                     @endif
                 </div>
-                
+
                 @if($banner->starts_at || $banner->ends_at)
                     <div class="mt-2 text-xs">
                         @if($banner->starts_at)
@@ -130,20 +150,20 @@
                         @endif
                     </div>
                 @endif
-                
+
                 <!-- Actions -->
                 <div class="flex items-center gap-2 mt-4 pt-3 border-t">
-                    <a href="{{ route('admin.banners.edit', $banner) }}" 
+                    <a href="{{ route('admin.banners.edit', $banner) }}"
                        class="text-blue-600 hover:text-blue-800 transition text-sm flex items-center gap-1">
                         <i class="fas fa-edit"></i> {{ __('admin.edit') }}
                     </a>
-                    
-                    <button onclick="toggleStatus({{ $banner->id }})" 
+
+                    <button onclick="toggleStatus({{ $banner->id }})"
                             class="text-sm flex items-center gap-1 {{ $banner->status ? 'text-yellow-600 hover:text-yellow-800' : 'text-green-600 hover:text-green-800' }} transition ml-2">
                         <i class="fas {{ $banner->status ? 'fa-eye-slash' : 'fa-eye' }}"></i>
                         {{ $banner->status ? __('admin.deactivate') ?? 'បិទ' : __('admin.activate') ?? 'បើក' }}
                     </button>
-                    
+
                     <form action="{{ route('admin.banners.destroy', $banner) }}" method="POST" class="inline ml-auto">
                         @csrf
                         @method('DELETE')
@@ -197,24 +217,87 @@
 
 @push('scripts')
 <script>
+    // Selection logic
+    const selectAll = document.getElementById('select-all');
+    const checkboxes = document.querySelectorAll('.banner-checkbox');
+    const bulkActions = document.getElementById('bulk-actions');
+
+    function updateBulkVisibility() {
+        const checkedCount = document.querySelectorAll('.banner-checkbox:checked').length;
+        if (checkedCount > 0) {
+            bulkActions.classList.remove('hidden');
+        } else {
+            bulkActions.classList.add('hidden');
+        }
+        if (selectAll) {
+            selectAll.checked = checkedCount === checkboxes.length && checkboxes.length > 0;
+        }
+    }
+
+    if (selectAll) {
+        selectAll.addEventListener('change', function() {
+            checkboxes.forEach(cb => cb.checked = this.checked);
+            updateBulkVisibility();
+        });
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateBulkVisibility);
+    });
+
     function toggleStatus(bannerId) {
         if (!confirm('{{ __("admin.confirm_status_change") ?? "តើអ្នកចង់ប្តូរស្ថានភាព?" }}')) {
             return;
         }
-        
+
         fetch(`/admin/banners/${bannerId}/toggle-status`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok && data.success) {
                 location.reload();
             } else {
-                alert('{{ __("admin.error_occurred") }}');
+                alert(data.message || '{{ __("admin.error_occurred") }}');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{{ __("admin.error_occurred") }}');
+        });
+    }
+
+    function bulkStatus(status) {
+        const selectedIds = Array.from(document.querySelectorAll('.banner-checkbox:checked')).map(cb => cb.value);
+        if (selectedIds.length === 0) return;
+
+        if (!confirm('{{ __("admin.confirm_bulk_status_change") ?? "តើអ្នកចង់ប្តូរស្ថានភាពធាតុដែលបានជ្រើសរើស?" }}')) {
+            return;
+        }
+
+        fetch('{{ route("admin.banners.bulk-status") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                ids: selectedIds,
+                status: status
+            })
+        })
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok && data.success) {
+                location.reload();
+            } else {
+                alert(data.message || '{{ __("admin.error_occurred") }}');
             }
         })
         .catch(error => {

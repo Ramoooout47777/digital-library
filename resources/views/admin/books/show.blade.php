@@ -412,7 +412,7 @@
         }
         
         fetch(`/admin/books/${bookId}/toggle-status`, {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'Content-Type': 'application/json',

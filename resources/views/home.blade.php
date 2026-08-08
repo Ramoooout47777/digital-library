@@ -1193,12 +1193,14 @@
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-indigo-400 flex items-center justify-center">
                         <i class="fas fa-book-open text-slate-900 text-sm"></i>
                     </div>
-                    <span class="text-base font-bold dark:text-slate-100 light:text-slate-800">{{ config('app.name') }}</span>
+                    <span class="text-base font-bold dark:text-slate-100 light:text-slate-800">{{ __('home.hero_badge') }}</span>
                 </div>
                 <p class="text-sm dark:text-slate-500 light:text-slate-500 leading-relaxed max-w-xs">
                     {{ __('home.footer_desc') ?? 'A modern digital library for the next generation of readers.' }}
                 </p>
                 <div class="flex gap-4 mt-6">
+                    <a href="https://www.facebook.com/" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-facebook-f text-lg"></i></a>
+                    <a href="https://www.youtube.com/" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-youtube text-lg"></i></a>
                     <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-twitter text-lg"></i></a>
                     <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-github text-lg"></i></a>
                     <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-discord text-lg"></i></a>
@@ -1238,14 +1240,14 @@
                     </li>
                     <li class="flex items-start gap-3">
                         <i class="fas fa-phone text-cyan-400/60 text-sm mt-0.5"></i>
-                        <span>{{ $settings['contact_phone'] ?? '+855 12 345 678' }}</span>
+                        <span>{{ $settings['contact_phone'] ?? '+855 70 771 359' }}</span>
                     </li>
                 </ul>
             </div>
         </div>
 
         <div class="mt-12 pt-8 border-t dark:border-slate-800/40 light:border-slate-200/60 text-center text-sm dark:text-slate-500 light:text-slate-500">
-            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('home.all_rights_reserved') ?? 'All rights reserved.' }}</p>
+            <p>&copy; {{ date('Y') }} {{ __('home.hero_badge') }}. {{ __('home.all_rights_reserved') ?? 'All rights reserved.' }}</p>
         </div>
     </div>
 </footer>

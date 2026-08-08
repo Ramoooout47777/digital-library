@@ -39,7 +39,7 @@
         0%, 100% { transform: scale(1); }
         50% { transform: scale(1.3); }
     }
-    
+
     /* ─── PAGE FLIP / BOOK OPENING ANIMATIONS ─── */
     @keyframes bookOpen {
         0% {
@@ -58,7 +58,7 @@
             transform-origin: left center;
         }
     }
-    
+
     @keyframes bookClose {
         0% {
             opacity: 1;
@@ -71,7 +71,7 @@
             transform-origin: left center;
         }
     }
-    
+
     @keyframes pageFlipForward {
         0% {
             transform: perspective(1500px) rotateY(-15deg) scale(0.95);
@@ -86,7 +86,7 @@
             transform-origin: left center;
         }
     }
-    
+
     @keyframes pageFlipBackward {
         0% {
             transform: perspective(1500px) rotateY(15deg) scale(0.95);
@@ -101,28 +101,28 @@
             transform-origin: right center;
         }
     }
-    
+
     @keyframes shadowSweep {
         0% { box-shadow: -30px 0 60px rgba(0,0,0,0.15); }
         100% { box-shadow: 0 0 0 rgba(0,0,0,0); }
     }
-    
+
     .book-opening {
         animation: bookOpen 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
-    
+
     .book-closing {
         animation: bookClose 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
-    
+
     .page-flip-forward {
         animation: pageFlipForward 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
-    
+
     .page-flip-backward {
         animation: pageFlipBackward 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
-    
+
     .shadow-sweep {
         animation: shadowSweep 0.6s ease-out forwards;
     }
@@ -133,7 +133,7 @@
     .animate-slide-right { animation: slideInRight 0.5s ease-out forwards; }
     .animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
     .animate-float { animation: float 4s ease-in-out infinite; }
-    .animate-shimmer { 
+    .animate-shimmer {
         background: linear-gradient(90deg, rgba(56,189,248,0.03) 0%, rgba(56,189,248,0.08) 50%, rgba(56,189,248,0.03) 100%);
         background-size: 200% 100%;
         animation: shimmer 4s ease-in-out infinite;
@@ -190,12 +190,12 @@
         transform-origin: left center;
         perspective: 1200px;
     }
-    
+
     .pdf-viewer-wrapper iframe {
         border-radius: 12px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
     }
-    
+
     .dark .pdf-viewer-wrapper iframe {
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
     }
@@ -310,15 +310,15 @@
     <!-- BOOK DETAIL PAGE WITH PDF VIEWER INTEGRATION -->
     <!-- ============================================================ -->
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        
+
         <!-- ============================================================ -->
         <!-- LEFT COLUMN - Book Cover & Actions -->
         <!-- ============================================================ -->
         <div class="lg:col-span-1">
             <div class="book-cover-3d dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-4 animate-fade-in-up">
                 @if($book->cover)
-                    <img src="{{ asset('storage/' . $book->cover) }}" 
-                         alt="{{ $book->title }}" 
+                    <img src="{{ asset('storage/' . $book->cover) }}"
+                         alt="{{ $book->title }}"
                          class="w-full aspect-[3/4] object-cover rounded-lg shadow-lg transition-all duration-500 hover:scale-105">
                 @else
                     <div class="w-full aspect-[3/4] dark:bg-slate-700/50 light:bg-slate-100 rounded-lg flex items-center justify-center">
@@ -326,16 +326,16 @@
                     </div>
                 @endif
             </div>
-            
+
             <!-- ACTIONS -->
             <div class="dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-4 mt-4 space-y-3 animate-slide-left">
-                
+
                 <!-- ============================================================ -->
                 <!-- 1. Read Online - Conditional Based on Book Access -->
                 <!-- ============================================================ -->
                 @php
                     $canRead = false;
-                    
+
                     // Check if user can read the book
                     if ($book->is_free) {
                         $canRead = true; // Free books are always readable
@@ -349,7 +349,7 @@
 
                 @if($book->pdf_file && $canRead)
                     <!-- User can read the book (Free or Purchased) -->
-                    <button onclick="togglePDFViewer()" 
+                    <button onclick="togglePDFViewer()"
                             id="toggleReaderBtn"
                             class="btn-animated w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
                         <i class="fas fa-book-open" id="readerIcon"></i>
@@ -369,7 +369,7 @@
                         </p>
                     </div>
                 @endif
-                
+
                 <!-- 2. Add to Cart -->
                 @auth
                     @if($book->stock > 0)
@@ -377,7 +377,7 @@
                             <form action="{{ route('cart.add', $book) }}" method="POST" class="w-full">
                                 @csrf
                                 <input type="hidden" name="quantity" value="1">
-                                <button type="submit" 
+                                <button type="submit"
                                         class="btn-animated w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
                                     <i class="fas fa-shopping-cart"></i>
                                     {{ __('book.add_to_cart') ?? 'បន្ថែមទៅកន្ត្រក' }}
@@ -391,13 +391,13 @@
                         </div>
                     @endif
                 @else
-                    <a href="{{ route('login') }}" 
+                    <a href="{{ route('login') }}"
                        class="btn-animated w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
                         <i class="fas fa-sign-in-alt"></i>
                         {{ __('book.login_to_buy') ?? 'ចូលប្រើដើម្បីទិញ' }}
                     </a>
                 @endauth
-                
+
                 <!-- 3. Buy Now -->
                 @auth
                     @if($book->stock > 0)
@@ -409,7 +409,7 @@
                                 <input type="hidden" name="payment_method" value="cod">
                                 <input type="hidden" name="shipping_address" value="{{ auth()->user()->address ?? '' }}">
                                 <input type="hidden" name="shipping_method" value="standard">
-                                <button type="submit" 
+                                <button type="submit"
                                         class="btn-animated w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
                                     <i class="fas fa-bolt"></i>
                                     {{ __('book.buy_now') ?? 'ទិញឥឡូវ' }}
@@ -419,10 +419,10 @@
                         @endif
                     @endif
                 @endauth
-                
+
                 <!-- 4. Favorite Button -->
                 @auth
-                    <button onclick="toggleFavorite({{ $book->id }}, this)" 
+                    <button onclick="toggleFavorite({{ $book->id }}, this)"
                             class="btn-animated w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2
                                    @if(auth()->user()->isFavorited($book->id)) opacity-100 @else opacity-70 hover:opacity-100 @endif">
                         <i class="fas fa-heart"></i>
@@ -433,20 +433,20 @@
                         @endif
                     </button>
                 @endauth
-                
+
                 <!-- 5. Preview -->
                 @if($book->sample_pdf)
-                    <a href="{{ route('books.preview', $book) }}" 
+                    <a href="{{ route('books.preview', $book) }}"
                        target="_blank"
                        class="btn-animated w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
                         <i class="fas fa-eye"></i>
                         {{ __('book.preview') ?? 'មើលសំណាក' }}
                     </a>
                 @endif
-                
+
                 <!-- 6. Download -->
                 @if($book->is_free && $book->pdf_file)
-                    <a href="{{ route('books.download', $book) }}" 
+                    <a href="{{ route('books.download', $book) }}"
                        target="_blank"
                        download
                        class="btn-animated w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
@@ -454,7 +454,7 @@
                         {{ __('book.download_pdf') ?? 'ទាញយក PDF' }}
                     </a>
                 @endif
-                
+
                 <!-- 7. Purchased Badge -->
                 @auth
                     @if(!$book->is_free && auth()->user()->hasPurchased($book))
@@ -471,13 +471,13 @@
         <!-- RIGHT COLUMN - Book Details & PDF Viewer -->
         <!-- ============================================================ -->
         <div class="lg:col-span-3 space-y-6">
-            
+
             <!-- Book Header -->
             <div class="dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-6 animate-fade-in-up">
                 <h1 class="text-3xl font-bold dark:text-slate-100 light:text-slate-900 animate-shimmer">{{ $book->title }}</h1>
                 <div class="flex flex-wrap items-center gap-4 mt-2">
                     <p class="text-slate-500 dark:text-slate-400 light:text-slate-500">
-                        {{ __('book.by') ?? 'ដោយ' }} 
+                        {{ __('book.by') ?? 'ដោយ' }}
                         <a href="{{ route('authors.show', $book->author) }}" class="text-cyan-400 hover:text-cyan-300 transition hover:underline">
                             {{ $book->author->name ?? 'N/A' }}
                         </a>
@@ -490,7 +490,7 @@
                         </a>
                     </p>
                 </div>
-                
+
                 <div class="flex flex-wrap items-center gap-4 mt-4">
                     <span class="text-sm dark:text-slate-400 light:text-slate-500">
                         <i class="fas fa-language mr-1"></i> {{ strtoupper($book->language) }}
@@ -511,7 +511,7 @@
                         </span>
                     @endif
                 </div>
-                
+
                 <!-- Rating -->
                 <div class="flex items-center gap-3 mt-4">
                     <div class="flex items-center gap-1">
@@ -526,7 +526,7 @@
                     <span class="text-sm font-semibold dark:text-slate-200 light:text-slate-800">{{ number_format($book->average_rating, 1) }}</span>
                     <span class="text-sm dark:text-slate-400 light:text-slate-500">({{ $book->total_ratings }} {{ __('book.reviews') ?? 'ការវាយតម្លៃ' }})</span>
                 </div>
-                
+
                 <!-- Price -->
                 <div class="mt-4 pt-4 border-t dark:border-slate-700/50 light:border-slate-200/50">
                     @if($book->is_free)
@@ -545,7 +545,7 @@
                     </span>
                 </div>
             </div>
-            
+
             <!-- ============================================================ -->
             <!-- PDF VIEWER SECTION - Only for users who can read -->
             <!-- ============================================================ -->
@@ -557,19 +557,19 @@
                                 <i class="fas fa-book-open mr-2 text-cyan-400"></i>
                                 {{ __('book.reading') ?? 'កំពុងអាន' }}
                             </h3>
-                            <button onclick="closePDFViewer()" 
+                            <button onclick="closePDFViewer()"
                                     class="text-red-400 hover:text-red-300 transition">
                                 <i class="fas fa-times"></i> {{ __('book.close') ?? 'បិទ' }}
                             </button>
                         </div>
-                        
+
                         <!-- PDF Viewer with Page Flip Animation -->
                         <div class="pdf-viewer-wrapper" id="pdfViewerWrapper">
                             <div id="pdfContent" style="height: 75vh;">
                                 @if($book->pdf_file)
-                                    <iframe 
+                                    <iframe
                                         id="pdfIframe"
-                                        src="{{ asset('storage/' . $book->pdf_file) }}#toolbar=1&navpanes=1&scrollbar=1&view=FitH" 
+                                        src="{{ asset('storage/' . $book->pdf_file) }}#toolbar=1&navpanes=1&scrollbar=1&view=FitH"
                                         class="w-full h-full border-0"
                                         allowfullscreen>
                                     </iframe>
@@ -624,7 +624,7 @@
                             {{ __('book.login_to_buy') ?? 'ចូលប្រើដើម្បីទិញ' }}
                         </a>
                     @endauth
-                    
+
                     <div class="features">
                         <span><i class="fas fa-file-pdf"></i> {{ __('book.pdf_format') ?? 'ទម្រង់ PDF' }}</span>
                         <span><i class="fas fa-book-open"></i> {{ $book->pages }} {{ __('book.pages') ?? 'ទំព័រ' }}</span>
@@ -632,7 +632,7 @@
                     </div>
                 </div>
             @endif
-            
+
             <!-- ============================================================ -->
             <!-- DESCRIPTION - Always Visible for All Books -->
             <!-- ============================================================ -->
@@ -649,7 +649,7 @@
                     <p class="dark:text-slate-500 light:text-slate-400">{{ __('book.no_description') ?? 'មិនមានការពិពណ៌នា' }}</p>
                 @endif
             </div>
-            
+
             <!-- Book Details -->
             <div class="dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-6 animate-fade-in-up" style="animation-delay: 0.3s;">
                 <h3 class="font-semibold text-lg dark:text-slate-200 light:text-slate-800 mb-3">
@@ -689,7 +689,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Related Books -->
             @if(isset($relatedBooks) && $relatedBooks->count() > 0)
                 <div class="dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-6 animate-fade-in-up" style="animation-delay: 0.4s;">
@@ -699,12 +699,12 @@
                     </h3>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                         @foreach($relatedBooks as $index => $related)
-                            <a href="{{ route('books.show', $related) }}" 
+                            <a href="{{ route('books.show', $related) }}"
                                class="group animate-fade-in-up" style="animation-delay: {{ $index * 0.1 }}s;">
                                 <div class="dark:bg-slate-700/50 light:bg-slate-100 rounded-lg overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-2">
                                     @if($related->cover)
-                                        <img src="{{ asset('storage/' . $related->cover) }}" 
-                                             alt="{{ $related->title }}" 
+                                        <img src="{{ asset('storage/' . $related->cover) }}"
+                                             alt="{{ $related->title }}"
                                              class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition duration-500">
                                     @else
                                         <div class="w-full aspect-[3/4] dark:bg-slate-600/50 light:bg-slate-200 flex items-center justify-center">
@@ -729,61 +729,61 @@
 <script>
     // ─── PDF VIEWER TOGGLE WITH PAGE FLIP ───
     let isReaderOpen = false;
-    
+
     function togglePDFViewer() {
         const section = document.getElementById('pdfViewerSection');
         const wrapper = document.getElementById('pdfViewerWrapper');
         const btnText = document.getElementById('readerBtnText');
         const icon = document.getElementById('readerIcon');
-        
+
         if (!isReaderOpen) {
             // Open PDF Viewer with Book Opening Animation
             section.classList.remove('hidden');
-            
+
             // Add opening animation to wrapper
             wrapper.classList.remove('book-closing');
             wrapper.classList.add('book-opening');
-            
+
             // Update button
             btnText.textContent = '{{ __('book.close_reader') ?? 'បិទអ្នកអាន' }}';
             icon.className = 'fas fa-times';
             isReaderOpen = true;
-            
+
         } else {
             // Close PDF Viewer with Book Closing Animation
             wrapper.classList.remove('book-opening');
             wrapper.classList.add('book-closing');
-            
+
             setTimeout(() => {
                 section.classList.add('hidden');
                 wrapper.classList.remove('book-closing');
                 isReaderOpen = false;
-                
+
                 // Update button
                 btnText.textContent = '{{ __('book.read_online') ?? 'អានសៀវភៅ' }}';
                 icon.className = 'fas fa-book-open';
             }, 500);
         }
     }
-    
+
     function closePDFViewer() {
         if (isReaderOpen) {
             togglePDFViewer();
         }
     }
-    
+
     // ─── KEYBOARD SHORTCUT ───
     document.addEventListener('keydown', function(e) {
         if (isReaderOpen && e.key === 'Escape') {
             closePDFViewer();
         }
     });
-    
+
     // ─── TOGGLE FAVORITE ───
     function toggleFavorite(bookId, button) {
         const icon = button.querySelector('i');
         const isFavorited = icon.classList.contains('text-red-500');
-        
+
         if (isFavorited) {
             icon.classList.remove('text-red-500');
             icon.classList.add('text-white/60');
@@ -793,12 +793,12 @@
             icon.classList.add('text-red-500');
             button.title = 'Remove from favorites';
         }
-        
+
         icon.classList.add('heart-pulse');
         setTimeout(() => {
             icon.classList.remove('heart-pulse');
         }, 300);
-        
+
         fetch('{{ route("favorites.toggle") }}', {
             method: 'POST',
             headers: {

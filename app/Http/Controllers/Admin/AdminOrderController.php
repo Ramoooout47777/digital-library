@@ -111,6 +111,19 @@ class AdminOrderController extends Controller
                     $order->status = 'completed';
                     $order->payment_status = 'completed';
                     $order->completed_at = now();
+
+                    // Create purchase records if they don't exist
+                    foreach ($order->items as $item) {
+                        \App\Models\Purchase::firstOrCreate([
+                            'user_id' => $order->user_id,
+                            'book_id' => $item->book_id,
+                            'order_id' => $order->id,
+                        ], [
+                            'price_paid' => $item->price,
+                            'status' => 'active',
+                            'expires_at' => now()->addYears(10), // Set a long expiry for digital books
+                        ]);
+                    }
                 } elseif ($request->status === Order::STATUS_CANCELLED) {
                     $order->status = 'cancelled';
                 }

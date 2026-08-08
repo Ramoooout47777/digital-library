@@ -152,6 +152,25 @@ class AdminCouponController extends Controller
     }
 
     /**
+     * Bulk update status for coupons
+     */
+    public function bulkStatus(Request $request)
+    {
+        $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:coupons,id'],
+            'status' => ['required', 'boolean'],
+        ]);
+
+        Coupon::whereIn('id', $request->ids)->update(['is_active' => $request->status]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('admin.bulk_status_updated') ?? 'បានធ្វើបច្ចុប្បន្នភាពស្ថានភាពដោយជោគជ័យ',
+        ]);
+    }
+
+    /**
      * Export coupons to CSV.
      */
     public function export(Request $request)
@@ -176,10 +195,10 @@ class AdminCouponController extends Controller
         }
 
         $file = fopen($path, 'w');
-        
+
         fputcsv($file, [
-            'ID', 'Code', 'Discount Type', 'Discount Value', 
-            'Min Order Amount', 'Max Discount Amount', 'Usage Limit', 
+            'ID', 'Code', 'Discount Type', 'Discount Value',
+            'Min Order Amount', 'Max Discount Amount', 'Usage Limit',
             'Used Count', 'Is Active', 'Expires At', 'Created At'
         ]);
 

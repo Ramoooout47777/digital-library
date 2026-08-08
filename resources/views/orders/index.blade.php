@@ -31,18 +31,18 @@
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
     }
-    
+
     .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
     .animate-scale-in { animation: scaleIn 0.5s ease-out forwards; }
     .animate-slide-right { animation: slideInRight 0.5s ease-out forwards; }
     .animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
-    .animate-shimmer { 
+    .animate-shimmer {
         background: linear-gradient(90deg, rgba(56,189,248,0.03) 0%, rgba(56,189,248,0.08) 50%, rgba(56,189,248,0.03) 100%);
         background-size: 200% 100%;
         animation: shimmer 4s ease-in-out infinite;
     }
     .animate-float { animation: float 4s ease-in-out infinite; }
-    
+
     /* ─── Order Card ─── */
     .order-card {
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -51,7 +51,7 @@
         transform: translateY(-4px);
         box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
     }
-    
+
     /* ─── Status Badge ─── */
     .status-badge {
         transition: all 0.3s ease;
@@ -66,7 +66,7 @@
     .status-badge:hover {
         transform: scale(1.05);
     }
-    
+
     /* ─── Progress Bar ─── */
     .progress-bar {
         height: 4px;
@@ -84,7 +84,7 @@
         border-radius: 4px;
         transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     /* ─── Status Steps ─── */
     .status-step {
         display: flex;
@@ -155,7 +155,7 @@
     .status-step.completed .step-label {
         color: #34d399;
     }
-    
+
     /* ─── Filter Section ─── */
     .filter-select {
         transition: all 0.3s ease;
@@ -185,7 +185,7 @@
                 {{ __('orders.total_orders') ?? 'total orders' }}
             </p>
         </div>
-        
+
         <div class="flex gap-2">
             <a href="{{ route('books.index') }}" class="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-cyan-500/20 flex items-center gap-2">
                 <i class="fas fa-book-open"></i>
@@ -202,7 +202,7 @@
             <!-- Status Filter -->
             <div>
                 <label class="block text-sm font-medium dark:text-slate-300 light:text-slate-700 mb-1">{{ __('orders.status') ?? 'Status' }}</label>
-                <select name="status" 
+                <select name="status"
                         class="filter-select w-full px-3 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 transition-all duration-300 focus:scale-105">
                     <option value="">{{ __('orders.all_status') ?? 'All Status' }}</option>
                     @foreach(\App\Models\Order::getStatuses() as $key => $label)
@@ -212,11 +212,11 @@
                     @endforeach
                 </select>
             </div>
-            
+
             <!-- Payment Status Filter -->
             <div>
                 <label class="block text-sm font-medium dark:text-slate-300 light:text-slate-700 mb-1">{{ __('orders.payment_status') ?? 'Payment Status' }}</label>
-                <select name="payment_status" 
+                <select name="payment_status"
                         class="filter-select w-full px-3 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 transition-all duration-300 focus:scale-105">
                     <option value="">{{ __('orders.all_payment') ?? 'All Payment' }}</option>
                     <option value="pending" {{ request('payment_status') == 'pending' ? 'selected' : '' }}>{{ __('orders.pending') ?? 'Pending' }}</option>
@@ -225,14 +225,14 @@
                     <option value="refunded" {{ request('payment_status') == 'refunded' ? 'selected' : '' }}>{{ __('orders.refunded') ?? 'Refunded' }}</option>
                 </select>
             </div>
-            
+
             <!-- Date Range -->
             <div>
                 <label class="block text-sm font-medium dark:text-slate-300 light:text-slate-700 mb-1">{{ __('orders.date_range') ?? 'Date Range' }}</label>
-                <input type="date" name="date_from" value="{{ request('date_from') }}" 
+                <input type="date" name="date_from" value="{{ request('date_from') }}"
                        class="w-full px-3 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 transition-all duration-300 focus:scale-105">
             </div>
-            
+
             <!-- Filter Buttons -->
             <div class="flex items-end gap-2">
                 <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-cyan-500/20">
@@ -253,7 +253,7 @@
             @foreach($orders as $index => $order)
                 <div class="order-card dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-6 animate-scale-in"
                      style="animation-delay: {{ $index * 0.05 }}s;">
-                    
+
                     <!-- Order Header -->
                     <div class="flex flex-wrap justify-between items-start gap-4">
                         <div>
@@ -278,7 +278,7 @@
                             </p>
                         </div>
                     </div>
-                    
+
                     <!-- Progress Bar -->
                     <div class="mt-4">
                         <div class="flex justify-between text-xs dark:text-slate-500 light:text-slate-500 mb-1">
@@ -289,14 +289,14 @@
                             <div class="progress-fill" style="width: {{ $order->status_progress }}%;"></div>
                         </div>
                     </div>
-                    
+
                     <!-- Status Steps -->
                     <div class="mt-4 flex justify-between">
                         @php
                             $steps = ['pending', 'confirmed', 'processing', 'packed', 'shipped', 'delivered', 'completed'];
                             $currentIndex = array_search($order->order_status, $steps);
                         @endphp
-                        
+
                         @foreach($steps as $index => $step)
                             <div class="status-step {{ $index <= $currentIndex ? ($index == $currentIndex ? 'active' : 'completed') : '' }}">
                                 <div class="step-dot">
@@ -312,15 +312,15 @@
                             </div>
                         @endforeach
                     </div>
-                    
+
                     <!-- Order Items Preview -->
                     <div class="mt-4 pt-4 border-t dark:border-slate-700/50 light:border-slate-200/50">
                         <div class="flex flex-wrap gap-2">
                             @foreach($order->items->take(3) as $item)
                                 <div class="flex items-center gap-2 dark:bg-slate-700/30 light:bg-slate-100 px-3 py-1.5 rounded-lg">
                                     @if($item->book && $item->book->cover)
-                                        <img src="{{ asset('storage/' . $item->book->cover) }}" 
-                                             alt="{{ $item->book_title }}" 
+                                        <img src="{{ asset('storage/' . $item->book->cover) }}"
+                                             alt="{{ $item->book_title }}"
                                              class="w-8 h-10 object-cover rounded">
                                     @endif
                                     <div>
@@ -336,14 +336,14 @@
                             @endif
                         </div>
                     </div>
-                    
+
                     <!-- Actions -->
                     <div class="mt-4 pt-4 border-t dark:border-slate-700/50 light:border-slate-200/50 flex flex-wrap gap-2">
-                        <a href="{{ route('orders.show', $order) }}" 
+                        <a href="{{ route('orders.show', $order) }}"
                            class="px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-all duration-300 hover:scale-105 text-sm flex items-center gap-2">
                             <i class="fas fa-eye"></i> {{ __('orders.view_details') ?? 'View Details' }}
                         </a>
-                        
+
                         @if($order->can_cancel)
                             <form action="{{ route('orders.cancel', $order) }}" method="POST" class="inline">
                                 @csrf
@@ -353,7 +353,7 @@
                                 </button>
                             </form>
                         @endif
-                        
+
                         @if($order->tracking_number)
                             <a href="#" class="px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 rounded-lg transition-all duration-300 hover:scale-105 text-sm flex items-center gap-2">
                                 <i class="fas fa-box"></i> {{ __('orders.track_order') ?? 'Track Order' }}
@@ -380,12 +380,12 @@
                 <h3 class="text-2xl font-semibold dark:text-slate-200 light:text-slate-800">{{ __('orders.no_orders') ?? 'No Orders Yet' }}</h3>
                 <p class="text-slate-500 dark:text-slate-400 light:text-slate-500 mt-2">{{ __('orders.no_orders_message') ?? 'You haven\'t placed any orders yet.' }}</p>
                 <div class="flex flex-wrap justify-center gap-3 mt-6">
-                    <a href="{{ route('books.index') }}" 
+                    <a href="{{ route('books.index') }}"
                        class="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-cyan-500/20 flex items-center gap-2">
                         <i class="fas fa-book-open"></i>
                         {{ __('orders.start_shopping') ?? 'Start Shopping' }}
                     </a>
-                    <a href="{{ route('home') }}" 
+                    <a href="{{ route('home') }}"
                        class="px-6 py-3 bg-slate-500 hover:bg-slate-600 text-white rounded-lg transition-all duration-300 hover:scale-105 flex items-center gap-2">
                         <i class="fas fa-home"></i>
                         {{ __('orders.go_home') ?? 'Go Home' }}

@@ -60,4 +60,15 @@ return [
     'danger_zone_desc' => 'Once you delete your account, there is no going back. Please be certain.',
     'delete_account' => 'Delete Account',
     'confirm_delete_account' => 'Are you sure you want to delete your account? This action cannot be undone.',
+
+    'my_books' => 'My Books',
+    'purchased' => 'Purchased',
+    'read' => 'Read',
+    'download' => 'Download',
+    'no_pdf' => 'No PDF',
+    'no_purchased_books' => 'No purchased books yet',
+    'start_shopping_to_get_books' => 'Start shopping to get your books.',
+    'back_to_profile' => 'Back to Profile',
+    'book_details' => 'Book Details',
+    'pdf_not_available' => 'PDF not available',
 ];

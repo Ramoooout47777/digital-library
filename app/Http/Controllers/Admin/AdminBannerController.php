@@ -171,6 +171,25 @@ class AdminBannerController extends Controller
     }
 
     /**
+     * Bulk update status for banners
+     */
+    public function bulkStatus(Request $request)
+    {
+        $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:banners,id'],
+            'status' => ['required', 'boolean'],
+        ]);
+
+        Banner::whereIn('id', $request->ids)->update(['status' => $request->status]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('admin.bulk_status_updated') ?? 'បានធ្វើបច្ចុប្បន្នភាពស្ថានភាពដោយជោគជ័យ',
+        ]);
+    }
+
+    /**
      * Reorder banners.
      */
     public function reorder(Request $request)
@@ -208,9 +227,9 @@ class AdminBannerController extends Controller
         }
 
         $file = fopen($path, 'w');
-        
+
         fputcsv($file, [
-            'ID', 'Title', 'Description', 'Image', 'Link', 
+            'ID', 'Title', 'Description', 'Image', 'Link',
             'Position', 'Order', 'Status', 'Starts At', 'Ends At', 'Created At'
         ]);
 

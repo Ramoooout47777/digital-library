@@ -100,6 +100,40 @@ class AdminCategoryController extends Controller
         return response()->json(['message' => 'Categories reordered successfully.']);
     }
 
+    /**
+     * Toggle category status
+     */
+    public function toggleStatus(Category $category)
+    {
+        $category->status = !$category->status;
+        $category->save();
+
+        return response()->json([
+            'success' => true,
+            'status' => $category->status,
+            'message' => $category->status ? __('admin.category_activated') : __('admin.category_deactivated'),
+        ]);
+    }
+
+    /**
+     * Bulk update status for categories
+     */
+    public function bulkStatus(Request $request)
+    {
+        $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:categories,id'],
+            'status' => ['required', 'boolean'],
+        ]);
+
+        Category::whereIn('id', $request->ids)->update(['status' => $request->status]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('admin.bulk_status_updated') ?? 'បានធ្វើបច្ចុប្បន្នភាពស្ថានភាពដោយជោគជ័យ',
+        ]);
+    }
+
     private function validated(Request $request, ?Category $category = null): array
     {
         return $request->validate([

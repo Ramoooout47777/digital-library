@@ -56,4 +56,5 @@ return [
     'close_reader' => 'បិទអ្នកអាន',
     'previous' => 'មុន',
     'next' => 'បន្ទាប់',
+    
 ];

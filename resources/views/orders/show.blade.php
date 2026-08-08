@@ -31,18 +31,18 @@
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
     }
-    
+
     .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
     .animate-scale-in { animation: scaleIn 0.5s ease-out forwards; }
     .animate-slide-right { animation: slideInRight 0.5s ease-out forwards; }
     .animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
-    .animate-shimmer { 
+    .animate-shimmer {
         background: linear-gradient(90deg, rgba(56,189,248,0.03) 0%, rgba(56,189,248,0.08) 50%, rgba(56,189,248,0.03) 100%);
         background-size: 200% 100%;
         animation: shimmer 4s ease-in-out infinite;
     }
     .animate-float { animation: float 4s ease-in-out infinite; }
-    
+
     /* ─── Status Badge ─── */
     .status-badge {
         padding: 6px 18px;
@@ -57,7 +57,7 @@
     .status-badge:hover {
         transform: scale(1.05);
     }
-    
+
     /* ─── Progress Bar ─── */
     .progress-bar {
         height: 6px;
@@ -74,7 +74,7 @@
         border-radius: 4px;
         transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     /* ─── Status Steps ─── */
     .status-steps {
         display: flex;
@@ -149,7 +149,7 @@
     .status-step.completed .step-label {
         color: #34d399;
     }
-    
+
     /* ─── Order Item ─── */
     .order-item {
         transition: all 0.3s ease;
@@ -158,7 +158,7 @@
         background: rgba(56, 189, 248, 0.03);
         transform: translateX(4px);
     }
-    
+
     /* ─── Summary Card ─── */
     .summary-card {
         position: sticky;
@@ -222,17 +222,17 @@
             </h3>
             <span class="text-sm dark:text-slate-400 light:text-slate-500">{{ $order->status_progress }}%</span>
         </div>
-        
+
         <div class="progress-bar mb-6">
             <div class="progress-fill" style="width: {{ $order->status_progress }}%;"></div>
         </div>
-        
+
         <div class="status-steps">
             @php
                 $steps = ['pending', 'confirmed', 'processing', 'packed', 'shipped', 'delivered', 'completed'];
                 $currentIndex = array_search($order->order_status, $steps);
             @endphp
-            
+
             @foreach($steps as $index => $step)
                 <div class="status-step {{ $index <= $currentIndex ? ($index == $currentIndex ? 'active' : 'completed') : '' }}">
                     <div class="step-dot">
@@ -263,15 +263,15 @@
                     {{ __('orders.order_items') ?? 'Order Items' }}
                     <span class="text-sm text-slate-500 dark:text-slate-400 light:text-slate-500 ml-2">({{ $order->items->count() }})</span>
                 </h3>
-                
+
                 <div class="space-y-3">
                     @foreach($order->items as $item)
                         <div class="order-item flex flex-wrap items-center gap-4 p-3 rounded-lg border dark:border-slate-700/50 light:border-slate-200/50">
                             <!-- Book Image -->
                             <div class="w-16 h-20 flex-shrink-0">
                                 @if($item->book && $item->book->cover)
-                                    <img src="{{ asset('storage/' . $item->book->cover) }}" 
-                                         alt="{{ $item->book_title }}" 
+                                    <img src="{{ asset('storage/' . $item->book->cover) }}"
+                                         alt="{{ $item->book_title }}"
                                          class="w-full h-full object-cover rounded-lg shadow-sm">
                                 @else
                                     <div class="w-full h-full dark:bg-slate-700/50 light:bg-slate-100 rounded-lg flex items-center justify-center">
@@ -279,7 +279,7 @@
                                     </div>
                                 @endif
                             </div>
-                            
+
                             <!-- Book Info -->
                             <div class="flex-1 min-w-[120px]">
                                 <a href="{{ route('books.show', $item->book) }}" class="block">
@@ -290,17 +290,29 @@
                                 @if($item->book && $item->book->author)
                                     <p class="text-sm dark:text-slate-500 light:text-slate-500">{{ $item->book->author->name }}</p>
                                 @endif
-                                <p class="text-xs dark:text-slate-400 light:text-slate-500">
-                                    {{ __('orders.quantity') ?? 'Qty' }}: {{ $item->quantity }}
-                                </p>
+                                <div class="flex items-center gap-4 mt-1">
+                                    <p class="text-xs dark:text-slate-400 light:text-slate-500">
+                                        {{ __('orders.quantity') ?? 'Qty' }}: {{ $item->quantity }}
+                                    </p>
+                                    @if($order->status === 'completed' && $item->book && $item->book->pdf_file)
+                                        <a href="{{ route('books.read', $item->book) }}" target="_blank"
+                                           class="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1">
+                                            <i class="fas fa-book-reader"></i> {{ __('orders.read_now') ?? 'Read Now' }}
+                                        </a>
+                                        <a href="{{ route('books.download', $item->book) }}"
+                                           class="text-xs text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1">
+                                            <i class="fas fa-download"></i> {{ __('orders.download') ?? 'Download' }}
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
-                            
+
                             <!-- Price -->
                             <div class="text-right min-w-[80px]">
                                 <p class="text-sm dark:text-slate-500 light:text-slate-500">{{ __('orders.price') ?? 'Price' }}</p>
                                 <p class="font-bold dark:text-slate-200 light:text-slate-800">${{ number_format($item->price, 2) }}</p>
                             </div>
-                            
+
                             <!-- Total -->
                             <div class="text-right min-w-[80px]">
                                 <p class="text-sm dark:text-slate-500 light:text-slate-500">{{ __('orders.total') ?? 'Total' }}</p>
@@ -310,7 +322,7 @@
                     @endforeach
                 </div>
             </div>
-            
+
             <!-- Shipping Information -->
             <div class="dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-6 animate-fade-in-up" style="animation-delay: 0.3s;">
                 <h3 class="font-semibold text-lg dark:text-slate-200 light:text-slate-800 mb-4">
@@ -346,32 +358,52 @@
                     <i class="fas fa-receipt text-cyan-400 mr-2"></i>
                     {{ __('orders.order_summary') ?? 'Order Summary' }}
                 </h3>
-                
+
+                @if($order->payment_method === 'qr' && $order->payment_status === 'pending')
+                    <div class="mb-6 p-4 border-2 border-dashed border-purple-500/30 rounded-2xl bg-purple-500/5 text-center">
+                        <p class="text-xs font-medium text-purple-400 mb-3 uppercase tracking-wider">Scan to Pay</p>
+                        <div class="p-3 bg-white rounded-xl shadow-lg mb-3 inline-block">
+                            @php
+                                $qrPath = \App\Models\Setting::where('key', 'payment_qr_code')->where('group', 'general')->value('value');
+                            @endphp
+                            @if($qrPath)
+                                <img src="{{ asset('storage/' . $qrPath) }}" alt="Payment QR Code" class="w-40 h-48 object-contain">
+                            @else
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('orders.show', $order)) }}"
+                                     alt="Default QR Code" class="w-40 h-40">
+                            @endif
+                        </div>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
+                            Please scan to complete your payment of <strong>${{ number_format($order->total, 2) }}</strong>.
+                        </p>
+                    </div>
+                @endif
+
                 <div class="space-y-3 text-sm">
                     <div class="flex justify-between">
                         <span class="dark:text-slate-400 light:text-slate-600">{{ __('orders.subtotal') ?? 'Subtotal' }}</span>
                         <span class="dark:text-slate-200 light:text-slate-800 font-medium">${{ number_format($order->subtotal, 2) }}</span>
                     </div>
-                    
+
                     @if($order->discount_amount > 0)
                         <div class="flex justify-between text-green-400">
                             <span>{{ __('orders.discount') ?? 'Discount' }}</span>
                             <span>-${{ number_format($order->discount_amount, 2) }}</span>
                         </div>
                     @endif
-                    
+
                     @if($order->coupon_code)
                         <div class="flex justify-between">
                             <span class="dark:text-slate-400 light:text-slate-600">{{ __('orders.coupon') ?? 'Coupon' }}</span>
                             <span class="text-cyan-400 font-medium">{{ $order->coupon_code }}</span>
                         </div>
                     @endif
-                    
+
                     <div class="flex justify-between">
                         <span class="dark:text-slate-400 light:text-slate-600">{{ __('orders.shipping') ?? 'Shipping' }}</span>
                         <span class="text-emerald-400 font-medium">{{ __('orders.free') ?? 'Free' }}</span>
                     </div>
-                    
+
                     <div class="border-t dark:border-slate-700/50 light:border-slate-200/50 pt-3 mt-3">
                         <div class="flex justify-between font-bold text-lg">
                             <span class="dark:text-slate-200 light:text-slate-800">{{ __('orders.total') ?? 'Total' }}</span>
@@ -396,7 +428,7 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="dark:text-slate-400 light:text-slate-600">{{ __('orders.payment_status') ?? 'Payment Status' }}</span>
-                        <span class="px-2 py-1 text-xs rounded-full 
+                        <span class="px-2 py-1 text-xs rounded-full
                             @if($order->payment_status == 'completed') bg-green-100 text-green-800
                             @elseif($order->payment_status == 'pending') bg-yellow-100 text-yellow-800
                             @elseif($order->payment_status == 'failed') bg-red-100 text-red-800

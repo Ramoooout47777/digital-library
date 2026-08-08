@@ -184,6 +184,25 @@ class AdminPublisherController extends Controller
     }
 
     /**
+     * Bulk update status for publishers
+     */
+    public function bulkStatus(Request $request)
+    {
+        $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:publishers,id'],
+            'status' => ['required', 'boolean'],
+        ]);
+
+        Publisher::whereIn('id', $request->ids)->update(['status' => $request->status]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('admin.bulk_status_updated') ?? 'បានធ្វើបច្ចុប្បន្នភាពស្ថានភាពដោយជោគជ័យ',
+        ]);
+    }
+
+    /**
      * Export publishers to CSV.
      */
     public function export(Request $request)
@@ -204,9 +223,9 @@ class AdminPublisherController extends Controller
         }
 
         $file = fopen($path, 'w');
-        
+
         fputcsv($file, [
-            'ID', 'Name', 'Slug', 'Address', 'Phone', 'Email', 
+            'ID', 'Name', 'Slug', 'Address', 'Phone', 'Email',
             'Website', 'Books Count', 'Status', 'Created At'
         ]);
 

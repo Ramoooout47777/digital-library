@@ -19,11 +19,21 @@
             <i class="fas fa-download mr-2"></i>
             {{ __('admin.export') }}
         </a>
+
+        <!-- Bulk Actions -->
+        <div id="bulk-actions" class="hidden flex gap-2">
+            <button onclick="bulkStatus(true)" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg transition flex items-center">
+                <i class="fas fa-eye mr-2"></i> {{ __('admin.activate_all') ?? 'បើកទាំងអស់' }}
+            </button>
+            <button onclick="bulkStatus(false)" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition flex items-center">
+                <i class="fas fa-eye-slash mr-2"></i> {{ __('admin.deactivate_all') ?? 'បិទទាំងអស់' }}
+            </button>
+        </div>
     </div>
-    
+
     <form action="{{ route('admin.books.index') }}" method="GET" class="flex gap-2">
-        <input type="text" name="search" value="{{ request('search') }}" 
-               placeholder="{{ __('admin.search') }}..." 
+        <input type="text" name="search" value="{{ request('search') }}"
+               placeholder="{{ __('admin.search') }}..."
                class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition">
             <i class="fas fa-search"></i>
@@ -51,7 +61,7 @@
                 @endforeach
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.status') }}</label>
             <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -61,7 +71,7 @@
                 <option value="trashed" {{ request('status') == 'trashed' ? 'selected' : '' }}>{{ __('admin.deleted') ?? 'បានលុប' }}</option>
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.language') }}</label>
             <select name="language" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -71,7 +81,7 @@
                 <option value="zh" {{ request('language') == 'zh' ? 'selected' : '' }}>中文</option>
             </select>
         </div>
-        
+
         <div class="flex items-end gap-2">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition w-full">
                 <i class="fas fa-filter mr-2"></i>{{ __('admin.filter') }}
@@ -89,6 +99,9 @@
         <table class="w-full">
             <thead>
                 <tr class="bg-gray-50 border-b">
+                    <th class="px-4 py-3 text-left">
+                        <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                    </th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.book_cover') }}</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.title') }}</th>
@@ -104,11 +117,14 @@
             <tbody class="divide-y divide-gray-200">
                 @forelse($books as $book)
                     <tr class="hover:bg-gray-50 transition">
+                        <td class="px-4 py-3">
+                            <input type="checkbox" name="ids[]" value="{{ $book->id }}" class="book-checkbox w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                        </td>
                         <td class="px-4 py-3 text-sm">{{ $book->id }}</td>
                         <td class="px-4 py-3">
                             @if($book->cover)
-                                <img src="{{ asset('storage/' . $book->cover) }}" 
-                                     alt="{{ $book->title }}" 
+                                <img src="{{ asset('storage/' . $book->cover) }}"
+                                     alt="{{ $book->title }}"
                                      class="w-12 h-16 object-cover rounded shadow">
                             @else
                                 <div class="w-12 h-16 bg-gray-200 rounded flex items-center justify-center">
@@ -148,24 +164,24 @@
                             </span>
                         </td>
                         <td class="px-4 py-3">
-                            <button onclick="toggleStatus({{ $book->id }})" 
+                            <button onclick="toggleStatus({{ $book->id }})"
                                     class="px-3 py-1 text-xs rounded-full transition {{ $book->status ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200' }}">
                                 {{ $book->status ? __('admin.active') : __('admin.inactive') }}
                             </button>
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
-                                <a href="{{ route('admin.books.show', $book) }}" 
-                                   class="text-green-600 hover:text-green-800 transition" 
+                                <a href="{{ route('admin.books.show', $book) }}"
+                                   class="text-green-600 hover:text-green-800 transition"
                                    title="{{ __('admin.view') ?? 'មើល' }}">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('admin.books.edit', $book) }}" 
-                                   class="text-blue-600 hover:text-blue-800 transition" 
+                                <a href="{{ route('admin.books.edit', $book) }}"
+                                   class="text-blue-600 hover:text-blue-800 transition"
                                    title="{{ __('admin.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                
+
                                 @if($book->trashed())
                                     <form action="{{ route('admin.books.restore', $book->id) }}" method="POST" class="inline">
                                         @csrf
@@ -177,7 +193,7 @@
                                     <form action="{{ route('admin.books.force-delete', $book->id) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-800 transition" 
+                                        <button type="submit" class="text-red-600 hover:text-red-800 transition"
                                                 onclick="return confirm('{{ __('admin.confirm_delete') }}')"
                                                 title="{{ __('admin.delete_permanent') ?? 'លុបជាអចិន្ត្រៃយ៍' }}">
                                             <i class="fas fa-trash-alt"></i>
@@ -187,7 +203,7 @@
                                     <form action="{{ route('admin.books.destroy', $book) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-800 transition" 
+                                        <button type="submit" class="text-red-600 hover:text-red-800 transition"
                                                 onclick="return confirm('{{ __('admin.confirm_delete') }}')"
                                                 title="{{ __('admin.delete') }}">
                                             <i class="fas fa-trash"></i>
@@ -208,10 +224,10 @@
             </tbody>
         </table>
     </div>
-    
+
     <div class="px-4 py-3 border-t flex justify-between items-center flex-wrap gap-2">
         <div class="text-sm text-gray-500">
-            {{ __('admin.showing') ?? 'បង្ហាញ' }} {{ $books->firstItem() ?? 0 }} - {{ $books->lastItem() ?? 0 }} 
+            {{ __('admin.showing') ?? 'បង្ហាញ' }} {{ $books->firstItem() ?? 0 }} - {{ $books->lastItem() ?? 0 }}
             {{ __('admin.of') ?? 'នៃ' }} {{ $books->total() }} {{ __('admin.items') ?? 'ធាតុ' }}
         </div>
         {{ $books->links() }}
@@ -220,24 +236,87 @@
 
 @push('scripts')
 <script>
+    // Selection logic
+    const selectAll = document.getElementById('select-all');
+    const checkboxes = document.querySelectorAll('.book-checkbox');
+    const bulkActions = document.getElementById('bulk-actions');
+
+    function updateBulkVisibility() {
+        const checkedCount = document.querySelectorAll('.book-checkbox:checked').length;
+        if (checkedCount > 0) {
+            bulkActions.classList.remove('hidden');
+        } else {
+            bulkActions.classList.add('hidden');
+        }
+        if (selectAll) {
+            selectAll.checked = checkedCount === checkboxes.length && checkboxes.length > 0;
+        }
+    }
+
+    if (selectAll) {
+        selectAll.addEventListener('change', function() {
+            checkboxes.forEach(cb => cb.checked = this.checked);
+            updateBulkVisibility();
+        });
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateBulkVisibility);
+    });
+
     function toggleStatus(bookId) {
         if (!confirm('{{ __("admin.confirm_status_change") ?? "តើអ្នកចង់ប្តូរស្ថានភាព?" }}')) {
             return;
         }
-        
+
         fetch(`/admin/books/${bookId}/toggle-status`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok && data.success) {
                 location.reload();
             } else {
-                alert('{{ __("admin.error_occurred") }}');
+                alert(data.message || '{{ __("admin.error_occurred") }}');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{{ __("admin.error_occurred") }}');
+        });
+    }
+
+    function bulkStatus(status) {
+        const selectedIds = Array.from(document.querySelectorAll('.book-checkbox:checked')).map(cb => cb.value);
+        if (selectedIds.length === 0) return;
+
+        if (!confirm('{{ __("admin.confirm_bulk_status_change") ?? "តើអ្នកចង់ប្តូរស្ថានភាពធាតុដែលបានជ្រើសរើស?" }}')) {
+            return;
+        }
+
+        fetch('{{ route("admin.books.bulk-status") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                ids: selectedIds,
+                status: status
+            })
+        })
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok && data.success) {
+                location.reload();
+            } else {
+                alert(data.message || '{{ __("admin.error_occurred") }}');
             }
         })
         .catch(error => {

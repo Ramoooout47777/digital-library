@@ -27,7 +27,7 @@ class AdminSettingsController extends Controller
         $types = Type::orderBy('name')->get();
         $authors = Author::orderBy('name')->get();
         $publishers = Publisher::orderBy('name')->get();
-        
+
         // Get general settings
         $settings = Setting::where('group', 'general')->pluck('value', 'key')->toArray();
 
@@ -73,12 +73,30 @@ class AdminSettingsController extends Controller
             'contact_email' => ['required', 'email', 'max:255'],
             'contact_phone' => ['nullable', 'string', 'max:20'],
             'address' => ['nullable', 'string', 'max:500'],
+            'payment_qr_code' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        foreach ($request->all() as $key => $value) {
+        $data = $request->except(['_token', '_method', 'payment_qr_code']);
+
+        foreach ($data as $key => $value) {
             Setting::updateOrCreate(
                 ['key' => $key, 'group' => 'general'],
                 ['value' => $value]
+            );
+        }
+
+        // Handle QR Code upload
+        if ($request->hasFile('payment_qr_code')) {
+            // Delete old QR code if exists
+            $oldQr = Setting::where('key', 'payment_qr_code')->where('group', 'general')->first();
+            if ($oldQr && $oldQr->value) {
+                \Storage::disk('public')->delete($oldQr->value);
+            }
+
+            $path = $request->file('payment_qr_code')->store('settings', 'public');
+            Setting::updateOrCreate(
+                ['key' => 'payment_qr_code', 'group' => 'general'],
+                ['value' => $path]
             );
         }
 
@@ -289,12 +307,12 @@ class AdminSettingsController extends Controller
     public function updatePrint(Request $request)
     {
         $settings = PrintSetting::firstOrCreate([]);
-        
+
         $data = $request->all();
         $data['double_sided'] = $request->has('double_sided');
         $data['binding'] = $request->has('binding');
         $data['status'] = $request->has('status');
-        
+
         $settings->update($data);
 
         return redirect()->route('admin.settings')
@@ -307,14 +325,14 @@ class AdminSettingsController extends Controller
     public function updateOrder(Request $request)
     {
         $settings = OrderSetting::firstOrCreate([]);
-        
+
         $data = $request->all();
         $data['auto_confirm'] = $request->has('auto_confirm');
         $data['auto_complete'] = $request->has('auto_complete');
         $data['notify_on_new_order'] = $request->has('notify_on_new_order');
         $data['notify_on_status_change'] = $request->has('notify_on_status_change');
         $data['status'] = $request->has('status');
-        
+
         $settings->update($data);
 
         return redirect()->route('admin.settings')
@@ -327,11 +345,11 @@ class AdminSettingsController extends Controller
     public function updateDiscount(Request $request)
     {
         $settings = DiscountSetting::firstOrCreate([]);
-        
+
         $data = $request->all();
         $data['auto_apply'] = $request->has('auto_apply');
         $data['status'] = $request->has('status');
-        
+
         $settings->update($data);
 
         return redirect()->route('admin.settings')
@@ -344,11 +362,11 @@ class AdminSettingsController extends Controller
     public function updateCoupon(Request $request)
     {
         $settings = CouponSetting::firstOrCreate([]);
-        
+
         $data = $request->all();
         $data['coupon_auto_apply'] = $request->has('coupon_auto_apply');
         $data['status'] = $request->has('status');
-        
+
         $settings->update($data);
 
         return redirect()->route('admin.settings')
@@ -361,7 +379,7 @@ class AdminSettingsController extends Controller
     public function updateNotification(Request $request)
     {
         $settings = NotificationSetting::firstOrCreate([]);
-        
+
         $data = [
             'email_notifications' => $request->has('email_notifications'),
             'sms_notifications' => $request->has('sms_notifications'),
@@ -375,7 +393,7 @@ class AdminSettingsController extends Controller
             'allow_user_preferences' => $request->has('allow_user_preferences'),
             'status' => $request->has('status'),
         ];
-        
+
         $settings->update($data);
 
         return redirect()->route('admin.settings')

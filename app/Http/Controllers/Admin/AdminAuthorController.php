@@ -93,7 +93,7 @@ class AdminAuthorController extends Controller
     {
         // Load relationships
         $author->load(['books.category', 'books.publisher']);
-        
+
         // Get statistics
         $stats = [
             'total_books' => $author->books()->count(),
@@ -183,6 +183,25 @@ public function toggleStatus(Author $author)
 }
 
 /**
+ * Bulk update status for authors
+ */
+public function bulkStatus(Request $request)
+{
+    $request->validate([
+        'ids' => ['required', 'array'],
+        'ids.*' => ['exists:authors,id'],
+        'status' => ['required', 'boolean'],
+    ]);
+
+    Author::whereIn('id', $request->ids)->update(['status' => $request->status]);
+
+    return response()->json([
+        'success' => true,
+        'message' => __('admin.bulk_status_updated') ?? 'បានធ្វើបច្ចុប្បន្នភាពស្ថានភាពដោយជោគជ័យ',
+    ]);
+}
+
+/**
  * Bulk upload authors
  */
 public function bulkUpload(Request $request)
@@ -192,7 +211,7 @@ public function bulkUpload(Request $request)
     ]);
 
     // Import logic here using Laravel Excel package
-    
+
     return redirect()->route('admin.authors.index')
         ->with('success', __('admin.authors_imported') ?? 'បាននាំចូលអ្នកនិពន្ធដោយជោគជ័យ');
 }
@@ -218,9 +237,9 @@ public function bulkUpload(Request $request)
         }
 
         $file = fopen($path, 'w');
-        
+
         fputcsv($file, [
-            'ID', 'Name', 'Slug', 'Email', 'Website', 
+            'ID', 'Name', 'Slug', 'Email', 'Website',
             'Books Count', 'Status', 'Created At', 'Updated At'
         ]);
 

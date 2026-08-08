@@ -119,7 +119,7 @@ class BookController extends Controller
 
         // Get the file path
         $filePath = Storage::disk('public')->path($book->pdf_file);
-        
+
         // Return download response with proper headers
         return response()->download($filePath, $book->slug . '.pdf', [
             'Content-Type' => 'application/pdf',
@@ -132,16 +132,44 @@ class BookController extends Controller
      */
     public function preview(Book $book)
     {
-        $canReadFullBook = $book->is_free || (auth()->check() && auth()->user()->hasPurchased($book));
-        $filePath = $canReadFullBook ? $book->pdf_file : $book->sample_pdf;
+        $filePath = $book->sample_pdf;
 
         if (!$filePath || !Storage::disk('public')->exists($filePath)) {
             abort(404, 'Preview not available');
         }
 
         $path = Storage::disk('public')->path($filePath);
-        
-        // Return preview for viewing in browser (not download)
+
+        return response()->file($path, [
+            'Content-Type' => 'application/pdf',
+        ]);
+    }
+
+    /**
+     * Read full book PDF.
+     */
+    public function read(Book $book)
+    {
+        if (!$book->is_free && !auth()->check()) {
+            return redirect()->route('login')
+                ->with('error', 'Please login to read this book');
+        }
+
+        if (!$book->is_free && !auth()->user()->hasPurchased($book)) {
+            abort(403, 'You need to purchase this book to read it');
+        }
+
+        // Check if PDF exists
+        if (!$book->pdf_file || !Storage::disk('public')->exists($book->pdf_file)) {
+            abort(404, 'Full PDF file not found');
+        }
+
+        // Increment views (reading counts as a view)
+        $book->incrementViews();
+
+        $path = Storage::disk('public')->path($book->pdf_file);
+
+        // Return file for inline viewing in browser
         return response()->file($path, [
             'Content-Type' => 'application/pdf',
         ]);

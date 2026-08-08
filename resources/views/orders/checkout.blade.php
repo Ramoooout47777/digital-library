@@ -81,8 +81,15 @@
                         <div class="max-w-xs mx-auto">
                             <p class="text-sm font-medium text-purple-400 mb-4 uppercase tracking-wider">Scan to Pay</p>
                             <div class="p-4 bg-white rounded-2xl shadow-xl mb-4 inline-block">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('home')) }}"
-                                     alt="Payment QR Code" class="w-48 h-48 mx-auto">
+                                @php
+                                    $qrPath = \App\Models\Setting::where('key', 'payment_qr_code')->where('group', 'general')->value('value');
+                                @endphp
+                                @if($qrPath)
+                                    <img src="{{ asset('storage/' . $qrPath) }}" alt="Payment QR Code" class="w-48 h-48 mx-auto object-contain">
+                                @else
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ urlencode(route('home')) }}"
+                                         alt="Default QR Code" class="w-48 h-48 mx-auto">
+                                @endif
                             </div>
                             <p class="text-xs text-slate-500 dark:text-slate-400">
                                 Please scan this QR code with your banking app to complete the payment. After successful payment, click "Place Order".

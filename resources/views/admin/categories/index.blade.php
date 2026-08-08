@@ -15,11 +15,21 @@
             <i class="fas fa-list-ul mr-2"></i>
             <span id="view-toggle-text">{{ __('admin.tree_view') ?? 'មើលតាមមែកធាង' }}</span>
         </button>
+
+        <!-- Bulk Actions -->
+        <div id="bulk-actions" class="hidden flex gap-2">
+            <button onclick="bulkStatus(true)" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg transition flex items-center">
+                <i class="fas fa-eye mr-2"></i> {{ __('admin.activate_all') ?? 'បើកទាំងអស់' }}
+            </button>
+            <button onclick="bulkStatus(false)" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition flex items-center">
+                <i class="fas fa-eye-slash mr-2"></i> {{ __('admin.deactivate_all') ?? 'បិទទាំងអស់' }}
+            </button>
+        </div>
     </div>
-    
+
     <form action="{{ route('admin.categories.index') }}" method="GET" class="flex gap-2">
-        <input type="text" name="search" value="{{ request('search') }}" 
-               placeholder="{{ __('admin.search') }}..." 
+        <input type="text" name="search" value="{{ request('search') }}"
+               placeholder="{{ __('admin.search') }}..."
                class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition">
             <i class="fas fa-search"></i>
@@ -38,7 +48,7 @@
                 <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>{{ __('admin.inactive') }}</option>
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.parent_category') ?? 'ប្រភេទមេ' }}</label>
             <select name="parent_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -51,7 +61,7 @@
                 @endforeach
             </select>
         </div>
-        
+
         <div class="flex items-end gap-2">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition w-full">
                 <i class="fas fa-filter mr-2"></i>{{ __('admin.filter') }}
@@ -69,6 +79,9 @@
         <table class="w-full">
             <thead>
                 <tr class="bg-gray-50 border-b">
+                    <th class="px-4 py-3 text-left">
+                        <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                    </th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.category_image') ?? 'រូបភាព' }}</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.category') }}</th>
@@ -83,11 +96,14 @@
             <tbody class="divide-y divide-gray-200">
                 @forelse($categories as $category)
                     <tr class="hover:bg-gray-50 transition">
+                        <td class="px-4 py-3">
+                            <input type="checkbox" name="ids[]" value="{{ $category->id }}" class="category-checkbox w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                        </td>
                         <td class="px-4 py-3 text-sm">{{ $category->id }}</td>
                         <td class="px-4 py-3">
                             @if($category->image)
-                                <img src="{{ asset('storage/' . $category->image) }}" 
-                                     alt="{{ $category->name }}" 
+                                <img src="{{ asset('storage/' . $category->image) }}"
+                                     alt="{{ $category->name }}"
                                      class="w-12 h-12 object-cover rounded">
                             @else
                                 <div class="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
@@ -109,7 +125,7 @@
                             </span>
                         </td>
                         <td class="px-4 py-3">
-                            <button onclick="toggleStatus({{ $category->id }})" 
+                            <button onclick="toggleStatus({{ $category->id }})"
                                     class="px-3 py-1 text-xs rounded-full transition {{ $category->status ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200' }}">
                                 {{ $category->status ? __('admin.active') : __('admin.inactive') }}
                             </button>
@@ -119,20 +135,20 @@
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
-                                <a href="{{ route('admin.categories.edit', $category) }}" 
-                                   class="text-blue-600 hover:text-blue-800 transition" 
+                                <a href="{{ route('admin.categories.edit', $category) }}"
+                                   class="text-blue-600 hover:text-blue-800 transition"
                                    title="{{ __('admin.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{{ route('admin.categories.show', $category) }}" 
-                                   class="text-green-600 hover:text-green-800 transition" 
+                                <a href="{{ route('admin.categories.show', $category) }}"
+                                   class="text-green-600 hover:text-green-800 transition"
                                    title="{{ __('admin.view') ?? 'មើល' }}">
                                     <i class="fas fa-eye"></i>
                                 </a>
                                 <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-800 transition" 
+                                    <button type="submit" class="text-red-600 hover:text-red-800 transition"
                                             onclick="return confirm('{{ __('admin.confirm_delete') }}')"
                                             title="{{ __('admin.delete') }}">
                                         <i class="fas fa-trash"></i>
@@ -152,7 +168,7 @@
             </tbody>
         </table>
     </div>
-    
+
     <div class="px-4 py-3 border-t">
         {{ $categories->links() }}
     </div>
@@ -178,12 +194,12 @@
                                 <i class="fas fa-edit"></i>
                             </a>
                             <span class="text-sm text-gray-400">|</span>
-                            <span class="text-sm {{ $category->status ? 'text-green-500' : 'text-red-500' }}">
+                            <button onclick="toggleStatus({{ $category->id }})" class="text-sm {{ $category->status ? 'text-green-500' : 'text-red-500' }} hover:underline">
                                 {{ $category->status ? __('admin.active') : __('admin.inactive') }}
-                            </span>
+                            </button>
                         </div>
                     </div>
-                    
+
                     @if($category->children->count() > 0)
                         <div class="ml-8 space-y-1 mt-1">
                             @foreach($category->children as $child)
@@ -199,9 +215,10 @@
                                         <a href="{{ route('admin.categories.edit', $child) }}" class="text-blue-500 hover:text-blue-700">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <span class="text-sm {{ $child->status ? 'text-green-500' : 'text-red-500' }}">
+                                        <span class="text-sm text-gray-400">|</span>
+                                        <button onclick="toggleStatus({{ $child->id }})" class="text-sm {{ $child->status ? 'text-green-500' : 'text-red-500' }} hover:underline">
                                             {{ $child->status ? __('admin.active') : __('admin.inactive') }}
-                                        </span>
+                                        </button>
                                     </div>
                                 </div>
                             @endforeach
@@ -215,14 +232,42 @@
 
 @push('scripts')
 <script>
+    // Selection logic
+    const selectAll = document.getElementById('select-all');
+    const checkboxes = document.querySelectorAll('.category-checkbox');
+    const bulkActions = document.getElementById('bulk-actions');
+
+    function updateBulkVisibility() {
+        const checkedCount = document.querySelectorAll('.category-checkbox:checked').length;
+        if (checkedCount > 0) {
+            bulkActions.classList.remove('hidden');
+        } else {
+            bulkActions.classList.add('hidden');
+        }
+        if (selectAll) {
+            selectAll.checked = checkedCount === checkboxes.length && checkboxes.length > 0;
+        }
+    }
+
+    if (selectAll) {
+        selectAll.addEventListener('change', function() {
+            checkboxes.forEach(cb => cb.checked = this.checked);
+            updateBulkVisibility();
+        });
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateBulkVisibility);
+    });
+
     let treeView = false;
-    
+
     function toggleView() {
         treeView = !treeView;
         const tableView = document.getElementById('table-view');
         const treeViewEl = document.getElementById('tree-view');
         const toggleText = document.getElementById('view-toggle-text');
-        
+
         if (treeView) {
             tableView.classList.add('hidden');
             treeViewEl.classList.remove('hidden');
@@ -233,25 +278,60 @@
             toggleText.textContent = '{{ __("admin.tree_view") ?? "មើលតាមមែកធាង" }}';
         }
     }
-    
+
     function toggleStatus(categoryId) {
         if (!confirm('{{ __("admin.confirm_status_change") ?? "តើអ្នកចង់ប្តូរស្ថានភាព?" }}')) {
             return;
         }
-        
+
         fetch(`/admin/categories/${categoryId}/toggle-status`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok && data.success) {
                 location.reload();
             } else {
-                alert('{{ __("admin.error_occurred") }}');
+                alert(data.message || '{{ __("admin.error_occurred") }}');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{{ __("admin.error_occurred") }}');
+        });
+    }
+
+    function bulkStatus(status) {
+        const selectedIds = Array.from(document.querySelectorAll('.category-checkbox:checked')).map(cb => cb.value);
+        if (selectedIds.length === 0) return;
+
+        if (!confirm('{{ __("admin.confirm_bulk_status_change") ?? "តើអ្នកចង់ប្តូរស្ថានភាពធាតុដែលបានជ្រើសរើស?" }}')) {
+            return;
+        }
+
+        fetch('{{ route("admin.categories.bulk-status") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                ids: selectedIds,
+                status: status
+            })
+        })
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok && data.success) {
+                location.reload();
+            } else {
+                alert(data.message || '{{ __("admin.error_occurred") }}');
             }
         })
         .catch(error => {

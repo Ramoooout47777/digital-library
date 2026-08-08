@@ -54,6 +54,7 @@ Route::get('/books', [BookController::class, 'index'])->name('books.index');
 Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
 Route::get('/books/{book}/download', [BookController::class, 'download'])->name('books.download');
 Route::get('/books/{book}/preview', [BookController::class, 'preview'])->name('books.preview');
+Route::get('/books/{book}/read', [BookController::class, 'read'])->name('books.read');
 
 // ============================================================
 // CATEGORY ROUTES (Frontend)
@@ -99,6 +100,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
+     // Purchased Books Routes
+    Route::get('/profile/purchased-books', [ProfileController::class, 'purchasedBooks'])->name('profile.purchased-books');
+    Route::get('/profile/read/{purchase}', [ProfileController::class, 'readBook'])->name('profile.read-book');
+    Route::get('/profile/download/{purchase}', [ProfileController::class, 'downloadBook'])->name('profile.download-book');
+
     // Orders
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
@@ -132,7 +138,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
 
     // ============ BOOKS MANAGEMENT ============
     Route::resource('books', AdminBookController::class);
-    Route::patch('books/{book}/toggle-status', [AdminBookController::class, 'toggleStatus'])->name('books.toggle-status');
+    Route::post('books/{book}/toggle-status', [AdminBookController::class, 'toggleStatus'])->name('books.toggle-status');
+    Route::post('books/bulk-status', [AdminBookController::class, 'bulkStatus'])->name('books.bulk-status');
     Route::patch('books/{id}/restore', [AdminBookController::class, 'restore'])->name('books.restore');
     Route::delete('books/{id}/force-delete', [AdminBookController::class, 'forceDelete'])->name('books.force-delete');
     Route::post('books/bulk-upload', [AdminBookController::class, 'bulkUpload'])->name('books.bulk-upload');
@@ -140,12 +147,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
 
     // ============ CATEGORIES MANAGEMENT ============
     Route::resource('categories', AdminCategoryController::class);
-    Route::patch('categories/{category}/toggle-status', [AdminCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+    Route::post('categories/{category}/toggle-status', [AdminCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+    Route::post('categories/bulk-status', [AdminCategoryController::class, 'bulkStatus'])->name('categories.bulk-status');
     Route::post('categories/reorder', [AdminCategoryController::class, 'reorder'])->name('categories.reorder');
 
     // ============ AUTHORS MANAGEMENT ============
     Route::resource('authors', AdminAuthorController::class);
-    Route::patch('authors/{author}/toggle-status', [AdminAuthorController::class, 'toggleStatus'])->name('authors.toggle-status');
+    Route::post('authors/{author}/toggle-status', [AdminAuthorController::class, 'toggleStatus'])->name('authors.toggle-status');
+    Route::post('authors/bulk-status', [AdminAuthorController::class, 'bulkStatus'])->name('authors.bulk-status');
     Route::post('authors/bulk-upload', [AdminAuthorController::class, 'bulkUpload'])->name('authors.bulk-upload');
     Route::get('authors/export', [AdminAuthorController::class, 'export'])->name('authors.export');
     Route::get('authors/export/pdf', [AdminAuthorController::class, 'exportPdf'])->name('authors.export-pdf');
@@ -153,7 +162,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
 
     // ============ PUBLISHERS MANAGEMENT ============
     Route::resource('publishers', AdminPublisherController::class);
-    Route::patch('publishers/{publisher}/toggle-status', [AdminPublisherController::class, 'toggleStatus'])->name('publishers.toggle-status');
+    Route::post('publishers/{publisher}/toggle-status', [AdminPublisherController::class, 'toggleStatus'])->name('publishers.toggle-status');
+    Route::post('publishers/bulk-status', [AdminPublisherController::class, 'bulkStatus'])->name('publishers.bulk-status');
 
     // ============ ORDERS MANAGEMENT ============
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
@@ -165,18 +175,21 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
 
     // ============ CUSTOMERS MANAGEMENT ============
     Route::resource('customers', AdminCustomerController::class);
-    Route::patch('customers/{customer}/toggle-status', [AdminCustomerController::class, 'toggleStatus'])->name('customers.toggle-status');
+    Route::post('customers/{customer}/toggle-status', [AdminCustomerController::class, 'toggleStatus'])->name('customers.toggle-status');
+    Route::post('customers/bulk-status', [AdminCustomerController::class, 'bulkStatus'])->name('customers.bulk-status');
     Route::post('customers/import', [AdminCustomerController::class, 'import'])->name('customers.import');
     Route::get('customers/export', [AdminCustomerController::class, 'export'])->name('customers.export');
 
     // ============ COUPONS MANAGEMENT ============
     Route::resource('coupons', AdminCouponController::class);
-    Route::patch('coupons/{coupon}/toggle-status', [AdminCouponController::class, 'toggleStatus'])->name('coupons.toggle-status');
+    Route::post('coupons/{coupon}/toggle-status', [AdminCouponController::class, 'toggleStatus'])->name('coupons.toggle-status');
+    Route::post('coupons/bulk-status', [AdminCouponController::class, 'bulkStatus'])->name('coupons.bulk-status');
     Route::get('coupons/export', [AdminCouponController::class, 'export'])->name('coupons.export');
 
     // ============ BANNERS MANAGEMENT ============
     Route::resource('banners', AdminBannerController::class);
     Route::post('banners/{banner}/toggle-status', [AdminBannerController::class, 'toggleStatus'])->name('banners.toggle-status');
+    Route::post('banners/bulk-status', [AdminBannerController::class, 'bulkStatus'])->name('banners.bulk-status');
     Route::post('banners/reorder', [AdminBannerController::class, 'reorder'])->name('banners.reorder');
     Route::get('banners/export', [AdminBannerController::class, 'export'])->name('banners.export');
 

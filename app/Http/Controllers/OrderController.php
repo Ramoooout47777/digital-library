@@ -63,20 +63,21 @@ class OrderController extends Controller
             return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
         }
 
-        // Get current coupon
-        $currentCoupon = $this->couponService->getCurrentCoupon();
-        $originalTotal = $cart->total;
-        $discountedTotal = $this->couponService->getDiscountedTotal($originalTotal);
-        $discountAmount = $originalTotal - $discountedTotal;
+        // Get fresh calculation of discount
+        $originalTotal = (float) $cart->total;
+        $discountAmount = (float) $this->couponService->getDiscountAmount($originalTotal);
+        $finalTotal = max(0, $originalTotal - $discountAmount);
 
-        return DB::transaction(function () use ($request, $cart, $currentCoupon, $discountAmount, $discountedTotal) {
+        $currentCoupon = $this->couponService->getCurrentCoupon();
+
+        return DB::transaction(function () use ($request, $cart, $currentCoupon, $discountAmount, $finalTotal, $originalTotal) {
             // Create order
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'order_number' => 'ORD-' . strtoupper(Str::random(10)),
-                'subtotal' => $cart->total,
+                'subtotal' => $originalTotal,
                 'discount_amount' => $discountAmount,
-                'total' => $discountedTotal,
+                'total' => $finalTotal,
                 'payment_method' => $request->payment_method,
                 'payment_status' => 'pending',
                 'status' => 'pending',
@@ -112,8 +113,11 @@ class OrderController extends Controller
             $this->couponService->removeCoupon();
 
             // Increment coupon usage if exists
-            if ($currentCoupon && isset($currentCoupon['coupon'])) {
-                $currentCoupon['coupon']->incrementUsage();
+            if ($currentCoupon && isset($currentCoupon['code'])) {
+                $coupon = \App\Models\Coupon::findByCode($currentCoupon['code']);
+                if ($coupon) {
+                    $coupon->incrementUsage();
+                }
             }
 
             // If COD, set status as confirmed
@@ -121,7 +125,23 @@ class OrderController extends Controller
                 $order->update([
                     'order_status' => Order::STATUS_CONFIRMED,
                     'confirmed_at' => now(),
+                    'status' => 'completed',
+                    'payment_status' => 'completed',
+                    'completed_at' => now(),
                 ]);
+
+                // Create purchase records
+                foreach ($order->items as $item) {
+                    \App\Models\Purchase::firstOrCreate([
+                        'user_id' => Auth::id(),
+                        'book_id' => $item->book_id,
+                        'order_id' => $order->id,
+                    ], [
+                        'price_paid' => $item->price,
+                        'status' => 'active',
+                        'expires_at' => now()->addYears(10),
+                    ]);
+                }
             }
 
             return redirect()->route('orders.show', $order)

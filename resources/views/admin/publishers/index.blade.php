@@ -11,15 +11,21 @@
             <i class="fas fa-plus mr-2"></i>
             {{ __('admin.add_new_publisher') }}
         </a>
-        {{-- <a href="{{ route('admin.publishers.export') }}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition flex items-center">
-            <i class="fas fa-file-export mr-2"></i>
-            {{ __('admin.export') }}
-        </a> --}}
+
+        <!-- Bulk Actions -->
+        <div id="bulk-actions" class="hidden flex gap-2">
+            <button onclick="bulkStatus(true)" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg transition flex items-center">
+                <i class="fas fa-eye mr-2"></i> {{ __('admin.activate_all') ?? 'បើកទាំងអស់' }}
+            </button>
+            <button onclick="bulkStatus(false)" class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg transition flex items-center">
+                <i class="fas fa-eye-slash mr-2"></i> {{ __('admin.deactivate_all') ?? 'បិទទាំងអស់' }}
+            </button>
+        </div>
     </div>
-    
+
     <form action="{{ route('admin.publishers.index') }}" method="GET" class="flex gap-2">
-        <input type="text" name="search" value="{{ request('search') }}" 
-               placeholder="{{ __('admin.search') }}..." 
+        <input type="text" name="search" value="{{ request('search') }}"
+               placeholder="{{ __('admin.search') }}..."
                class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition">
             <i class="fas fa-search"></i>
@@ -38,7 +44,7 @@
                 <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>{{ __('admin.inactive') }}</option>
             </select>
         </div>
-        
+
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.sort_by') }}</label>
             <select name="sort" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -47,7 +53,7 @@
                 <option value="created_at_desc" {{ request('sort') == 'created_at_desc' ? 'selected' : '' }}>{{ __('admin.newest') }}</option>
             </select>
         </div>
-        
+
         <div class="flex items-end gap-2">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition w-full">
                 <i class="fas fa-filter mr-2"></i>{{ __('admin.filter') }}
@@ -65,6 +71,9 @@
         <table class="w-full">
             <thead>
                 <tr class="bg-gray-50 border-b">
+                    <th class="px-4 py-3 text-left">
+                        <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                    </th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.logo') }}</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.publisher_name') }}</th>
@@ -79,11 +88,14 @@
             <tbody class="divide-y divide-gray-200">
                 @forelse($publishers as $publisher)
                     <tr class="hover:bg-gray-50 transition">
+                        <td class="px-4 py-3">
+                            <input type="checkbox" name="ids[]" value="{{ $publisher->id }}" class="publisher-checkbox w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                        </td>
                         <td class="px-4 py-3 text-sm">{{ $publisher->id }}</td>
                         <td class="px-4 py-3">
                             @if($publisher->logo)
-                                <img src="{{ asset('storage/' . $publisher->logo) }}" 
-                                     alt="{{ $publisher->name }}" 
+                                <img src="{{ asset('storage/' . $publisher->logo) }}"
+                                     alt="{{ $publisher->name }}"
                                      class="w-12 h-12 object-cover rounded">
                             @else
                                 <div class="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
@@ -98,13 +110,13 @@
                         <td class="px-4 py-3 text-sm">{{ Str::limit($publisher->address, 30) }}</td>
                         <td class="px-4 py-3 text-sm">{{ $publisher->phone ?? '-' }}</td>
                         <td class="px-4 py-3 text-sm text-center">
-                            <a href="{{ route('admin.books.index', ['publisher_id' => $publisher->id]) }}" 
+                            <a href="{{ route('admin.books.index', ['publisher_id' => $publisher->id]) }}"
                                class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs hover:bg-blue-200 transition">
                                 {{ $publisher->books_count ?? $publisher->books()->count() }}
                             </a>
                         </td>
                         <td class="px-4 py-3">
-                            <button onclick="toggleStatus({{ $publisher->id }})" 
+                            <button onclick="toggleStatus({{ $publisher->id }})"
                                     class="px-3 py-1 text-xs rounded-full transition {{ $publisher->status ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-red-100 text-red-800 hover:bg-red-200' }}">
                                 {{ $publisher->status ? __('admin.active') : __('admin.inactive') }}
                             </button>
@@ -112,13 +124,13 @@
                         <td class="px-4 py-3 text-sm text-gray-500">{{ $publisher->created_at->format('d/m/Y') }}</td>
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-2">
-                                <a href="{{ route('admin.publishers.edit', $publisher) }}" 
-                                   class="text-blue-600 hover:text-blue-800 transition" 
+                                <a href="{{ route('admin.publishers.edit', $publisher) }}"
+                                   class="text-blue-600 hover:text-blue-800 transition"
                                    title="{{ __('admin.edit') }}">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{{ route('admin.publishers.show', $publisher) }}" 
-                                   class="text-green-600 hover:text-green-800 transition" 
+                                <a href="{{ route('admin.publishers.show', $publisher) }}"
+                                   class="text-green-600 hover:text-green-800 transition"
                                    title="{{ __('admin.view') }}">
                                     <i class="fas fa-eye"></i>
                                 </a>
@@ -126,7 +138,7 @@
                                     <form action="{{ route('admin.publishers.destroy', $publisher) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-800 transition" 
+                                        <button type="submit" class="text-red-600 hover:text-red-800 transition"
                                                 onclick="return confirm('{{ __('admin.confirm_delete') }}')"
                                                 title="{{ __('admin.delete') }}">
                                             <i class="fas fa-trash"></i>
@@ -151,10 +163,10 @@
             </tbody>
         </table>
     </div>
-    
+
     <div class="px-4 py-3 border-t flex justify-between items-center flex-wrap gap-2">
         <div class="text-sm text-gray-500">
-            {{ __('admin.showing') }} {{ $publishers->firstItem() ?? 0 }} - {{ $publishers->lastItem() ?? 0 }} 
+            {{ __('admin.showing') }} {{ $publishers->firstItem() ?? 0 }} - {{ $publishers->lastItem() ?? 0 }}
             {{ __('admin.of') }} {{ $publishers->total() }} {{ __('admin.items') }}
         </div>
         {{ $publishers->links() }}
@@ -183,24 +195,87 @@
 
 @push('scripts')
 <script>
+    // Selection logic
+    const selectAll = document.getElementById('select-all');
+    const checkboxes = document.querySelectorAll('.publisher-checkbox');
+    const bulkActions = document.getElementById('bulk-actions');
+
+    function updateBulkVisibility() {
+        const checkedCount = document.querySelectorAll('.publisher-checkbox:checked').length;
+        if (checkedCount > 0) {
+            bulkActions.classList.remove('hidden');
+        } else {
+            bulkActions.classList.add('hidden');
+        }
+        if (selectAll) {
+            selectAll.checked = checkedCount === checkboxes.length && checkboxes.length > 0;
+        }
+    }
+
+    if (selectAll) {
+        selectAll.addEventListener('change', function() {
+            checkboxes.forEach(cb => cb.checked = this.checked);
+            updateBulkVisibility();
+        });
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateBulkVisibility);
+    });
+
     function toggleStatus(publisherId) {
         if (!confirm('{{ __("admin.confirm_status_change") }}')) {
             return;
         }
-        
+
         fetch(`/admin/publishers/${publisherId}/toggle-status`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 'Content-Type': 'application/json',
+                'Accept': 'application/json',
             },
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok && data.success) {
                 location.reload();
             } else {
-                alert('{{ __("admin.error_occurred") }}');
+                alert(data.message || '{{ __("admin.error_occurred") }}');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('{{ __("admin.error_occurred") }}');
+        });
+    }
+
+    function bulkStatus(status) {
+        const selectedIds = Array.from(document.querySelectorAll('.publisher-checkbox:checked')).map(cb => cb.value);
+        if (selectedIds.length === 0) return;
+
+        if (!confirm('{{ __("admin.confirm_bulk_status_change") ?? "តើអ្នកចង់ប្តូរស្ថានភាពធាតុដែលបានជ្រើសរើស?" }}')) {
+            return;
+        }
+
+        fetch('{{ route("admin.publishers.bulk-status") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                ids: selectedIds,
+                status: status
+            })
+        })
+        .then(async response => {
+            const data = await response.json();
+            if (response.ok && data.success) {
+                location.reload();
+            } else {
+                alert(data.message || '{{ __("admin.error_occurred") }}');
             }
         })
         .catch(error => {

@@ -71,11 +71,35 @@ class AdminBookController extends Controller
         return back()->with('success', 'Book deleted successfully.');
     }
 
-    public function toggleStatus(Book $book)
+    public function toggleStatus(Request $request, Book $book)
     {
-        $book->update(['status' => ! $book->status]);
+        $book->status = !$book->status;
+        $book->save();
 
-        return back()->with('success', 'Book status updated.');
+        return response()->json([
+            'success' => true,
+            'status' => $book->status,
+            'message' => $book->status ? __('admin.book_activated') : __('admin.book_deactivated'),
+        ]);
+    }
+
+    /**
+     * Bulk update status for books
+     */
+    public function bulkStatus(Request $request)
+    {
+        $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:books,id'],
+            'status' => ['required', 'boolean'],
+        ]);
+
+        Book::whereIn('id', $request->ids)->update(['status' => $request->status]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('admin.bulk_status_updated') ?? 'បានធ្វើបច្ចុប្បន្នភាពស្ថានភាពដោយជោគជ័យ',
+        ]);
     }
 
     public function restore(int $id)

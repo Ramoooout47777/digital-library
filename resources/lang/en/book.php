@@ -55,6 +55,6 @@ return [
     'close_reader' => 'Close Reader',
     'previous' => 'Previous',
     'next' => 'Next',
-        
+       
 
 ];

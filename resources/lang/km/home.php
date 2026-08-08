@@ -89,6 +89,7 @@ return [
     'search_categories' => 'ស្វែងរកប្រភេទ',
     'no_categories_message' => 'មិនទាន់មានប្រភេទសៀវភៅនៅឡើយ',
     'available' => 'មាន',
+    'website' => 'គេហទំព័រផ្លូវការ',
 
     // ============ ABOUT ============
     'about_title' => 'អំពីបណ្ណាល័យឌីជីថលរបស់យើង',

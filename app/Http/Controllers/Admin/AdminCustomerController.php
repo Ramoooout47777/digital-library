@@ -22,9 +22,9 @@ class AdminCustomerController extends Controller
             // Use selectRaw for SQLite compatibility
             ->select('users.*')
             ->selectRaw('(
-                SELECT COALESCE(SUM(total), 0) 
-                FROM orders 
-                WHERE orders.user_id = users.id 
+                SELECT COALESCE(SUM(total), 0)
+                FROM orders
+                WHERE orders.user_id = users.id
                 AND orders.status = "completed"
             ) as total_spent');
 
@@ -85,20 +85,20 @@ class AdminCustomerController extends Controller
     public function show(User $customer)
     {
         $customer->load(['orders', 'reviews.book', 'roles']);
-        
+
         // Calculate total spent
         $customer->total_spent = $customer->orders()
             ->where('status', 'completed')
             ->sum('total');
-        
+
         $customer->orders_count = $customer->orders()->count();
-        
+
         // === FIXED: Check if last order exists before accessing ===
         $lastOrder = $customer->orders()
             ->where('status', 'completed')
             ->latest()
             ->first();
-        
+
         // Set last_order_date only if last order exists
         $customer->last_order_date = $lastOrder ? $lastOrder->created_at : null;
 
@@ -115,10 +115,10 @@ class AdminCustomerController extends Controller
         $customer->total_spent = $customer->orders()
             ->where('status', 'completed')
             ->sum('total');
-            
+
         return view('admin.customers.edit', compact('customer'));
     }
-    
+
     /**
      * Update the specified customer.
      */
@@ -208,6 +208,31 @@ class AdminCustomerController extends Controller
     }
 
     /**
+     * Bulk update status for customers
+     */
+    public function bulkStatus(Request $request)
+    {
+        $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:users,id'],
+            'status' => ['required', 'boolean'],
+        ]);
+
+        // Exclude self from bulk update if it's deactivation
+        $ids = $request->ids;
+        if ($request->status == false) {
+            $ids = array_diff($ids, [auth()->id()]);
+        }
+
+        User::whereIn('id', $ids)->update(['is_active' => $request->status]);
+
+        return response()->json([
+            'success' => true,
+            'message' => __('admin.bulk_status_updated') ?? 'បានធ្វើបច្ចុប្បន្នភាពស្ថានភាពដោយជោគជ័យ',
+        ]);
+    }
+
+    /**
      * Import customers from CSV.
      */
     public function import(Request $request)
@@ -217,7 +242,7 @@ class AdminCustomerController extends Controller
         ]);
 
         // Import logic here using Laravel Excel package
-        
+
         return redirect()->route('admin.customers.index')
             ->with('success', __('admin.customers_imported') ?? 'Customers imported successfully');
     }
@@ -243,9 +268,9 @@ class AdminCustomerController extends Controller
         }
 
         $file = fopen($path, 'w');
-        
+
         fputcsv($file, [
-            'ID', 'Name', 'Email', 'Phone', 'Address', 
+            'ID', 'Name', 'Email', 'Phone', 'Address',
             'Total Orders', 'Status', 'Registered At', 'Last Login'
         ]);
 
@@ -267,5 +292,5 @@ class AdminCustomerController extends Controller
 
         return response()->download($path, $filename)->deleteFileAfterSend(true);
     }
-   
+
 }
