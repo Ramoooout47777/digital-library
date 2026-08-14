@@ -20,8 +20,10 @@
             @foreach($purchasedBooks as $purchase)
                 <div class="neu-card p-3 animate-fade-in-up">
                     <div class="relative">
-                        <a href="{{ route('books.show', $purchase->book) }}">
-                            @if($purchase->book->cover)
+                        @if($purchase->book)
+                            <a href="{{ route('books.show', $purchase->book) }}">
+                        @endif
+                            @if($purchase->book?->cover)
                                 <img src="{{ asset('storage/' . $purchase->book->cover) }}" 
                                      alt="{{ $purchase->book->title }}" 
                                      class="w-full aspect-[3/4] object-cover rounded-lg">
@@ -30,7 +32,9 @@
                                     <i class="fas fa-book dark:text-slate-500 light:text-slate-300 text-4xl"></i>
                                 </div>
                             @endif
-                        </a>
+                        @if($purchase->book)
+                            </a>
+                        @endif
                         
                         <!-- Badge -->
                         <div class="absolute top-2 left-2">
@@ -42,10 +46,10 @@
                     
                     <div class="mt-3">
                         <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate">
-                            {{ $purchase->book->title }}
+                            {{ $purchase->book?->title ?? __('profile.book_unavailable') ?? 'Book unavailable' }}
                         </h4>
                         <p class="text-xs dark:text-slate-500 light:text-slate-500 truncate">
-                            {{ $purchase->book->author->name ?? 'N/A' }}
+                            {{ $purchase->book?->author?->name ?? 'N/A' }}
                         </p>
                         
                         <div class="flex items-center justify-between mt-3">
@@ -53,7 +57,7 @@
                                 {{ $purchase->created_at->format('d/m/Y') }}
                             </span>
                             <div class="flex gap-1">
-                                @if($purchase->book->pdf_file)
+                                @if($purchase->book?->pdf_file)
                                     <a href="{{ route('profile.read-book', $purchase) }}" 
                                        class="px-3 py-1.5 text-xs rounded-lg bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 transition flex items-center gap-1">
                                         <i class="fas fa-book-open"></i> {{ __('profile.read') ?? 'Read' }}

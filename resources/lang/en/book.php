@@ -55,6 +55,11 @@ return [
     'close_reader' => 'Close Reader',
     'previous' => 'Previous',
     'next' => 'Next',
+    'leave_review' => 'Leave a Review',
+    'rating' => 'Rating',
+    'write_comment' => 'Write a Comment',
+    'submit_review' => 'Submit Review',
+    'no_reviews' => 'No Reviews Yet',
        
 
 ];

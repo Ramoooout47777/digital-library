@@ -34,9 +34,7 @@ use Illuminate\Support\Facades\Route;
 // ============================================================
 // DASHBOARD ROUTE
 // ============================================================
-Route::get('/dashboard', DashboardController::class)
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
 
 // ============================================================
 // PUBLIC ROUTES
@@ -45,6 +43,7 @@ Route::get('/dashboard', DashboardController::class)
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/switch-language/{locale}', [HomeController::class, 'switchLanguage'])->name('switch-language');
+Route::post('/switch-theme/{theme}', [HomeController::class, 'switchTheme'])->name('switch-theme');
 Route::post('/newsletter/subscribe', [HomeController::class, 'subscribe'])->name('newsletter.subscribe');
 
 // ============================================================
@@ -98,6 +97,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
+    Route::delete('/profile/avatar', [ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
      // Purchased Books Routes
@@ -118,6 +118,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/favorites/{book}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
     Route::post('/favorites/toggle', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::get('/favorites/check/{book}', [FavoriteController::class, 'check'])->name('favorites.check');
+
+    // Reviews
+    Route::post('/books/{book}/reviews', [BookController::class, 'storeReview'])->name('books.reviews.store');
 });
 
 // ============================================================
@@ -134,6 +137,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
     Route::put('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/avatar', [AdminProfileController::class, 'updateAvatar'])->name('profile.avatar');
+    Route::delete('/profile/avatar', [AdminProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
     Route::put('/profile/password', [AdminProfileController::class, 'updatePassword'])->name('profile.password');
 
     // ============ BOOKS MANAGEMENT ============

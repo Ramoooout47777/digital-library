@@ -126,20 +126,22 @@
                         <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP (Max 2MB)</p>
                     </div>
                     @if($user->avatar)
-                        <form action="{{ route('admin.profile.avatar') }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" 
-                                    onclick="return confirm('{{ __('admin.confirm_delete') }}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
+                        <button type="submit" form="admin-avatar-delete-form" class="btn btn-danger btn-sm" 
+                                onclick="return confirm('{{ __('admin.confirm_delete') }}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     @endif
                 </div>
                 @error('avatar')
                     <p class="form-error">{{ $message }}</p>
                 @enderror
             </form>
+            @if($user->avatar)
+                <form id="admin-avatar-delete-form" action="{{ route('admin.profile.avatar.destroy') }}" method="POST" class="hidden">
+                    @csrf
+                    @method('DELETE')
+                </form>
+            @endif
         </div>
 
         <!-- Change Password Form -->

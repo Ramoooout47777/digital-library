@@ -282,11 +282,19 @@
 
                             <!-- Book Info -->
                             <div class="flex-1 min-w-[120px]">
-                                <a href="{{ route('books.show', $item->book) }}" class="block">
-                                    <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 hover:text-cyan-400 transition-colors">
-                                        {{ $item->book_title }}
-                                    </h4>
-                                </a>
+                                @if($item->book)
+                                    <a href="{{ route('books.show', $item->book) }}" class="block">
+                                @else
+                                    <div class="block">
+                                @endif
+                                        <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 hover:text-cyan-400 transition-colors">
+                                            {{ $item->book_title }}
+                                        </h4>
+                                @if($item->book)
+                                    </a>
+                                @else
+                                    </div>
+                                @endif
                                 @if($item->book && $item->book->author)
                                     <p class="text-sm dark:text-slate-500 light:text-slate-500">{{ $item->book->author->name }}</p>
                                 @endif

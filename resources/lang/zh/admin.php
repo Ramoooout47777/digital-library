@@ -20,6 +20,8 @@ return [
     'back_to_list' => '返回列表',
     'view' => '查看',
     'actions' => '操作',
+    'quick_actions' => '快捷操作',
+    'recent_users' => '最近用户',
     'save' => '保存',
     'cancel' => '取消',
     'edit' => '编辑',
@@ -272,6 +274,7 @@ return [
     'confirm_cancel' => '您确定要取消此订单吗？',
     'no_orders' => '无订单',
     'customer_information' => '客户信息',
+    'customer_deleted' => '成功删除客户',
     'payment_information' => '支付信息',
     'completed_at' => '完成时间',
     'date_range' => '日期范围',
@@ -291,6 +294,8 @@ return [
     'total_spent' => '总消费',
     'last_order' => '最近订单',
     'registered_at' => '注册时间',
+    'total_customers' => '客户总数',
+    'new_this_month' => '本月新增',
     
     // ============ COUPON MANAGEMENT ============
     'coupons_menu' => '优惠券',
@@ -466,4 +471,24 @@ return [
     'push_notifications' => '推送通知',
     'order_notifications' => '订单通知',
     'promotion_notifications' => '促销通知',
+
+     // Profile
+    'profile_menu' => '管理员个人资料',
+    'edit_profile' => '编辑个人资料',
+    'update_avatar' => '更新头像',
+    'change_password' => '更改密码',
+    'current_password' => '当前密码',
+    'new_password' => '新密码',
+    'confirm_password' => '确认密码',
+    'update_password' => '更新密码',
+    'update' => '更新',
+    'choose_image' => '选择图片',
+    'confirm_delete' => '您确定要删除吗？',
+    'registered_at' => '注册于',
+    'last_login' => '最后登录',
+    'phone' => '电话',
+    'address' => '地址',
+    'name' => '姓名',
+    'email' => '电子邮件',
 ];
+

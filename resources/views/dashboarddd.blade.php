@@ -85,8 +85,12 @@
                                     <p class="truncate font-semibold text-gray-900">{{ $purchase->book?->title }}</p>
                                     <p class="truncate text-sm text-gray-500">{{ $purchase->book?->author?->name }}</p>
                                     <div class="mt-3 flex gap-2">
-                                        <a href="{{ route('books.show', $purchase->book) }}" class="rounded-md bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-100">Read</a>
-                                        <a href="{{ route('books.download', $purchase->book) }}" class="rounded-md bg-green-50 px-3 py-1.5 text-xs font-semibold text-green-700 hover:bg-green-100">Download</a>
+                                        @if($purchase->book)
+                                            <a href="{{ route('books.show', $purchase->book) }}" class="rounded-md bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-100">Read</a>
+                                            <a href="{{ route('books.download', $purchase->book) }}" class="rounded-md bg-green-50 px-3 py-1.5 text-xs font-semibold text-green-700 hover:bg-green-100">Download</a>
+                                        @else
+                                            <span class="text-xs text-gray-500">Book unavailable</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

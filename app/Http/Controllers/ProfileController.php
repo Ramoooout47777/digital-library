@@ -23,11 +23,11 @@ class ProfileController extends Controller
         // Get user statistics
         $ordersCount = Order::where('user_id', $user->id)->count();
         $totalSpent = Order::where('user_id', $user->id)->where('status', 'completed')->sum('total');
-        $purchasedBooksCount = $user->purchases()->count();
+        $purchasedBooksCount = $user->purchases()->whereHas('book')->count();
         $reviewsCount = $user->reviews()->count();
 
         // Get recent purchased books
-        $purchasedBooks = $user->purchases()->with('book.author')->latest()->limit(5)->get();
+        $purchasedBooks = $user->purchases()->whereHas('book')->with('book.author')->latest()->limit(5)->get();
 
         // Get recent orders
         $recentOrders = Order::where('user_id', $user->id)
@@ -95,6 +95,23 @@ class ProfileController extends Controller
     }
 
     /**
+     * Remove the user's avatar.
+     */
+    public function destroyAvatar(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
+        $user->update(['avatar' => null]);
+
+        return redirect()->route('profile.edit')
+            ->with('success', __('profile.avatar_removed') ?? 'Avatar removed successfully!');
+    }
+
+    /**
      * Update the user's password.
      */
     public function updatePassword(Request $request)
@@ -121,7 +138,12 @@ class ProfileController extends Controller
     }
      public function purchasedBooks()
     {
-        $purchasedBooks = Auth::user()->purchases()->with('book')->latest()->paginate(12);
+        $purchasedBooks = Auth::user()->purchases()
+            ->whereHas('book')
+            ->with('book.author')
+            ->latest()
+            ->paginate(12);
+
         return view('profile.purchased-books', compact('purchasedBooks'));
     }
 

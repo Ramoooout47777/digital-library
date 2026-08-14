@@ -58,10 +58,12 @@
                class="px-4 py-2 text-sm rounded-lg bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 transition flex items-center gap-2">
                 <i class="fas fa-download"></i> {{ __('profile.download') ?? 'Download' }}
             </a>
-            <a href="{{ route('books.show', $purchase->book) }}"
-               class="px-4 py-2 text-sm rounded-lg bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 transition flex items-center gap-2">
-                <i class="fas fa-info-circle"></i> {{ __('profile.book_details') ?? 'Book Details' }}
-            </a>
+            @if($purchase->book)
+                <a href="{{ route('books.show', $purchase->book) }}"
+                   class="px-4 py-2 text-sm rounded-lg bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 transition flex items-center gap-2">
+                    <i class="fas fa-info-circle"></i> {{ __('profile.book_details') ?? 'Book Details' }}
+                </a>
+            @endif
         </div>
     </div>
 

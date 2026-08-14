@@ -56,5 +56,10 @@ return [
     'close_reader' => '关闭阅读器',
     'previous' => '上一页',
     'next' => '下一页',
+    'leave_review' => '留下评价',
+    'rating' => '图书评分',
+    'write_comment' => '撰写评论',
+    'submit_review' => '提交评价',
+    'no_reviews' => '暂无评价',
    
 ];

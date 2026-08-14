@@ -133,4 +133,16 @@ class HomeController extends Controller
         return redirect()->route('home')
             ->with('success', __('home.subscription_success') ?? 'Subscription successful!');
     }
+
+    /**
+     * Switch application theme (dark/light)
+     */
+    public function switchTheme($theme)
+    {
+        if (in_array($theme, ['dark', 'light'])) {
+            session(['theme' => $theme]);
+        }
+
+        return response()->json(['success' => true]);
+    }
 }

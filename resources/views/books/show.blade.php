@@ -690,37 +690,82 @@
                 </div>
             </div>
 
-            <!-- Related Books -->
+            <!-- RELATED BOOKS -->
             @if(isset($relatedBooks) && $relatedBooks->count() > 0)
-                <div class="dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-6 animate-fade-in-up" style="animation-delay: 0.4s;">
-                    <h3 class="font-semibold text-lg dark:text-slate-200 light:text-slate-800 mb-4">
-                        <i class="fas fa-book-open mr-2 text-cyan-400"></i>
-                        {{ __('book.related_books') ?? 'សៀវភៅដែលទាក់ទង' }}
+                <!-- ... related books code ... -->
+            @endif
+
+            <!-- ============================================================ -->
+            <!-- REVIEWS SECTION -->
+            <!-- ============================================================ -->
+            <div id="reviews" class="dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-6 animate-fade-in-up" style="animation-delay: 0.5s;">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-semibold text-lg dark:text-slate-200 light:text-slate-800">
+                        <i class="fas fa-star mr-2 text-amber-400"></i>
+                        {{ __('book.reviews') ?? 'ការវាយតម្លៃ' }} ({{ $book->total_ratings }})
                     </h3>
-                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                        @foreach($relatedBooks as $index => $related)
-                            <a href="{{ route('books.show', $related) }}"
-                               class="group animate-fade-in-up" style="animation-delay: {{ $index * 0.1 }}s;">
-                                <div class="dark:bg-slate-700/50 light:bg-slate-100 rounded-lg overflow-hidden transition-all duration-300 group-hover:shadow-lg group-hover:-translate-y-2">
-                                    @if($related->cover)
-                                        <img src="{{ asset('storage/' . $related->cover) }}"
-                                             alt="{{ $related->title }}"
-                                             class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition duration-500">
-                                    @else
-                                        <div class="w-full aspect-[3/4] dark:bg-slate-600/50 light:bg-slate-200 flex items-center justify-center">
-                                            <i class="fas fa-book dark:text-slate-500 light:text-slate-400 text-3xl animate-float"></i>
-                                        </div>
-                                    @endif
-                                    <div class="p-2">
-                                        <p class="text-xs font-medium dark:text-slate-200 light:text-slate-800 truncate group-hover:text-cyan-400 transition-colors">{{ $related->title }}</p>
-                                        <p class="text-xs dark:text-slate-400 light:text-slate-500 truncate">{{ $related->author->name ?? 'N/A' }}</p>
+                </div>
+
+                @auth
+                    @if($book->is_free || auth()->user()->hasPurchased($book))
+                        <div class="mb-8 p-4 rounded-xl bg-slate-700/10 border border-slate-700/20">
+                            <h4 class="font-medium dark:text-slate-200 light:text-slate-800 mb-3">{{ __('book.leave_review') ?? 'សរសេរការវាយតម្លៃរបស់អ្នក' }}</h4>
+                            <form action="{{ route('books.reviews.store', $book) }}" method="POST">
+                                @csrf
+                                <div class="mb-4">
+                                    <label class="block text-sm dark:text-slate-400 light:text-slate-600 mb-2">{{ __('book.rating') ?? 'ពិន្ទុ' }}</label>
+                                    <div class="flex gap-2">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <label class="cursor-pointer">
+                                                <input type="radio" name="rating" value="{{ $i }}" class="hidden peer" {{ $i == 5 ? 'checked' : '' }}>
+                                                <i class="fas fa-star text-2xl text-slate-400 peer-checked:text-amber-400 hover:text-amber-400 transition-colors"></i>
+                                            </label>
+                                        @endfor
                                     </div>
                                 </div>
-                            </a>
-                        @endforeach
+                                <div class="mb-4">
+                                    <textarea name="comment" rows="3" required
+                                              class="w-full px-4 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800"
+                                              placeholder="{{ __('book.write_comment') ?? 'សរសេរមតិយោបល់...' }}"></textarea>
+                                </div>
+                                <button type="submit" class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-6 rounded-lg transition hover:scale-105">
+                                    {{ __('book.submit_review') ?? 'ផ្ញើការវាយតម្លៃ' }}
+                                </button>
+                            </form>
+                        </div>
+                    @endif
+                @endauth
+
+                <div class="space-y-6">
+                    @forelse($reviews as $review)
+                        <div class="flex gap-4 border-b dark:border-slate-700/50 light:border-slate-200/50 pb-6 last:border-0">
+                            <img src="{{ $review->user->avatar ? asset('storage/' . $review->user->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode($review->user->name) . '&background=3b82f6&color=fff' }}"
+                                 class="w-12 h-12 rounded-full border-2 border-slate-700/50">
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-1">
+                                    <h5 class="font-semibold dark:text-slate-200 light:text-slate-800">{{ $review->user->name }}</h5>
+                                    <span class="text-xs dark:text-slate-500 light:text-slate-500">{{ $review->created_at->diffForHumans() }}</span>
+                                </div>
+                                <div class="flex gap-1 mb-2">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <i class="fas fa-star text-[10px] {{ $i <= $review->rating ? 'text-amber-400' : 'text-slate-600' }}"></i>
+                                    @endfor
+                                </div>
+                                <p class="text-sm dark:text-slate-400 light:text-slate-600 leading-relaxed">{{ $review->comment }}</p>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-8">
+                            <i class="fas fa-comment-dots text-4xl text-slate-700 mb-2"></i>
+                            <p class="dark:text-slate-500 light:text-slate-500">{{ __('book.no_reviews') ?? 'មិនទាន់មានការវាយតម្លៃនៅឡើយទេ' }}</p>
+                        </div>
+                    @endforelse
+
+                    <div class="mt-4">
+                        {{ $reviews->links() }}
                     </div>
                 </div>
-            @endif
+            </div>
         </div>
     </div>
 </div>

@@ -92,7 +92,10 @@ class BookController extends Controller
             ->limit(10)
             ->get();
 
-        return view('books.show', compact('book', 'relatedBooks', 'canRead', 'canBuy'));
+        // Load reviews
+        $reviews = $book->reviews()->with('user')->where('status', true)->latest()->paginate(10);
+
+        return view('books.show', compact('book', 'relatedBooks', 'canRead', 'canBuy', 'reviews'));
     }
 
     /**
@@ -173,5 +176,34 @@ class BookController extends Controller
         return response()->file($path, [
             'Content-Type' => 'application/pdf',
         ]);
+    }
+
+    /**
+     * Store a book review.
+     */
+    public function storeReview(Request $request, Book $book)
+    {
+        $request->validate([
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'comment' => ['required', 'string', 'max:1000'],
+        ]);
+
+        if (!auth()->user()->hasPurchased($book) && !$book->is_free) {
+            return redirect()->back()->with('error', 'You must purchase this book to leave a review.');
+        }
+
+        $book->reviews()->updateOrCreate(
+            ['user_id' => auth()->id()],
+            [
+                'rating' => $request->rating,
+                'comment' => $request->comment,
+                'status' => true // Auto approve for now
+            ]
+        );
+
+        // Update book average rating
+        $book->updateRating();
+
+        return redirect()->back()->with('success', 'Thank you for your review!');
     }
 }

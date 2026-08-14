@@ -51,10 +51,16 @@ return [
     'book_locked' => 'សៀវភៅត្រូវបានចាក់សោរ',
     'purchase_to_read_full' => 'សូមទិញសៀវភៅនេះដើម្បីអានមាតិកាពេញលេញ',
     'pdf_format' => 'ទម្រង់ PDF',
-    'instant_download' => 'ទាញយកភ្លាមៗ','reading' => 'កំពុងអាន',
+    'instant_download' => 'ទាញយកភ្លាមៗ',
+    'reading' => 'កំពុងអាន',
     'close' => 'បិទ',
     'close_reader' => 'បិទអ្នកអាន',
     'previous' => 'មុន',
     'next' => 'បន្ទាប់',
+    'leave_review' => 'ទុកការវាយតម្លៃ',
+    'rating' => 'ពិន្ទុ',
+    'write_comment' => 'សរសេរមតិយោបល់',
+    'submit_review' => 'បញ្ជូនការវាយតម្លៃ',
+    'no_reviews' => 'មិនទាន់មានការវាយតម្លៃ',
     
 ];

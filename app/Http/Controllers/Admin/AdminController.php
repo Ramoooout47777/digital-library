@@ -29,6 +29,7 @@ class AdminController extends Controller
             'total_users' => User::count(),
             'total_orders' => Order::count(),
             'total_revenue' => Order::where('status', 'completed')->sum('total'),
+            'revenue_2026' => Order::where('status', 'completed')->whereYear('created_at', 2026)->sum('total'),
             'pending_orders' => Order::where('status', 'pending')->count(),
             'total_categories' => Category::count(),
             'total_authors' => Author::count(),
@@ -42,23 +43,28 @@ class AdminController extends Controller
                 $query->whereNull('deleted_at');
             }])
             ->get()
-            ->filter(function($category) {
-                return $category->books_count > 0;
-            })
-            ->sortByDesc('books_count')
-            ->take(10)
             ->map(function($category) {
-                $revenue = Book::where('category_id', $category->id)
-                    ->whereNull('deleted_at')
-                    ->sum('final_price');
-                
+                // More accurate revenue calculation based on actual sales
+                $revenue = DB::table('order_items')
+                    ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                    ->join('books', 'order_items.book_id', '=', 'books.id')
+                    ->where('books.category_id', $category->id)
+                    ->where('orders.status', 'completed')
+                    ->sum('order_items.total');
+
                 return [
                     'id' => $category->id,
                     'name' => $category->name,
                     'books_count' => $category->books_count,
                     'revenue' => $revenue,
                 ];
-            });
+            })
+            ->filter(function($category) {
+                return $category['books_count'] > 0 || $category['revenue'] > 0;
+            })
+            ->sortByDesc('revenue')
+            ->take(10)
+            ->values();
 
         // ============ RECENT ORDERS ============
         $recentOrders = Order::with(['user', 'items'])
@@ -105,7 +111,7 @@ class AdminController extends Controller
     public function chartData(Request $request)
     {
         $period = $request->get('period', 'monthly');
-        
+
         if ($period === 'weekly') {
             $data = Order::where('status', 'completed')
                 ->whereDate('created_at', '>=', now()->subDays(7))
@@ -145,7 +151,7 @@ class AdminController extends Controller
             App::setLocale($locale);
             session(['locale' => $locale]);
         }
-        
+
         return redirect()->back();
     }
 }

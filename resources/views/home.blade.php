@@ -1262,6 +1262,7 @@
         const html = document.documentElement;
         const body = document.getElementById('app');
         const icon = document.getElementById('theme-icon');
+        let theme = 'dark';
 
         if (html.classList.contains('dark')) {
             html.classList.remove('dark');
@@ -1269,15 +1270,26 @@
             body.classList.add('light');
             icon.classList.remove('fa-moon');
             icon.classList.add('fa-sun');
-            localStorage.setItem('theme', 'light');
+            theme = 'light';
         } else {
             html.classList.add('dark');
             body.classList.remove('light');
             body.classList.add('dark');
             icon.classList.remove('fa-sun');
             icon.classList.add('fa-moon');
-            localStorage.setItem('theme', 'dark');
+            theme = 'dark';
         }
+
+        localStorage.setItem('theme', theme);
+
+        // Sync with backend
+        fetch(`/switch-theme/${theme}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            }
+        });
     }
 
     // ─── Load Theme from LocalStorage ───

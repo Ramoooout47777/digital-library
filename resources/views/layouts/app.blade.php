@@ -6,22 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', config('app.name'))</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Khmer+OS&display=swap" rel="stylesheet">
-    
+
     <style>
         * {
             font-family: 'Inter', 'Khmer OS', system-ui, sans-serif;
         }
-        
+
         /* ─── Dark Mode ─── */
         .dark .cyber-bg {
             background: #0b1120;
@@ -197,7 +197,7 @@
             border-color: rgba(56, 189, 248, 0.2);
             color: #38bdf8;
         }
-        
+
         /* ─── Light Mode ─── */
         .light .cyber-bg {
             background: #f8fafc;
@@ -372,7 +372,7 @@
             border-color: rgba(14, 165, 233, 0.2);
             color: #0ea5e9;
         }
-        
+
         /* ─── Common Styles ─── */
         .neu-card, .neu-card-inset, .neu-book, .mobile-menu {
             border-radius: 20px;
@@ -380,7 +380,7 @@
         .neu-book {
             border-radius: 16px;
         }
-        
+
         /* ─── Keyframe Animations ─── */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
@@ -410,7 +410,7 @@
         .animate-scale-in { animation: scaleIn 0.5s ease-out forwards; }
         .animate-float { animation: float 4s ease-in-out infinite; }
         .animate-pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
-        
+
         .gradient-text-animated {
             background: linear-gradient(135deg, #38bdf8 0%, #818cf8 35%, #a78bfa 65%, #38bdf8 100%);
             background-size: 300% 300%;
@@ -419,10 +419,10 @@
             background-clip: text;
             animation: shimmer 8s ease-in-out infinite;
         }
-        
+
         .section-padding { padding: 5rem 0; }
         @media (max-width: 768px) { .section-padding { padding: 3rem 0; } }
-        
+
         .theme-transition,
         .theme-transition * {
             transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
@@ -432,7 +432,7 @@
                         transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
-    
+
     @stack('styles')
 </head>
 <body class="{{ session('theme', 'dark') }} theme-transition" id="app">
@@ -449,14 +449,14 @@
             </div>
             <span class="text-lg font-bold tracking-tight dark:text-slate-100 light:text-slate-800">{{ __('home.hero_badge') }}</span>
         </a>
-        
+
         <!-- Right Side -->
         <div class="flex items-center gap-3">
             <!-- Theme Toggle -->
             <button onclick="toggleTheme()" class="neu-button w-10 h-10 rounded-xl flex items-center justify-center text-sm p-0">
                 <i id="theme-icon" class="fas fa-moon text-lg"></i>
             </button>
-            
+
             <button id="mobile-toggle" class="lg:hidden dark:text-slate-400 light:text-slate-600 hover:dark:text-slate-200 hover:light:text-slate-900 transition p-2">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
@@ -474,19 +474,19 @@
                 <p class="text-emerald-400">{{ session('success') }}</p>
             </div>
         @endif
-        
+
         @if(session('error'))
             <div class="neu-card p-4 mb-4 border-l-4 border-red-500">
                 <p class="text-red-400">{{ session('error') }}</p>
             </div>
         @endif
-        
+
         @if(session('info'))
             <div class="neu-card p-4 mb-4 border-l-4 border-blue-500">
                 <p class="text-blue-400">{{ session('info') }}</p>
             </div>
         @endif
-        
+
         @yield('content')
     </div>
 </main>
@@ -500,31 +500,43 @@
         const html = document.documentElement;
         const body = document.getElementById('app');
         const icon = document.getElementById('theme-icon');
-        
+        let theme = 'dark';
+
         if (html.classList.contains('dark')) {
             html.classList.remove('dark');
             body.classList.remove('dark');
             body.classList.add('light');
             icon.classList.remove('fa-moon');
             icon.classList.add('fa-sun');
-            localStorage.setItem('theme', 'light');
+            theme = 'light';
         } else {
             html.classList.add('dark');
             body.classList.remove('light');
             body.classList.add('dark');
             icon.classList.remove('fa-sun');
             icon.classList.add('fa-moon');
-            localStorage.setItem('theme', 'dark');
+            theme = 'dark';
         }
+
+        localStorage.setItem('theme', theme);
+
+        // Sync with backend
+        fetch(`/switch-theme/${theme}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Content-Type': 'application/json',
+            }
+        });
     }
-    
+
     // ─── Load Theme from LocalStorage ───
     document.addEventListener('DOMContentLoaded', function() {
         const savedTheme = localStorage.getItem('theme') || 'dark';
         const html = document.documentElement;
         const body = document.getElementById('app');
         const icon = document.getElementById('theme-icon');
-        
+
         if (savedTheme === 'light') {
             html.classList.remove('dark');
             body.classList.remove('dark');
@@ -539,7 +551,7 @@
             icon.classList.add('fa-moon');
         }
     });
-    
+
     // ─── Mobile Menu ───
     document.getElementById('mobile-toggle')?.addEventListener('click', function() {
         const menu = document.getElementById('mobile-menu');

@@ -225,7 +225,7 @@
                         @foreach($purchasedBooks->take(3) as $purchase)
                             <div class="flex items-center gap-3 p-2 rounded-xl dark:bg-slate-800/30 light:bg-slate-100/50">
                                 <div class="w-12 h-16 flex-shrink-0 rounded-lg overflow-hidden">
-                                    @if($purchase->book->cover)
+                                    @if($purchase->book && $purchase->book->cover)
                                         <img src="{{ asset('storage/' . $purchase->book->cover) }}" 
                                              alt="{{ $purchase->book->title }}" 
                                              class="w-full h-full object-cover">
@@ -236,11 +236,11 @@
                                     @endif
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-medium dark:text-slate-200 light:text-slate-800 truncate">{{ $purchase->book->title }}</p>
-                                    <p class="text-xs dark:text-slate-500 light:text-slate-500">{{ $purchase->book->author->name ?? 'N/A' }}</p>
+                                    <p class="text-sm font-medium dark:text-slate-200 light:text-slate-800 truncate">{{ $purchase->book?->title ?? __('profile.book_unavailable') ?? 'Book unavailable' }}</p>
+                                    <p class="text-xs dark:text-slate-500 light:text-slate-500">{{ $purchase->book?->author?->name ?? 'N/A' }}</p>
                                 </div>
                                 <div class="flex gap-1">
-                                    @if($purchase->book->pdf_file)
+                                    @if($purchase->book?->pdf_file)
                                         <a href="{{ route('profile.read-book', $purchase) }}" 
                                            class="text-cyan-400 hover:text-cyan-300 transition p-1.5 rounded-lg hover:bg-cyan-500/10"
                                            title="Read">

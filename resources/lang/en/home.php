@@ -25,6 +25,7 @@ return [
     // ============ BUTTONS ============
     'explore_books' => 'Explore Books',
     'view_categories' => 'View Categories',
+    'authors' => 'Authors',
     'view_all' => 'View All',
     'subscribe' => 'Subscribe',
     'enter_email' => 'Enter your email',

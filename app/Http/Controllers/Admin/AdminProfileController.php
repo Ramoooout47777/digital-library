@@ -71,6 +71,23 @@ class AdminProfileController extends Controller
     }
 
     /**
+     * Remove avatar
+     */
+    public function destroyAvatar(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+            Storage::disk('public')->delete($user->avatar);
+        }
+
+        $user->update(['avatar' => null]);
+
+        return redirect()->route('admin.profile')
+            ->with('success', __('admin.avatar_removed') ?? 'Avatar removed successfully');
+    }
+
+    /**
      * Update password
      */
     public function updatePassword(Request $request)

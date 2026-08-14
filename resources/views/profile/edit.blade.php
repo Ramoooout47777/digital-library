@@ -262,17 +262,19 @@
                                 <i class="fas fa-upload mr-2"></i> {{ __('profile.choose_image') ?? 'Choose Image' }}
                             </button>
                             @if(auth()->user()->avatar)
-                                <form action="{{ route('profile.avatar') }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="neu-button px-4 py-2 text-sm rounded-xl text-red-400 hover:text-red-300"
-                                            onclick="return confirm('{{ __('profile.confirm_remove_avatar') ?? 'Remove avatar?' }}')">
-                                        <i class="fas fa-trash mr-2"></i> {{ __('profile.remove') ?? 'Remove' }}
-                                    </button>
-                                </form>
+                                <button type="submit" form="avatar-delete-form" class="neu-button px-4 py-2 text-sm rounded-xl text-red-400 hover:text-red-300"
+                                        onclick="return confirm('{{ __('profile.confirm_remove_avatar') ?? 'Remove avatar?' }}')">
+                                    <i class="fas fa-trash mr-2"></i> {{ __('profile.remove') ?? 'Remove' }}
+                                </button>
                             @endif
                         </div>
                     </form>
+                    @if(auth()->user()->avatar)
+                        <form id="avatar-delete-form" action="{{ route('profile.avatar.destroy') }}" method="POST" class="hidden">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    @endif
                     @error('avatar')
                         <p class="form-error">{{ $message }}</p>
                     @enderror
