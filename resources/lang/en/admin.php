@@ -156,6 +156,9 @@ return [
     'auto_generated' => 'Auto-generated',
     'leave_empty_for_auto' => 'Leave empty for auto-generation',
     'uncheck_to_deactivate' => 'Uncheck to deactivate',
+    'type_created' => 'Type Created Successfully',
+    'type_updated' => 'Type Updated Successfully',
+    'type_deleted' => 'Type Deleted Successfully',
     
     // ============ AUTHOR MANAGEMENT ============
     'author_management' => 'Author Management',
@@ -180,6 +183,9 @@ return [
     'cannot_delete_author_has_books' => 'Cannot delete this author because they have books',
     'view_books' => 'View Books',
     'bio' => 'Biography',
+    'author_deleted' => 'Author Deleted Successfully',
+    'author_created' => 'Author Created Successfully',
+    'author_updated' => 'Author Updated Successfully',
     
     // ============ PUBLISHER MANAGEMENT ============
     'publisher_management' => 'Publisher Management',
@@ -213,6 +219,11 @@ return [
     'confirm_delete_publisher' => 'Are you sure you want to delete this publisher?',
     'publisher_statistics' => 'Publisher Statistics',
     'search_publishers' => 'Search publishers...',
+    'change_logo' => 'Change Logo',
+    'website' => 'Website',
+    'books_by_publisher' => 'Books by Publisher',
+    'publishers_deleted' => 'Publisher Deleted Successfully',
+    'publishers_created' => 'Publisher Created Successfully',
     
     // ============ BOOK MANAGEMENT ============
     'books_menu' => 'Books',
@@ -261,6 +272,8 @@ return [
     'payment_qr_code' => 'Payment QR code',
     'subtotal' => 'Subtotal',
     'coupon' => 'Coupon',
+    'order' => 'Slide Number',
+    'order' => 'Order',
     'shipping_address' => 'Shipping Address',
     'view_order' => 'View Order',
     'order_status' => 'Order Status',
@@ -344,7 +357,7 @@ return [
     'delete_banner' => 'Delete Banner',
     'banner_activated' => 'Banner activated',
     'banner_deactivated' => 'Banner deactivated',
-   
+    'select_all' => 'Select All',
     'banners_menu' => 'Banners',
     'add_new_banner' => 'Add New Banner',
     'edit_banner' => 'Edit Banner',
@@ -493,4 +506,6 @@ return [
     'address' => 'Address',
     'name' => 'Name',
     'email' => 'Email',
+    'avatar_updated' => 'Avatar Updated Successfully',
+    
 ];

@@ -13,7 +13,7 @@ return [
     'register' => '注册',
     'logout' => '退出',
     'dashboard' => '仪表盘',
-    
+    'website' => '网站',
     // ============ HERO ============
     'hero_badge' => '数字图书馆',
     'hero_title' => '发现. 阅读.',
@@ -136,11 +136,12 @@ return [
     'download' => '下载',
     'pdf_not_available' => 'PDF不可用',
     'all_categories' => '全部分类',
-'all_authors' => '全部作者',
-'min' => '最低',
-'max' => '最高',
-'title_asc' => '标题 A-Z',
-'no_books_found' => '未找到图书',
-'try_different_search' => '请尝试其他搜索',
-'reset_filters' => '重置筛选',
+    'all_authors' => '全部作者',
+    'min' => '最低',
+    'max' => '最高',
+    'title_asc' => '标题 A-Z',
+    'no_books_found' => '未找到图书',
+    'try_different_search' => '请尝试其他搜索',
+    'reset_filters' => '重置筛选',
+    'learn_more' => '了解更多',
 ];

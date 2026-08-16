@@ -155,6 +155,9 @@ return [
     'auto_generated' => '自动生成',
     'leave_empty_for_auto' => '留空以自动生成',
     'uncheck_to_deactivate' => '取消勾选以停用',
+    'type_created' => '成功创建类型',
+    'type_updated' => '成功更新类型',
+    'type_deleted' => '成功删除类型',
     
     // ============ AUTHOR MANAGEMENT ============
     'author_management' => '作者管理',
@@ -179,6 +182,9 @@ return [
     'cannot_delete_author_has_books' => '无法删除该作者，因为他有图书',
     'view_books' => '查看图书',
     'bio' => '简介',
+    'author_deleted' => '成功删除作者',
+    'author_created' => '成功创建作者',
+    'author_updated' => '成功更新作者',
     
     // ============ PUBLISHER MANAGEMENT ============
     'publisher_management' => '出版商管理',
@@ -212,6 +218,11 @@ return [
     'confirm_delete_publisher' => '您确定要删除此出版社吗？',
     'publisher_statistics' => '出版社统计',
     'search_publishers' => '搜索出版社...',
+    'change_logo' => '更改图标',
+    'website' => '网站',
+    'books_by_publisher' => '按出版商分类的图书',
+    'publishers_deleted' => '成功删除出版商',
+    'publishers_created' => '成功创建出版商',
     
     // ============ BOOK MANAGEMENT ============
     'books_menu' => '图书',
@@ -260,6 +271,7 @@ return [
     'payment_qr_code' => '支付二维码', 
     'subtotal' => '小计',
     'coupon' => '优惠券',
+    'order' => '幻灯片编号',
     'shipping_address' => '收货地址',
     'view_order' => '查看订单',
     'order_status' => '订单状态',
@@ -367,6 +379,7 @@ return [
     'view_link' => '查看链接',
     'deactivate' => '停用',
     'activate' => '激活',
+    'select_all' => '全选',
     
     // ============ NOTIFICATION MANAGEMENT ============
     'notifications_menu' => '通知',
@@ -490,5 +503,6 @@ return [
     'address' => '地址',
     'name' => '姓名',
     'email' => '电子邮件',
+    'avatar_updated' => '成功更新头像',
 ];
 

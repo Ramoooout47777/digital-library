@@ -13,6 +13,7 @@ return [
     'register' => 'Register',
     'logout' => 'Logout',
     'dashboard' => 'Dashboard',
+    'website' => 'Website',
     
     // ============ HERO ============
     'hero_badge' => 'Digital Library',
@@ -145,5 +146,6 @@ return [
     'no_books_found' => 'No books found',
     'try_different_search' => 'Please try a different search',
     'reset_filters' => 'Reset Filters',
+    'learn_more' => 'Learn More',
 
 ];

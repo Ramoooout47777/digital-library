@@ -355,7 +355,7 @@
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-400 to-indigo-400 flex items-center justify-center shadow-xl shadow-cyan-500/10 group-hover:scale-105 transition">
                 <i class="fas fa-book-open text-slate-900 text-sm"></i>
             </div>
-            <span class="text-lg font-bold tracking-tight dark:text-slate-100 light:text-slate-800">{{ config('app.name') }}</span>
+            <span class="text-lg font-bold tracking-tight dark:text-slate-100 light:text-slate-800">{{ __('home.hero_badge') }}</span>
         </a>
         
         <!-- Right Side -->

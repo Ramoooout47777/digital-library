@@ -155,6 +155,9 @@ return [
     'auto_generated' => 'បង្កើតដោយស្វ័យប្រវត្តិ',
     'leave_empty_for_auto' => 'ទុកចោលដើម្បីបង្កើតដោយស្វ័យប្រវត្តិ',
     'uncheck_to_deactivate' => 'ដោះធីកដើម្បីបិទ',
+    'type_created' => 'បង្កើតប្រភេទបានជោគជ័យ',
+    'type_updated' => 'ធ្វើបច្ចុប្បន្នភាពប្រភេទបានជោគជ័យ',
+    'type_deleted' => 'លុបប្រភេទបានជោគជ័យ',
     
     // ============ AUTHOR MANAGEMENT ============
     'author_management' => 'ការគ្រប់គ្រងអ្នកនិពន្ធ',
@@ -179,6 +182,9 @@ return [
     'cannot_delete_author_has_books' => 'មិនអាចលុបអ្នកនិពន្ធនេះបានទេ ព្រោះមានសៀវភៅរបស់គាត់',
     'view_books' => 'មើលសៀវភៅ',
     'bio' => 'ជីវប្រវត្តិ',
+    'author_deleted' => 'លុបអ្នកនិពន្ធបានជោគជ័យ',
+    'author_created' => 'បង្កើតអ្នកនិពន្ធបានជោគជ័យ',
+    'author_updated' => 'ធ្វើបច្ចុប្បន្នភាពអ្នកនិពន្ធបានជោគជ័យ',
     
     // ============ PUBLISHER MANAGEMENT ============
     'publisher_management' => 'ការគ្រប់គ្រងគ្រឹះស្ថានបោះពុម្ព',
@@ -212,6 +218,11 @@ return [
     'confirm_delete_publisher' => 'តើអ្នកប្រាកដថាចង់លុបគ្រឹះស្ថានបោះពុម្ពនេះទេ?',
     'publisher_statistics' => 'ស្ថិតិគ្រឹះស្ថានបោះពុម្ព',
     'search_publishers' => 'ស្វែងរកគ្រឹះស្ថានបោះពុម្ព...',
+    'change_logo' => 'ផ្លាស់ប្តូរឡូហ្គោ',
+    'website' => 'គេហទំព័រ',
+    'books_by_publisher' => 'សៀវភៅតាមរោងពុម្ព',
+    'publishers_deleted' => 'លុបរោងពុម្ពបានជោគជ័យ',
+    'publishers_created' => 'បង្កើតរោងពុម្ពបានជោគជ័យ',
     
     // ============ BOOK MANAGEMENT ============
     'books_menu' => 'សៀវភៅ',
@@ -260,6 +271,7 @@ return [
     'payment_status' => 'ស្ថានភាពការទូទាត់',
     'subtotal' => 'សរុបរង',
     'coupon' => 'ប័ណ្ណបញ្ចុះតម្លៃ',
+    'order' => 'លេខស្លាយ',
     'shipping_address' => 'អាសយដ្ឋានដឹកជញ្ជូន',
     'view_order' => 'មើលការកម្មង់',
     'order_status' => 'ស្ថានភាពការកម្មង់',
@@ -367,6 +379,7 @@ return [
     'view_link' => 'មើលតំណ',
     'deactivate' => 'បិទ',
     'activate' => 'បើក',
+    'select_all' => 'ជ្រើសរើសទាំងអស់',
 
     // ============ NOTIFICATION MANAGEMENT ============
     'notifications_menu' => 'ការជូនដំណឹង',
@@ -494,4 +507,5 @@ return [
     'address' => 'អាស័យដ្ឋាន',
     'name' => 'ឈ្មោះ',
     'email' => 'អ៊ីមែល',
+    'avatar_updated' => 'ធ្វើបច្ចុប្បន្នភាពរូបភាពប្រវត្តិរូបបានជោគជ័យ',
 ];

@@ -16,6 +16,7 @@ return [
     'my_profile' => 'ប្រវត្តិរូបរបស់ខ្ញុំ',
     'my_orders' => 'ការកម្មង់របស់ខ្ញុំ',
     'favorites' => 'ចំណូលចិត្ត',
+    'website' => 'គេហទំព័រ',
     
     // HERO
     'hero_badge' => 'បណ្ណាល័យឌីជីថល',
@@ -151,6 +152,6 @@ return [
     'no_books_found' => 'មិនមានសៀវភៅ',
     'try_different_search' => 'សូមសាកល្បងស្វែងរកផ្សេងទៀត',
     'reset_filters' => 'កំណត់ឡើងវិញ',
-   
+    'learn_more' => 'ស្វែងយល់ថ្មីៗបន្ថែម',
 
 ];

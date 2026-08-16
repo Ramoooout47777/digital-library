@@ -75,7 +75,7 @@
                         <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer">
                     </th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.logo') }}</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.publisher_logo') }}</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.publisher_name') }}</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.publisher_address') }}</th>
                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{{ __('admin.publisher_phone') }}</th>
