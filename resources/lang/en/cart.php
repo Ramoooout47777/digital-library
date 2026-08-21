@@ -28,6 +28,7 @@ return [
     'coupon_applied' => 'Coupon applied!',
     'code' => 'Code',
     'discount' => 'Discount',
+    
 
 
 ];

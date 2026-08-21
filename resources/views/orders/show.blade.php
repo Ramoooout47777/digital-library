@@ -194,6 +194,10 @@
             </p>
         </div>
         <div class="flex gap-2">
+            <a href="{{ route('orders.invoice', $order) }}" class="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 flex items-center gap-2">
+                <i class="fas fa-file-invoice"></i>
+                {{ __('orders.download_invoice') ?? 'Invoice' }}
+            </a>
             <a href="{{ route('orders.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 flex items-center gap-2">
                 <i class="fas fa-arrow-left"></i>
                 {{ __('orders.back_to_orders') ?? 'Back to Orders' }}

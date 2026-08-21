@@ -55,4 +55,11 @@ return [
     'quick_actions' => 'Quick Actions',
     'view_all_orders' => 'View All Orders',
     'free' => 'Free',
+    'read_now' => 'Read Now',
+    'download' => 'Download',
+    'total' => 'Total',
+    'subtotal' => 'Subtotal',
+    'shipping' => 'Shipping',   
+    'download_invoice'   => 'Download Invoice',
+
 ];

@@ -22,6 +22,70 @@
             font-family: 'Inter', 'Khmer OS', system-ui, sans-serif;
         }
 
+        /* ─── Scrollbar ─── */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        .dark ::-webkit-scrollbar-track { background: #0f172a; }
+        .dark ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        .dark ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        .light ::-webkit-scrollbar-track { background: #f1f5f9; }
+        .light ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .light ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* ─── Language Select Custom Styles ─── */
+        .lang-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding-right: 2.5rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            height: 40px;
+            min-width: 140px;
+        }
+        .lang-select:focus {
+            outline: none;
+            ring: 2px;
+            ring-offset: 2px;
+        }
+        .lang-select-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .lang-select-wrapper .lang-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 1rem;
+        }
+        .lang-select-wrapper .lang-arrow {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            transition: transform 0.3s ease;
+        }
+        .lang-select-wrapper:hover .lang-arrow {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        @keyframes slide-down {
+            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .profile-dropdown {
+            min-width: 220px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform-origin: top right;
+            animation: slide-down 0.2s ease-out;
+        }
+
         /* ─── Dark Mode ─── */
         .dark .cyber-bg {
             background: #0b1120;
@@ -440,27 +504,159 @@
 <!-- ============================================================ -->
 <!-- NAVIGATION -->
 <!-- ============================================================ -->
-<nav class="neu-nav fixed top-0 left-0 right-0 z-50 py-3 px-4">
+<nav class="neu-nav fixed top-0 left-0 right-0 z-50 py-4 px-4">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
         <!-- Logo -->
-        <a href="{{ route('home') }}" class="flex items-center gap-3 group">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-400 to-indigo-400 flex items-center justify-center shadow-xl shadow-cyan-500/10 group-hover:scale-105 transition">
-                <i class="fas fa-book-open text-slate-900 text-sm"></i>
+        <a href="{{ route('home') }}" class="flex items-center gap-3 group flex-shrink-0">
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-indigo-400 flex items-center justify-center shadow-xl shadow-cyan-500/10 group-hover:scale-105 transition">
+                <i class="fas fa-book-open text-slate-900 text-lg"></i>
             </div>
-            <span class="text-lg font-bold tracking-tight dark:text-slate-100 light:text-slate-800">{{ __('home.hero_badge') }}</span>
+            <span class="text-xl font-bold tracking-tight dark:text-slate-100 light:text-slate-800">{{ __('home.hero_badge') ?? 'Digital Library' }}</span>
         </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden lg:flex items-center gap-8">
+            <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">{{ __('home.home') ?? 'Home' }}</a>
+            <a href="{{ route('books.index') }}" class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}">{{ __('home.books') ?? 'Books' }}</a>
+            <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories.*') ? 'active' : '' }}">{{ __('home.categories') ?? 'Categories' }}</a>
+            <a href="{{ route('home') }}#about" class="nav-link">{{ __('home.about') ?? 'About' }}</a>
+        </div>
 
         <!-- Right Side -->
         <div class="flex items-center gap-3">
+            @auth
+                <a href="{{ route('admin.dashboard') }}" class="admin-link hidden sm:flex">
+                    <i class="fas fa-tachometer-alt text-xs"></i>
+                    <span class="hidden md:inline ml-2">{{ __('home.dashboard') ?? 'Dashboard' }}</span>
+                </a>
+            @endauth
+
             <!-- Theme Toggle -->
-            <button onclick="toggleTheme()" class="neu-button w-10 h-10 rounded-xl flex items-center justify-center text-sm p-0">
+            <button onclick="toggleTheme()" class="neu-button w-11 h-11 rounded-xl flex items-center justify-center text-sm p-0 flex-shrink-0">
                 <i id="theme-icon" class="fas fa-moon text-lg"></i>
             </button>
+
+            <!-- Language Select -->
+            <div class="hidden lg:flex items-center gap-1">
+                @php $currentLocale = app()->getLocale(); @endphp
+                <div class="lang-select-wrapper">
+                    <span class="lang-icon"></span>
+                    <select onchange="window.location.href = this.value;"
+                            class="lang-select dark:lang-select light:lang-select pl-8 pr-8 py-1.5">
+                        <option value="{{ route('switch-language', 'km') }}" {{ $currentLocale == 'km' ? 'selected' : '' }}>🇰🇭 ខ្មែរ</option>
+                        <option value="{{ route('switch-language', 'en') }}" {{ $currentLocale == 'en' ? 'selected' : '' }}>🇬🇧 English</option>
+                        <option value="{{ route('switch-language', 'zh') }}" {{ $currentLocale == 'zh' ? 'selected' : '' }}>🇨🇳 中文</option>
+                    </select>
+                    <span class="lang-arrow text-gray-400 dark:text-gray-500">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            @guest
+                <a href="{{ route('login') }}" class="text-sm font-medium dark:text-slate-400 light:text-slate-600 hover:dark:text-slate-200 hover:light:text-slate-900 transition px-3 py-1.5 hidden sm:block">
+                    {{ __('home.login') ?? 'Login' }}
+                </a>
+                <a href="{{ route('register') }}" class="neu-button-primary px-5 py-2.5 text-sm font-semibold rounded-xl hidden sm:block">
+                    <i class="fas fa-user-plus text-xs mr-1"></i> {{ __('home.register') ?? 'Register' }}
+                </a>
+            @else
+                <!-- Profile Dropdown -->
+                <div class="relative">
+                    <button onclick="toggleProfileDropdown()"
+                            class="flex items-center gap-2 hover:opacity-80 transition px-2 py-1 rounded-xl hover:bg-slate-700/10">
+                        <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3b82f6&color=fff&size=36' }}"
+                             alt="{{ auth()->user()->name }}"
+                             class="w-8 h-8 rounded-full border-2 border-cyan-500/30">
+                        <span class="text-sm font-medium dark:text-slate-200 light:text-slate-800 hidden xl:block">{{ auth()->user()->name }}</span>
+                        <i class="fas fa-chevron-down text-xs dark:text-slate-400 light:text-slate-500 hidden xl:block ml-1"></i>
+                    </button>
+
+                    <div id="profileDropdown" class="profile-dropdown hidden absolute right-0 mt-2 neu-card p-2 z-50">
+                        <div class="px-3 py-3 border-b dark:border-slate-800/40 light:border-slate-200/60">
+                            <p class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm">{{ auth()->user()->name }}</p>
+                            <p class="text-xs dark:text-slate-500 light:text-slate-500">{{ auth()->user()->email }}</p>
+                        </div>
+                        <a href="{{ route('profile.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/10 transition text-sm">
+                            <i class="fas fa-user text-cyan-400 w-5"></i> {{ __('home.my_profile') ?? 'Profile' }}
+                        </a>
+                        <a href="{{ route('orders.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/10 transition text-sm">
+                            <i class="fas fa-shopping-bag text-cyan-400 w-5"></i> {{ __('home.my_orders') ?? 'Orders' }}
+                        </a>
+                        <a href="{{ route('favorites.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-700/10 transition text-sm">
+                            <i class="fas fa-heart text-red-400 w-5"></i> {{ __('home.favorites') ?? 'Favorites' }}
+                        </a>
+                        <div class="border-t dark:border-slate-800/40 light:border-slate-200/60 mt-2 pt-2">
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-red-500/10 transition text-sm text-red-400">
+                                    <i class="fas fa-sign-out-alt w-5"></i> {{ __('home.logout') ?? 'Logout' }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            @endguest
 
             <button id="mobile-toggle" class="lg:hidden dark:text-slate-400 light:text-slate-600 hover:dark:text-slate-200 hover:light:text-slate-900 transition p-2">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
         </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MOBILE MENU -->
+    <!-- ============================================================ -->
+    <div id="mobile-menu" class="hidden lg:hidden mt-4 mobile-menu p-6 space-y-4">
+        <a href="{{ route('home') }}" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.home') ?? 'Home' }}</a>
+        <a href="{{ route('books.index') }}" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.books') ?? 'Books' }}</a>
+        <a href="{{ route('categories.index') }}" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.categories') ?? 'Categories' }}</a>
+        <a href="{{ route('home') }}#about" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.about') ?? 'About' }}</a>
+
+        <!-- MOBILE: Language Select -->
+        <div class="pt-4 border-t dark:border-slate-800/40 light:border-slate-200/60">
+            <div class="lang-select-wrapper w-full">
+                <span class="lang-icon">🌐</span>
+                <select onchange="window.location.href = this.value;"
+                        class="lang-select w-full dark:lang-select light:lang-select pl-8 pr-8 py-2.5 text-base">
+                    <option value="{{ route('switch-language', 'km') }}" {{ $currentLocale == 'km' ? 'selected' : '' }}>🇰🇭 ខ្មែរ</option>
+                    <option value="{{ route('switch-language', 'en') }}" {{ $currentLocale == 'en' ? 'selected' : '' }}>🇺🇸 English</option>
+                    <option value="{{ route('switch-language', 'zh') }}" {{ $currentLocale == 'zh' ? 'selected' : '' }}>🇨🇳 中文</option>
+                </select>
+                <span class="lang-arrow text-gray-400 dark:text-gray-500">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </span>
+            </div>
+        </div>
+
+        @guest
+            <div class="flex gap-3 pt-2 border-t dark:border-slate-800/40 light:border-slate-200/60">
+                <a href="{{ route('login') }}" class="flex-1 text-center neu-button text-sm py-3">{{ __('home.login') ?? 'Login' }}</a>
+                <a href="{{ route('register') }}" class="flex-1 text-center neu-button-primary text-sm py-3">{{ __('home.register') ?? 'Register' }}</a>
+            </div>
+        @else
+            <div class="pt-2 border-t dark:border-slate-800/40 light:border-slate-200/60 space-y-3">
+                <a href="{{ route('profile.index') }}" class="block text-center neu-button-primary text-sm py-3">
+                    <i class="fas fa-user mr-2"></i> {{ __('home.my_profile') ?? 'Profile' }}
+                </a>
+                <a href="{{ route('orders.index') }}" class="block text-center neu-button text-sm py-3">
+                    <i class="fas fa-shopping-bag mr-2"></i> {{ __('home.my_orders') ?? 'Orders' }}
+                </a>
+                <a href="{{ route('favorites.index') }}" class="block text-center neu-button text-sm py-3">
+                    <i class="fas fa-heart mr-2"></i> {{ __('home.favorites') ?? 'Favorites' }}
+                </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full text-center text-sm font-medium dark:text-slate-400 light:text-slate-600 hover:text-red-400 transition py-3">
+                        <i class="fas fa-sign-out-alt mr-2"></i>{{ __('home.logout') ?? 'Logout' }}
+                    </button>
+                </form>
+            </div>
+        @endguest
     </div>
 </nav>
 
@@ -554,9 +750,35 @@
 
     // ─── Mobile Menu ───
     document.getElementById('mobile-toggle')?.addEventListener('click', function() {
-        const menu = document.getElementById('mobile-menu');
-        if (menu) {
-            menu.classList.toggle('hidden');
+        document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
+    // ─── Profile Dropdown ───
+    function toggleProfileDropdown() {
+        const dropdown = document.getElementById('profileDropdown');
+        if (dropdown) {
+            dropdown.classList.toggle('hidden');
+        }
+    }
+
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('profileDropdown');
+        const button = event.target.closest('button');
+
+        // If clicking outside dropdown and its toggle button, hide it
+        if (dropdown && !dropdown.classList.contains('hidden')) {
+            if (!button || (button.onclick && button.onclick.toString().indexOf('toggleProfileDropdown') === -1)) {
+                if (!dropdown.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            }
+        }
+    });
+
+    // ─── Close mobile menu on resize ───
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 1024) {
+            document.getElementById('mobile-menu')?.classList.add('hidden');
         }
     });
 </script>

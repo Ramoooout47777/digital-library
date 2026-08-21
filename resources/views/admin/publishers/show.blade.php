@@ -1,8 +1,8 @@
 {{-- resources/views/admin/publishers/show.blade.php --}}
 @extends('admin.layouts.app')
 
-@section('title', __('admin.publisher_details') . ' - ' . $publisher->name)
-@section('page-title', __('admin.publisher_details'))
+@section('title', __('admin.publisher_description_help') . ' - ' . $publisher->name)
+@section('page-title', __('admin.publisher_description_help'))
 
 @section('content')
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

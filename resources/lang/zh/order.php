@@ -83,4 +83,11 @@ return [
     // ============ EMPTY STATE ============
     'no_orders' => '暂无订单',
     'no_orders_message' => '您还没有下过任何订单。',
+    'read_now' => '立即阅读',
+    'download' => '下载',
+    'total' => '总计',
+    'subtotal' => '小计',
+    'shipping' => '运费',
+    'download_invoice'         => '下载发票',
+
 ];

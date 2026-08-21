@@ -256,6 +256,10 @@
                     </form>
                 @endif
 
+                <a href="{{ route('admin.orders.invoice', $order) }}" class="btn btn-primary w-full">
+                    <i class="fas fa-file-invoice mr-2"></i> {{ __('admin.download_invoice') ?? 'Download Invoice' }}
+                </a>
+
                 <a href="{{ route('admin.orders.index') }}" class="btn btn-gray w-full">
                     <i class="fas fa-arrow-left mr-2"></i> {{ __('admin.back_to_list') }}
                 </a>

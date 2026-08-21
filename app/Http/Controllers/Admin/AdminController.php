@@ -85,7 +85,7 @@ class AdminController extends Controller
         // ============ CHART DATA ============
         $monthlyRevenue = Order::where('status', 'completed')
             ->whereYear('created_at', date('Y'))
-            ->selectRaw('strftime("%m", created_at) as month, SUM(total) as total')
+            ->selectRaw("DATE_FORMAT(created_at, '%m') as month, SUM(total) as total")
             ->groupBy('month')
             ->orderBy('month')
             ->get()
@@ -124,7 +124,7 @@ class AdminController extends Controller
         } elseif ($period === 'yearly') {
             $data = Order::where('status', 'completed')
                 ->whereYear('created_at', date('Y'))
-                ->selectRaw('strftime("%m", created_at) as month, SUM(total) as total')
+                ->selectRaw("DATE_FORMAT(created_at, '%m') as month, SUM(total) as total")
                 ->groupBy('month')
                 ->orderBy('month')
                 ->get()
@@ -134,7 +134,7 @@ class AdminController extends Controller
             // Monthly
             $data = Order::where('status', 'completed')
                 ->whereYear('created_at', date('Y'))
-                ->selectRaw('strftime("%m", created_at) as month, SUM(total) as total')
+                ->selectRaw("DATE_FORMAT(created_at, '%m') as month, SUM(total) as total")
                 ->groupBy('month')
                 ->orderBy('month')
                 ->get()

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ ('Digital Library') }} — {{ __('home.welcome') ?? 'Digital Library' }}</title>
+    <title>{{ config('app.name') }} — {{ __('home.welcome') ?? 'Digital Library' }}</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -47,9 +47,8 @@
         /* ─── Dark Mode ─── */
         .dark .cyber-bg {
             background: #0b1120;
-            background-image:
-                radial-gradient(ellipse at 15% 50%, rgba(56, 189, 248, 0.05) 0%, transparent 65%),
-                radial-gradient(ellipse at 85% 20%, rgba(168, 85, 247, 0.04) 0%, transparent 55%);
+            background-image: radial-gradient(ellipse at 15% 50%, rgba(56, 189, 248, 0.05) 0%, transparent 65%),
+                              radial-gradient(ellipse at 85% 20%, rgba(168, 85, 247, 0.04) 0%, transparent 55%);
             min-height: 100vh;
         }
         .dark .neu-card {
@@ -172,9 +171,8 @@
         /* ─── Light Mode ─── */
         .light .cyber-bg {
             background: #f8fafc;
-            background-image:
-                radial-gradient(ellipse at 15% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 65%),
-                radial-gradient(ellipse at 85% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 55%);
+            background-image: radial-gradient(ellipse at 15% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 65%),
+                              radial-gradient(ellipse at 85% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 55%);
             min-height: 100vh;
         }
         .light .neu-card {
@@ -447,6 +445,53 @@
         .neu-badge-free { color: #34d399; }
         .neu-badge-featured { color: #fbbf24; }
         .neu-badge-new { color: #38bdf8; }
+
+        /* ─── Swiper Custom Styles ─── */
+        .swiper-button-prev::after,
+        .swiper-button-next::after {
+            font-size: 20px !important;
+            font-weight: 700;
+        }
+        .swiper-pagination-bullet {
+            background: rgba(255,255,255,0.3) !important;
+            opacity: 1 !important;
+        }
+        .swiper-pagination-bullet-active {
+            background: #38bdf8 !important;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 5;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(239, 68, 68, 0.5); }
+        }
+
+        /* ─── Book Card Hover Effect ─── */
+        .book-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .book-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .book-card .book-image {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .book-card:hover .book-image {
+            transform: scale(1.08);
+        }
     </style>
 </head>
 <body class="{{ session('theme', 'dark') }} theme-transition" id="app">
@@ -465,7 +510,7 @@
             <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-indigo-400 flex items-center justify-center shadow-xl shadow-cyan-500/10 group-hover:scale-105 transition">
                 <i class="fas fa-book-open text-slate-900 text-lg"></i>
             </div>
-            <span class="text-xl font-bold tracking-tight dark:text-slate-100 light:text-slate-800">{{  __('home.hero_badge') }}</span>
+            <span class="text-xl font-bold tracking-tight dark:text-slate-100 light:text-slate-800">{{ config('app.name') }}</span>
         </a>
 
         <!-- Desktop Nav -->
@@ -485,14 +530,27 @@
                 </a>
             @endauth
 
+            <!-- ============================================================ -->
+            <!-- CHAT ICON -->
+            <!-- ============================================================ -->
+            @auth
+                <a href="{{ route('chat.index') }}" 
+                   class="neu-button w-11 h-11 rounded-xl flex items-center justify-center text-sm p-0 flex-shrink-0 relative">
+                    <i class="fas fa-comment-dots text-lg"></i>
+                    @if(isset($unreadChatCount) && $unreadChatCount > 0)
+                        <span class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold">
+                            {{ $unreadChatCount > 9 ? '9+' : $unreadChatCount }}
+                        </span>
+                    @endif
+                </a>
+            @endauth
+
             <!-- Theme Toggle -->
             <button onclick="toggleTheme()" class="neu-button w-11 h-11 rounded-xl flex items-center justify-center text-sm p-0 flex-shrink-0">
                 <i id="theme-icon" class="fas fa-moon text-lg"></i>
             </button>
 
-            <!-- ============================================================ -->
-            <!-- DESKTOP: Language Select (hidden lg:flex) -->
-            <!-- ============================================================ -->
+            <!-- Language Select -->
             <div class="hidden lg:flex items-center gap-1">
                 <div class="lang-select-wrapper">
                     <span class="lang-icon">🌐</span>
@@ -561,18 +619,13 @@
         </div>
     </div>
 
-    <!-- ============================================================ -->
-    <!-- MOBILE MENU -->
-    <!-- ============================================================ -->
+    <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden lg:hidden mt-4 mobile-menu p-6 space-y-4">
         <a href="{{ route('home') }}" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.home') ?? 'Home' }}</a>
         <a href="#books" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.books') ?? 'Books' }}</a>
         <a href="#categories" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.categories') ?? 'Categories' }}</a>
         <a href="#about" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.about') ?? 'About' }}</a>
 
-        <!-- ============================================================ -->
-        <!-- MOBILE: Language Select -->
-        <!-- ============================================================ -->
         <div class="pt-4 border-t dark:border-slate-800/40 light:border-slate-200/60">
             <div class="lang-select-wrapper w-full">
                 <span class="lang-icon">🌐</span>
@@ -618,11 +671,12 @@
 </nav>
 
 <!-- ============================================================ -->
-<!-- HERO SECTION -->
+<!-- HERO SECTION WITH SWIPER -->
 <!-- ============================================================ -->
 <section class="hero-container section-padding" style="padding-top: 8rem;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <!-- Left Content -->
             <div class="space-y-8">
                 <div class="inline-flex items-center gap-3 px-5 py-3 rounded-full neu-card-inset">
                     <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
@@ -638,32 +692,6 @@
                 <p class="text-lg dark:text-slate-400 light:text-slate-600 leading-relaxed max-w-lg">
                     {{ __('home.hero_subtitle') ?? 'A curated digital library with thousands of books. Read anywhere, anytime.' }}
                 </p>
-
-                <!-- Mobile Slider (Only visible on mobile/tablet) -->
-                <div class="lg:hidden w-full mt-8">
-                    @if(isset($banners) && $banners->count() > 0)
-                        <div class="swiper heroSwiper rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50">
-                            <div class="swiper-wrapper">
-                                @foreach($banners as $banner)
-                                    <div class="swiper-slide relative aspect-[16/9]">
-                                        @if($banner->link)
-                                            <a href="{{ $banner->link }}" class="block w-full h-full">
-                                        @endif
-                                        <img src="{{ asset('storage/' . $banner->image) }}" alt="{{ $banner->title }}" class="w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
-                                        <div class="absolute bottom-4 left-4 right-4">
-                                            <h3 class="text-lg font-bold text-white">{{ $banner->title }}</h3>
-                                        </div>
-                                        @if($banner->link)
-                                            </a>
-                                        @endif
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="swiper-pagination"></div>
-                        </div>
-                    @endif
-                </div>
 
                 <div class="flex flex-wrap gap-4">
                     <a href="#books" class="neu-button-primary px-10 py-4 text-base font-semibold rounded-xl flex items-center gap-3">
@@ -690,6 +718,7 @@
                 </div>
             </div>
 
+            <!-- Right Side - Swiper Slider -->
             <div class="relative hidden lg:block animate-float">
                 <div class="neu-card p-4">
                     <div class="relative rounded-2xl overflow-hidden aspect-[4/3]">
@@ -703,8 +732,8 @@
                                             @else
                                                 <div class="w-full h-full relative overflow-hidden">
                                             @endif
-                                                <img src="{{ asset('storage/' . $banner->image) }}"
-                                                     alt="{{ $banner->title }}"
+                                                <img src="{{ $banner->image ? asset('storage/' . $banner->image) : 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&h=600&fit=crop&q=80' }}"
+                                                     alt="{{ $banner->title ?? 'Banner' }}"
                                                      class="w-full h-full object-cover transform transition-transform duration-[5000ms] hover:scale-110">
 
                                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent"></div>
@@ -720,6 +749,11 @@
                                                             <p class="text-base text-slate-200 line-clamp-2 opacity-90 max-w-md">
                                                                 {{ $banner->description }}
                                                             </p>
+                                                        @endif
+                                                        @if($banner->discount_percentage)
+                                                            <span class="inline-block px-3 py-1 bg-red-500/80 text-white text-xs font-bold rounded-full">
+                                                                -{{ $banner->discount_percentage }}% OFF
+                                                            </span>
                                                         @endif
                                                         @if($banner->link)
                                                             <div class="pt-2">
@@ -740,10 +774,8 @@
                                     @endforeach
                                 </div>
 
-                                <!-- Navigation Arrows -->
                                 <div class="swiper-button-prev !text-white/50 after:!text-xl hover:!text-white transition opacity-0 group-hover:opacity-100"></div>
                                 <div class="swiper-button-next !text-white/50 after:!text-xl hover:!text-white transition opacity-0 group-hover:opacity-100"></div>
-
                                 <div class="swiper-pagination !bottom-6 !text-right !px-8"></div>
                             </div>
                         @else
@@ -764,52 +796,41 @@
                 <div class="absolute -top-20 -left-20 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl animate-float pointer-events-none"></div>
             </div>
         </div>
-    </div>
-</section>
 
-<!-- ============================================================ -->
-<!-- USER PROFILE QUICK ACCESS -->
-<!-- ============================================================ -->
-@auth
-<section class="section-padding border-t dark:border-slate-800/40 light:border-slate-200/60">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="neu-card p-6">
-            <div class="flex flex-col md:flex-row items-center gap-6">
-                <div class="relative flex-shrink-0">
-                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3b82f6&color=fff&size=80' }}"
-                         alt="{{ auth()->user()->name }}"
-                         class="w-20 h-20 rounded-full object-cover border-2 border-cyan-500/30">
-                    <span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-400 rounded-full border-2 border-slate-900"></span>
-                </div>
-                <div class="flex-1 text-center md:text-left">
-                    <h3 class="text-xl font-bold dark:text-slate-100 light:text-slate-900">{{ auth()->user()->name }}</h3>
-                    <p class="text-sm dark:text-slate-400 light:text-slate-500">{{ auth()->user()->email }}</p>
-                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-2">
-                        <span class="px-2 py-1 text-xs rounded-full bg-emerald-500/20 text-emerald-400">
-                            <i class="fas fa-check-circle mr-1"></i> {{ __('profile.verified') ?? 'Verified' }}
-                        </span>
-                        <span class="text-xs dark:text-slate-500 light:text-slate-500">
-                            <i class="fas fa-calendar-alt mr-1"></i>
-                            {{ __('profile.member_since') ?? 'Member since' }} {{ auth()->user()->created_at->format('M Y') }}
-                        </span>
+        <!-- Mobile Swiper Slider -->
+        <div class="lg:hidden w-full mt-8">
+            @if(isset($banners) && $banners->count() > 0)
+                <div class="swiper heroSwiper rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50">
+                    <div class="swiper-wrapper">
+                        @foreach($banners as $banner)
+                            <div class="swiper-slide relative aspect-[16/9]">
+                                @if($banner->link)
+                                    <a href="{{ $banner->link }}" class="block w-full h-full">
+                                @endif
+                                <img src="{{ $banner->image ? asset('storage/' . $banner->image) : 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=800&h=600&fit=crop&q=80' }}"
+                                     alt="{{ $banner->title ?? 'Banner' }}"
+                                     class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+                                <div class="absolute bottom-4 left-4 right-4">
+                                    <h3 class="text-lg font-bold text-white">{{ $banner->title ?? '' }}</h3>
+                                    @if($banner->discount_percentage)
+                                        <span class="inline-block mt-1 px-2 py-0.5 bg-red-500/80 text-white text-xs font-bold rounded-full">
+                                            -{{ $banner->discount_percentage }}%
+                                        </span>
+                                    @endif
+                                </div>
+                                @if($banner->link)
+                                    </a>
+                                @endif
+                            </div>
+                        @endforeach
                     </div>
+                    <div class="swiper-pagination"></div>
                 </div>
-                <div class="flex flex-wrap gap-2">
-                    <a href="{{ route('profile.index') }}" class="neu-button-primary px-4 py-2.5 text-sm rounded-xl flex items-center gap-2">
-                        <i class="fas fa-user"></i> {{ __('home.my_profile') ?? 'Profile' }}
-                    </a>
-                    <a href="{{ route('orders.index') }}" class="neu-button px-4 py-2.5 text-sm rounded-xl flex items-center gap-2">
-                        <i class="fas fa-shopping-bag"></i> {{ __('home.my_orders') ?? 'Orders' }}
-                    </a>
-                    <a href="{{ route('favorites.index') }}" class="neu-button px-4 py-2.5 text-sm rounded-xl flex items-center gap-2">
-                        <i class="fas fa-heart"></i> {{ __('home.favorites') ?? 'Favorites' }}
-                    </a>
-                </div>
-            </div>
+            @endif
         </div>
     </div>
 </section>
-@endauth
 
 <!-- ============================================================ -->
 <!-- FEATURES SECTION -->
@@ -859,6 +880,83 @@
 </section>
 
 <!-- ============================================================ -->
+<!-- DISCOUNTED BOOKS SECTION -->
+<!-- ============================================================ -->
+@if(isset($discountedBooks) && $discountedBooks->count() > 0)
+<section id="books" class="section-padding border-t dark:border-slate-800/40 light:border-slate-200/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-12">
+            <div>
+                <p class="text-sm font-medium text-red-400 tracking-[0.15em] uppercase mb-2">Sale</p>
+                <h2 class="heading-lg dark:text-slate-100 light:text-slate-900">
+                    <i class="fas fa-tags text-red-400 mr-2"></i>
+                    {{ __('home.discounted_books') ?? 'Discounted Books' }}
+                </h2>
+                <p class="text-base dark:text-slate-400 light:text-slate-600 mt-1">Grab these deals before they're gone</p>
+            </div>
+            <a href="{{ route('books.index', ['discount' => 'true']) }}" class="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition flex items-center gap-2">
+                {{ __('home.view_all') ?? 'View All' }}
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach($discountedBooks as $book)
+                <div class="neu-book book-card group">
+                    <div class="relative overflow-hidden rounded-t-2xl">
+                        <a href="{{ route('books.show', $book) }}" class="block">
+                            @if($book->cover)
+                                <img src="{{ asset('storage/' . $book->cover) }}"
+                                     alt="{{ $book->title }}"
+                                     class="book-image w-full aspect-[3/4] object-cover">
+                            @else
+                                <div class="book-image w-full aspect-[3/4] bg-slate-800/30 flex items-center justify-center">
+                                    <i class="fas fa-book dark:text-slate-600 light:text-slate-400 text-5xl"></i>
+                                </div>
+                            @endif
+                        </a>
+
+                        <div class="discount-badge">
+                            -{{ number_format($book->discount_percentage, 0) }}%
+                        </div>
+
+                        @auth
+                            <button onclick="toggleFavorite({{ $book->id }}, this)"
+                                    class="absolute top-3 left-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm hover:bg-black/60 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg z-10">
+                                <i class="fas fa-heart text-sm
+                                    @if(auth()->user()->isFavorited($book->id))
+                                        text-red-500
+                                    @else
+                                        text-white/60 hover:text-red-400
+                                    @endif
+                                    transition-colors duration-300">
+                                </i>
+                            </button>
+                        @endauth
+                    </div>
+
+                    <div class="p-4">
+                        <a href="{{ route('books.show', $book) }}" class="block">
+                            <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate">{{ $book->title }}</h4>
+                        </a>
+                        <p class="text-xs dark:text-slate-500 light:text-slate-500 mt-1 truncate">{{ $book->author->name ?? 'N/A' }}</p>
+                        <div class="flex items-center gap-2 mt-3">
+                            <span class="text-sm font-bold text-cyan-400">
+                                ${{ number_format($book->final_price, 2) }}
+                            </span>
+                            <span class="text-xs dark:text-slate-500 light:text-slate-400 line-through">
+                                ${{ number_format($book->price, 2) }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+@endif
+
+<!-- ============================================================ -->
 <!-- POPULAR BOOKS SECTION -->
 <!-- ============================================================ -->
 <section id="books" class="section-padding border-t dark:border-slate-800/40 light:border-slate-200/60">
@@ -877,15 +975,15 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             @forelse($popularBooks ?? [] as $index => $book)
-                <div class="neu-book group">
-                    <div class="relative">
+                <div class="neu-book book-card group">
+                    <div class="relative overflow-hidden rounded-t-2xl">
                         <a href="{{ route('books.show', $book) }}" class="block">
                             @if($book->cover)
                                 <img src="{{ asset('storage/' . $book->cover) }}"
                                      alt="{{ $book->title }}"
-                                     class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition duration-500">
+                                     class="book-image w-full aspect-[3/4] object-cover">
                             @else
-                                <div class="w-full aspect-[3/4] bg-slate-800/30 flex items-center justify-center">
+                                <div class="book-image w-full aspect-[3/4] bg-slate-800/30 flex items-center justify-center">
                                     <i class="fas fa-book dark:text-slate-600 light:text-slate-400 text-5xl"></i>
                                 </div>
                             @endif
@@ -1018,15 +1116,15 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             @foreach($freeBooks as $index => $book)
-                <div class="neu-book group border-emerald-500/10">
-                    <div class="relative">
+                <div class="neu-book book-card group border-emerald-500/10">
+                    <div class="relative overflow-hidden rounded-t-2xl">
                         <a href="{{ route('books.show', $book) }}" class="block">
                             @if($book->cover)
                                 <img src="{{ asset('storage/' . $book->cover) }}"
                                      alt="{{ $book->title }}"
-                                     class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition duration-500">
+                                     class="book-image w-full aspect-[3/4] object-cover">
                             @else
-                                <div class="w-full aspect-[3/4] bg-slate-800/30 flex items-center justify-center">
+                                <div class="book-image w-full aspect-[3/4] bg-slate-800/30 flex items-center justify-center">
                                     <i class="fas fa-book dark:text-slate-600 light:text-slate-400 text-5xl"></i>
                                 </div>
                             @endif
@@ -1193,14 +1291,13 @@
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-indigo-400 flex items-center justify-center">
                         <i class="fas fa-book-open text-slate-900 text-sm"></i>
                     </div>
-                    <span class="text-base font-bold dark:text-slate-100 light:text-slate-800">{{ __('home.hero_badge') }}</span>
+                    <span class="text-base font-bold dark:text-slate-100 light:text-slate-800">{{ config('app.name') }}</span>
                 </div>
                 <p class="text-sm dark:text-slate-500 light:text-slate-500 leading-relaxed max-w-xs">
                     {{ __('home.footer_desc') ?? 'A modern digital library for the next generation of readers.' }}
                 </p>
                 <div class="flex gap-4 mt-6">
-                    <a href="https://www.facebook.com/" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-facebook-f text-lg"></i></a>
-                    <a href="https://www.youtube.com/" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-youtube text-lg"></i></a>
+                    <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-facebook-f text-lg"></i></a>
                     <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-twitter text-lg"></i></a>
                     <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-github text-lg"></i></a>
                     <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-discord text-lg"></i></a>
@@ -1247,7 +1344,7 @@
         </div>
 
         <div class="mt-12 pt-8 border-t dark:border-slate-800/40 light:border-slate-200/60 text-center text-sm dark:text-slate-500 light:text-slate-500">
-            <p>&copy; {{ date('Y') }} {{ __('home.hero_badge') }}. {{ __('home.all_rights_reserved') ?? 'All rights reserved.' }}</p>
+            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('home.all_rights_reserved') ?? 'All rights reserved.' }}</p>
         </div>
     </div>
 </footer>
@@ -1262,7 +1359,6 @@
         const html = document.documentElement;
         const body = document.getElementById('app');
         const icon = document.getElementById('theme-icon');
-        let theme = 'dark';
 
         if (html.classList.contains('dark')) {
             html.classList.remove('dark');
@@ -1270,26 +1366,15 @@
             body.classList.add('light');
             icon.classList.remove('fa-moon');
             icon.classList.add('fa-sun');
-            theme = 'light';
+            localStorage.setItem('theme', 'light');
         } else {
             html.classList.add('dark');
             body.classList.remove('light');
             body.classList.add('dark');
             icon.classList.remove('fa-sun');
             icon.classList.add('fa-moon');
-            theme = 'dark';
+            localStorage.setItem('theme', 'dark');
         }
-
-        localStorage.setItem('theme', theme);
-
-        // Sync with backend
-        fetch(`/switch-theme/${theme}`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Content-Type': 'application/json',
-            }
-        });
     }
 
     // ─── Load Theme from LocalStorage ───

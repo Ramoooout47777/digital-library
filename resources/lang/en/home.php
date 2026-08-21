@@ -30,6 +30,8 @@ return [
     'view_all' => 'View All',
     'subscribe' => 'Subscribe',
     'enter_email' => 'Enter your email',
+    'email' => 'Email',
+
     
     // ============ STATISTICS ============
     'total_books' => 'Total Books',

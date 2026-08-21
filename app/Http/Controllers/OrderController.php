@@ -8,11 +8,13 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Purchase;
 use App\Models\Book;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Services\CouponService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -132,7 +134,7 @@ class OrderController extends Controller
 
                 // Create purchase records
                 foreach ($order->items as $item) {
-                    \App\Models\Purchase::firstOrCreate([
+                    Purchase::firstOrCreate([
                         'user_id' => Auth::id(),
                         'book_id' => $item->book_id,
                         'order_id' => $order->id,
@@ -204,6 +206,23 @@ class OrderController extends Controller
             return redirect()->route('orders.show', $order)
                 ->with('success', 'Order cancelled successfully.');
         });
+    }
+
+    /**
+     * Download order invoice as PDF
+     */
+    public function downloadInvoice(Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $order->load(['user', 'items']);
+        $settings = Setting::where('group', 'general')->pluck('value', 'key')->toArray();
+
+        $pdf = Pdf::loadView('orders.invoice', compact('order', 'settings'));
+
+        return $pdf->download('invoice-' . $order->order_number . '.pdf');
     }
 
     /**

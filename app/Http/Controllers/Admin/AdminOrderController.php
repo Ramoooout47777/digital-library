@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdminOrderController extends Controller
 {
@@ -64,6 +66,19 @@ class AdminOrderController extends Controller
     {
         $order->load(['user', 'items.book', 'items.book.author']);
         return view('admin.orders.show', compact('order'));
+    }
+
+    /**
+     * Download order invoice as PDF
+     */
+    public function downloadInvoice(Order $order)
+    {
+        $order->load(['user', 'items']);
+        $settings = Setting::where('group', 'general')->pluck('value', 'key')->toArray();
+
+        $pdf = Pdf::loadView('orders.invoice', compact('order', 'settings'));
+
+        return $pdf->download('invoice-' . $order->order_number . '.pdf');
     }
 
     /**

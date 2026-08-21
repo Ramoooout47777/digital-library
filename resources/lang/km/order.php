@@ -56,4 +56,11 @@ return [
     'quick_actions' => 'សកម្មភាពរហ័ស',
     'view_all_orders' => 'មើលការកម្មង់ទាំងអស់',
     'free' => 'ឥតគិតថ្លៃ',
+    'read_now' => 'អានឥឡូវនេះ',
+    'download' => 'ទាញយក',
+    'total' => 'សរុប',
+    'subtotal' => 'សរុបរង',
+    'shipping' => 'ថ្លៃដឹកជញ្ជូន',
+    'download_invoice'         => 'ទាញយកវិក្កយបត្រ',
+
 ];

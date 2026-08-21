@@ -28,6 +28,7 @@ return [
     'view_all' => '查看全部',
     'subscribe' => '订阅',
     'enter_email' => '输入您的邮箱',
+    'email' => '电子邮箱',
     
     // ============ STATISTICS ============
     'total_books' => '图书总数',

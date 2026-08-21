@@ -19,7 +19,7 @@
         }
         .container {
             max-width: 1280px;
-        }
+        }s
     </style>
 </head>
 <body>

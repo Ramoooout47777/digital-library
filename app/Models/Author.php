@@ -31,9 +31,35 @@ class Author extends Model
         
         static::creating(function ($author) {
             if (empty($author->slug)) {
-                $author->slug = Str::slug($author->name);
+                $author->slug = $author->generateUniqueSlug();
             }
         });
+
+        static::updating(function ($author) {
+            if ($author->isDirty('name')) {
+                $author->slug = $author->generateUniqueSlug();
+            }
+        });
+    }
+
+    protected function generateUniqueSlug()
+    {
+        $slug = Str::slug($this->name);
+
+        if (empty($slug)) {
+            $slug = 'author-' . Str::uuid();
+        }
+
+        $baseSlug = $slug;
+        $suffix = 2;
+
+        while (static::where('slug', $slug)
+            ->where('id', '!=', $this->getKey())
+            ->exists()) {
+            $slug = $baseSlug . '-' . $suffix++;
+        }
+
+        return $slug;
     }
 
     public function books()

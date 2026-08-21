@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminBannerController;
 use App\Http\Controllers\Admin\AdminNotificationController;
 use App\Http\Controllers\Admin\AdminSettingsController;
 use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\AdminChatController;
 use App\Http\Controllers\CustomerDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -79,6 +81,20 @@ Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name(
 Route::post('/cart/remove-coupon', [CartController::class, 'removeCoupon'])->name('cart.remove-coupon');
 
 // ============================================================
+// CUSTOMER CHAT ROUTES
+// ============================================================
+Route::middleware(['auth'])->prefix('chat')->name('chat.')->group(function () {
+    Route::get('/', [ChatController::class, 'index'])->name('index');
+    Route::get('/create', [ChatController::class, 'create'])->name('create');
+    Route::post('/', [ChatController::class, 'store'])->name('store');
+    Route::get('/{chat}', [ChatController::class, 'show'])->name('show');
+    Route::post('/{chat}/send', [ChatController::class, 'sendMessage'])->name('send');
+    Route::delete('/message/{message}', [ChatController::class, 'deleteMessage'])->name('message.delete');
+    Route::get('/users', [ChatController::class, 'getUsers'])->name('users');
+    Route::get('/unread/count', [ChatController::class, 'unreadCount'])->name('unread');
+});
+
+// ============================================================
 // AUTH ROUTES
 // ============================================================
 require __DIR__.'/auth.php';
@@ -110,6 +126,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}/invoice', [OrderController::class, 'downloadInvoice'])->name('orders.invoice');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 
     // Favorites
@@ -121,6 +138,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Reviews
     Route::post('/books/{book}/reviews', [BookController::class, 'storeReview'])->name('books.reviews.store');
+
 });
 
 // ============================================================
@@ -132,6 +150,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard/chart-data', [AdminController::class, 'chartData'])->name('dashboard.chart-data');
     Route::get('/switch-language/{locale}', [AdminController::class, 'switchLanguage'])->name('switch-language');
+
+    // Admin chat routes
+    Route::get('/chat', [AdminChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/{chat}', [AdminChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{chat}/send', [AdminChatController::class, 'sendMessage'])->name('chat.send');
+    Route::post('/chat/create', [AdminChatController::class, 'createChat'])->name('chat.create');
+    Route::post('/chat/{chat}/archive', [AdminChatController::class, 'archive'])->name('chat.archive');
+    Route::delete('/chat/{chat}', [AdminChatController::class, 'destroy'])->name('chat.destroy');
 
     // ============ PROFILE MANAGEMENT ============
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('profile');
@@ -173,6 +199,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/export', [AdminOrderController::class, 'export'])->name('orders.export');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}/invoice', [AdminOrderController::class, 'downloadInvoice'])->name('orders.invoice');
     Route::patch('/orders/{order}/update-status', [AdminOrderController::class, 'updateStatus'])->name('orders.update-status');
     Route::patch('/orders/{order}/update-payment', [AdminOrderController::class, 'updatePaymentStatus'])->name('orders.update-payment');
     Route::delete('/orders/{order}', [AdminOrderController::class, 'destroy'])->name('orders.destroy');

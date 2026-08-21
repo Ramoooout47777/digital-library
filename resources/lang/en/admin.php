@@ -507,5 +507,22 @@ return [
     'name' => 'Name',
     'email' => 'Email',
     'avatar_updated' => 'Avatar Updated Successfully',
+    'default_discount_value'   => 'Default Discount Value',
+    'days'                     => 'Days',
+    'minutes'                  => 'Minutes',
+    'auto_complete'            => 'Auto Complete',
+    'price_per_page'           => 'Price Per Page',
+    'customer_orders'          => 'Customer Orders',
+    'average_order'            => 'Average Order',
+    'customer_reviews'         => 'Customer Reviews',
+    'customer_details'         => 'Customer Details',
+    'edit_customer'            => 'Edit Customer',
+    'avatar'                   => 'Avatar',
+    'role'                     => 'Role',
+    'admin'                    => 'Admin',
+    'cannot_delete_has_orders' => 'Cannot delete, has orders',
+    'download_invoice'         => 'Download Invoice',
+
+
     
 ];
