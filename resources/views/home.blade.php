@@ -523,10 +523,15 @@
 
         <!-- Right Side -->
         <div class="flex items-center gap-3">
-            @auth
-                <a href="{{ route('admin.dashboard') }}" class="admin-link hidden sm:flex">
-                    <i class="fas fa-tachometer-alt text-xs"></i>
-                    <span class="hidden md:inline">{{ __('home.dashboard') ?? 'Dashboard' }}</span>
+           @auth
+                <a href="{{ route('admin.dashboard') }}" 
+                class="admin-link hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-indigo-600 bg-white/80 hover:bg-indigo-50 border border-slate-200/80 hover:border-indigo-100 shadow-sm hover:shadow transition-all duration-200 group">
+                    
+                    <i class="fas fa-tachometer-alt text-xs text-slate-400 group-hover:text-indigo-600 group-hover:scale-110 transition-transform duration-200"></i>
+                    
+                    <span class="hidden md:inline group-hover:translate-x-0.5 transition-transform duration-200">
+                        {{ __('home.dashboard') ?? 'Dashboard' }}
+                    </span>
                 </a>
             @endauth
 

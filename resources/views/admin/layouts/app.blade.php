@@ -645,39 +645,67 @@
                     </button>
 
                 <!-- Language Switcher ប្រើ Pure HTML/CSS (មិនបាច់មាន Alpine.js) -->
-            <details class="relative inline-block text-left dropdown-flags">
+           <details class="relative inline-block text-left group">
+            <!-- Dropdown Button -->
+            <summary class="inline-flex items-center justify-between gap-x-2.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white border border-slate-200/80 dark:border-slate-700/80 shadow-sm hover:shadow transition-all duration-200 list-none cursor-pointer select-none">
+                @php $currentLocale = session('locale', app()->getLocale()); @endphp
 
-                <summary class="inline-flex justify-between items-center gap-x-2 rounded-lg bg-gray-100 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-200 transition list-none cursor-pointer select-none">
-                    @if(session('locale') == 'km')
-                        <span class="w-5 h-3.5 bg-cover bg-center rounded-sm shadow-sm" style="background-image: url('https://flagcdn.com/kh.svg')"></span>
-                        <span>កម្ពុជា</span>
-                    @elseif(session('locale') == 'zh')
-                        <span class="w-5 h-3.5 bg-cover bg-center rounded-sm shadow-sm" style="background-image: url('https://flagcdn.com/cn.svg')"></span>
+                <div class="flex items-center gap-x-2">
+                    @if($currentLocale == 'km')
+                        <img src="https://flagcdn.com/w40/kh.png" alt="Cambodia" class="w-5 h-3.5 object-cover rounded-[3px] shadow-xs">
+                        <span>ខ្មែរ</span>
+                    @elseif($currentLocale == 'zh')
+                        <img src="https://flagcdn.com/w40/cn.png" alt="China" class="w-5 h-3.5 object-cover rounded-[3px] shadow-xs">
                         <span>中文</span>
                     @else
-                        <span class="w-5 h-3.5 bg-cover bg-center rounded-sm shadow-sm" style="background-image: url('https://flagcdn.com/gb.svg')"></span>
-                        <span>EN</span>
-                    @endif
-
-                    <svg class="-mr-1 h-5 w-5 text-gray-400 custom-arrow" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
-                    </svg>
-                </summary>
-
-            <!-- បញ្ជីភាសាសម្រាប់ជ្រើសរើស -->
-            <div class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
-                <div class="py-1">
-                    <a href="{{ route('admin.switch-language', 'km') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ session('locale') == 'km' ? 'bg-blue-50 font-bold text-blue-600' : '' }}">
-                        <span class="w-5 h-3.5 bg-cover bg-center rounded-sm" style="background-image: url('https://flagcdn.com/kh.svg')"></span>
-                        <span>ខ្មែរ</span>
-                    </a>
-                    <a href="{{ route('admin.switch-language', 'en') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ session('locale') == 'en' ? 'bg-blue-50 font-bold text-blue-600' : '' }}">
-                        <span class="w-5 h-3.5 bg-cover bg-center rounded-sm" style="background-image: url('https://flagcdn.com/gb.svg')"></span>
+                        <img src="https://flagcdn.com/w40/gb.png" alt="English" class="w-5 h-3.5 object-cover rounded-[3px] shadow-xs">
                         <span>English</span>
+                    @endif
+                </div>
+
+                <!-- Arrow Icon with Rotate Effect -->
+                <svg class="h-4 w-4 text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+            </summary>
+
+            <!-- Dropdown Menu -->
+            <div class="absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-1.5 shadow-xl ring-1 ring-slate-900/5 dark:ring-slate-700/50 border border-slate-100 dark:border-slate-700/60 focus:outline-none transition-all">
+                <div class="space-y-0.5">
+                    <!-- Khmer -->
+                    <a href="{{ route('admin.switch-language', 'km') }}" 
+                    class="flex items-center justify-between px-3 py-2 text-xs font-medium rounded-xl transition-all duration-150 group/item {{ $currentLocale == 'km' ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white' }}">
+                        <div class="flex items-center gap-2.5">
+                            <img src="https://flagcdn.com/w40/kh.png" alt="Cambodia" class="w-5 h-3.5 object-cover rounded-[3px] shadow-xs group-hover/item:scale-105 transition-transform">
+                            <span>ខ្មែរ</span>
+                        </div>
+                        @if($currentLocale == 'km')
+                            <i class="fas fa-check text-[10px] text-indigo-600 dark:text-indigo-400"></i>
+                        @endif
                     </a>
-                    <a href="{{ route('admin.switch-language', 'zh') }}" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {{ session('locale') == 'zh' ? 'bg-blue-50 font-bold text-blue-600' : '' }}">
-                        <span class="w-5 h-3.5 bg-cover bg-center rounded-sm" style="background-image: url('https://flagcdn.com/cn.svg')"></span>
-                        <span>中文</span>
+
+                    <!-- English -->
+                    <a href="{{ route('admin.switch-language', 'en') }}" 
+                    class="flex items-center justify-between px-3 py-2 text-xs font-medium rounded-xl transition-all duration-150 group/item {{ $currentLocale == 'en' ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white' }}">
+                        <div class="flex items-center gap-2.5">
+                            <img src="https://flagcdn.com/w40/gb.png" alt="English" class="w-5 h-3.5 object-cover rounded-[3px] shadow-xs group-hover/item:scale-105 transition-transform">
+                            <span>English</span>
+                        </div>
+                        @if($currentLocale == 'en')
+                            <i class="fas fa-check text-[10px] text-indigo-600 dark:text-indigo-400"></i>
+                        @endif
+                    </a>
+
+                    <!-- Chinese -->
+                    <a href="{{ route('admin.switch-language', 'zh') }}" 
+                    class="flex items-center justify-between px-3 py-2 text-xs font-medium rounded-xl transition-all duration-150 group/item {{ $currentLocale == 'zh' ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white' }}">
+                        <div class="flex items-center gap-2.5">
+                            <img src="https://flagcdn.com/w40/cn.png" alt="China" class="w-5 h-3.5 object-cover rounded-[3px] shadow-xs group-hover/item:scale-105 transition-transform">
+                            <span>中文</span>
+                        </div>
+                        @if($currentLocale == 'zh')
+                            <i class="fas fa-check text-[10px] text-indigo-600 dark:text-indigo-400"></i>
+                        @endif
                     </a>
                 </div>
             </div>
@@ -746,38 +774,65 @@
                     </div>
                 </div>
 
-                <!-- User Profile -->
-                <div class="dropdown">
-                    <button id="user-dropdown-toggle" class="flex items-center gap-3 p-1.5 rounded-lg hover:bg-gray-100 transition">
-                        <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=3b82f6&color=fff&size=32' }}"
-                             alt="{{ auth()->user()->name }}"
-                             class="w-8 h-8 rounded-full">
-                        <span class="text-sm font-medium text-gray-700 hidden sm:block">{{ auth()->user()->name }}</span>
-                        <i class="fas fa-chevron-down text-gray-400 text-xs hidden sm:block"></i>
-                    </button>
+                <!-- User Profile Dropdown -->
+<details class="relative inline-block text-left group">
+    <!-- Toggle Button -->
+    <summary class="flex items-center gap-2.5 p-1.5 pr-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-200 cursor-pointer select-none list-none border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+        <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=6366f1&color=fff&size=32' }}"
+             alt="{{ auth()->user()->name }}"
+             class="w-8 h-8 rounded-lg object-cover ring-2 ring-indigo-500/20 dark:ring-indigo-400/30">
+        
+        <span class="text-xs font-semibold text-slate-700 dark:text-slate-200 hidden sm:block">
+            {{ auth()->user()->name }}
+        </span>
+        
+        <!-- Arrow rotates 180 deg when dropdown opens -->
+        <i class="fas fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] hidden sm:block transition-transform duration-300 group-open:rotate-180"></i>
+    </summary>
 
-                    <!-- User Dropdown -->
-                    <div id="user-dropdown" class="dropdown-menu min-w-[200px]">
-                        <div class="px-4 py-3 border-b">
-                            <p class="text-sm font-semibold text-gray-800">{{ auth()->user()->name }}</p>
-                            <p class="text-xs text-gray-500">{{ auth()->user()->email }}</p>
-                        </div>
-                        <div class="flex flex-col space-y-1">
-                            <a href="{{ route('admin.profile') }}" class="dropdown-item">
-                                <i class="fas fa-user"></i> {{ __('admin.profile_menu') }}
-                            </a>
-                            <a href="{{ route('admin.settings') }}" class="dropdown-item">
-                                <i class="fas fa-cog"></i> {{ __('admin.settings_menu') }}
-                            </a>
-                            <form action="{{ route('logout') }}" method="POST" class="m-0">
-                                @csrf
-                                <button type="submit" class="dropdown-item w-full text-left text-red-600 hover:bg-red-50 cursor-pointer">
-                                    <i class="fas fa-sign-out-alt"></i> {{ __('admin.logout_menu') }}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+    <!-- Dropdown Menu -->
+    <div class="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-1.5 shadow-xl ring-1 ring-slate-900/5 dark:ring-slate-700/50 border border-slate-100 dark:border-slate-700/60 focus:outline-none transition-all">
+        <!-- User Info Header -->
+        <div class="px-3 py-2.5 mb-1 border-b border-slate-100 dark:border-slate-700/60">
+            <p class="text-xs font-semibold text-slate-800 dark:text-slate-100 truncate">
+                {{ auth()->user()->name }}
+            </p>
+            <p class="text-[11px] font-normal text-slate-500 dark:text-slate-400 truncate">
+                {{ auth()->user()->email }}
+            </p>
+        </div>
+
+        <!-- Links -->
+        <div class="space-y-0.5">
+            <!-- Profile -->
+            <a href="{{ route('admin.profile') }}" 
+               class="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all duration-150 group/item">
+                <i class="fas fa-user w-4 text-slate-400 dark:text-slate-500 group-hover/item:text-indigo-600 dark:group-hover/item:text-indigo-400 transition-colors"></i>
+                <span>{{ __('admin.profile_menu') }}</span>
+            </a>
+
+            <!-- Settings -->
+            <a href="{{ route('admin.settings') }}" 
+               class="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all duration-150 group/item">
+                <i class="fas fa-cog w-4 text-slate-400 dark:text-slate-500 group-hover/item:text-indigo-600 dark:group-hover/item:text-indigo-400 transition-colors"></i>
+                <span>{{ __('admin.settings_menu') }}</span>
+            </a>
+
+            <!-- Divider -->
+            <div class="my-1 border-t border-slate-100 dark:border-slate-700/60"></div>
+
+            <!-- Logout -->
+            <form action="{{ route('logout') }}" method="POST" class="m-0">
+                @csrf
+                <button type="submit" 
+                        class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-xl transition-all duration-150 group/item text-left cursor-pointer">
+                    <i class="fa-solid fa-right-to-bracket w-4 text-red-500 dark:text-red-400 group-hover/item:scale-110 transition-transform"></i>
+                    <span>{{ __('admin.logout_menu') }}</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</details>
             </div>
         </nav>
 

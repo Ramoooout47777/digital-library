@@ -14,9 +14,9 @@
     <h2 class="text-2xl font-bold text-center dark:text-slate-100 light:text-slate-800 mt-4">
         {{ __('auth.login') ?? 'Login' }}
     </h2>
-    <p class="text-sm text-center dark:text-slate-400 light:text-slate-600 mt-1">
+    {{-- <p class="text-sm text-center dark:text-slate-400 light:text-slate-600 mt-1">
         {{ __('auth.welcome_back') ?? 'Welcome back! Please login to your account.' }}
-    </p>
+    </p> --}}
     
     <!-- Form -->
     <form method="POST" action="{{ route('login') }}" class="mt-6 space-y-4">
