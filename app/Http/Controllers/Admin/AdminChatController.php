@@ -32,6 +32,8 @@ class AdminChatController extends Controller
      */
     public function show(Chat $chat)
     {
+        $otherUser = $chat->getOtherUser(Auth::id());
+
         // Mark all messages as read for admin
         Message::where('chat_id', $chat->id)
             ->where('is_read', false)
@@ -46,7 +48,7 @@ class AdminChatController extends Controller
             ->where('is_admin', false)
             ->get(['id', 'name', 'email', 'avatar']);
 
-        return view('admin.chat.show', compact('chat', 'messages', 'users'));
+        return view('admin.chat.show', compact('chat', 'messages', 'users', 'otherUser'));
     }
 
     /**

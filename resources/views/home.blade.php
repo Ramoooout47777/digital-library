@@ -1297,10 +1297,12 @@
                     {{ __('home.footer_desc') ?? 'A modern digital library for the next generation of readers.' }}
                 </p>
                 <div class="flex gap-4 mt-6">
-                    <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-facebook-f text-lg"></i></a>
-                    <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-twitter text-lg"></i></a>
+                    <a href="https://www.facebook.com/" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-facebook-f text-lg"></i></a>
+                    <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-tiktok text-lg"></i></a>
+                    <a href="https://www.instagram.com/" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-instagram text-lg"></i></a>
+                    <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-youtube text-lg"></i></a>
                     <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-github text-lg"></i></a>
-                    <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-discord text-lg"></i></a>
+                    {{-- <a href="#" class="neu-button w-12 h-12 rounded-xl flex items-center justify-center"><i class="fab fa-discord text-lg"></i></a> --}}
                 </div>
             </div>
 

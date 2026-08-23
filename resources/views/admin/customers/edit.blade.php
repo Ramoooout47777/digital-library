@@ -107,6 +107,7 @@
                     <select name="role" class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('role') border-red-500 @enderror">
                         <option value="customer" {{ $customer->hasRole('customer') ? 'selected' : '' }}>{{ __('admin.customer') ?? 'អតិថិជន' }}</option>
                         <option value="admin" {{ $customer->hasRole('admin') ? 'selected' : '' }}>{{ __('admin.admin') ?? 'អ្នកគ្រប់គ្រង' }}</option>
+                        
                         @if($customer->hasRole('super-admin'))
                             <option value="super-admin" selected>{{ __('admin.super_admin') ?? 'អ្នកគ្រប់គ្រងកំពូល' }}</option>
                         @endif

@@ -25,6 +25,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\Admin\ThemeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -150,7 +151,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard/chart-data', [AdminController::class, 'chartData'])->name('dashboard.chart-data');
     Route::get('/switch-language/{locale}', [AdminController::class, 'switchLanguage'])->name('switch-language');
-
+    // Theme Switch
+    Route::post('/switch-theme', [App\Http\Controllers\Admin\ThemeController::class, 'switchTheme'])
+        ->name('switch-theme');
     // Admin chat routes
     Route::get('/chat', [AdminChatController::class, 'index'])->name('chat.index');
     Route::get('/chat/{chat}', [AdminChatController::class, 'show'])->name('chat.show');

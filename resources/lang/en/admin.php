@@ -523,6 +523,10 @@ return [
     'cannot_delete_has_orders' => 'Cannot delete, has orders',
     'download_invoice'         => 'Download Invoice',
 
+    // ============ BOOK MANAGEMENT ============
+    'chat' => 'Messenger'
+
+
 
     
 ];
