@@ -73,10 +73,17 @@ class AdminSettingsController extends Controller
             'contact_email' => ['required', 'email', 'max:255'],
             'contact_phone' => ['nullable', 'string', 'max:20'],
             'address' => ['nullable', 'string', 'max:500'],
+            'maintenance_mode' => ['nullable', 'boolean'],
+            'maintenance_message' => ['nullable', 'string', 'max:1000'],
             'payment_qr_code' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
         $data = $request->except(['_token', '_method', 'payment_qr_code']);
+
+        // Ensure maintenance_mode is set to 0 if not present in request
+        if (!$request->has('maintenance_mode')) {
+            $data['maintenance_mode'] = '0';
+        }
 
         foreach ($data as $key => $value) {
             Setting::updateOrCreate(
@@ -399,4 +406,5 @@ class AdminSettingsController extends Controller
         return redirect()->route('admin.settings')
             ->with('success', __('admin.settings_updated'));
     }
+
 }

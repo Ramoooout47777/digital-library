@@ -272,6 +272,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
 
     // Notification Settings
     Route::put('/settings/notification', [AdminSettingsController::class, 'updateNotification'])->name('settings.notification');
+    
 });
 
 // ============================================================

@@ -308,6 +308,7 @@ return [
     'registered_at' => '注册时间',
     'total_customers' => '客户总数',
     'new_this_month' => '本月新增',
+    'customer_updated' => '客户信息更新成功',
     
     // ============ COUPON MANAGEMENT ============
     'coupons_menu' => '优惠券',

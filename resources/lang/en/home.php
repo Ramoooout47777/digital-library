@@ -148,6 +148,8 @@ return [
     'no_books_found' => 'No books found',
     'try_different_search' => 'Please try a different search',
     'reset_filters' => 'Reset Filters',
-    'learn_more' => 'Learn More',
+    'learn_more' => 'Learn More',   
+    'books_by_author' => 'Books by Author',
+
 
 ];

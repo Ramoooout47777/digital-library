@@ -70,20 +70,20 @@ return [
     'processing' => 'Processing',
     'approved' => 'Approved',
     'rejected' => 'Rejected',
-    
+
     // ============ TOP CATEGORIES ============
     'top_categories' => 'Top Categories',
     'category' => 'Category',
     'books_count' => 'Books Count',
     'revenue' => 'Revenue',
-    
+
     // ============ RECENT ORDERS ============
     'recent_orders' => 'Recent Orders',
     'order_number' => 'Order Number',
     'customer' => 'Customer',
     'total' => 'Total',
     'date' => 'Date',
-    
+
     // ============ POPULAR BOOKS ============
     'popular_books' => 'Popular Books',
     'title' => 'Title',
@@ -102,7 +102,7 @@ return [
     'no_purchases' => 'No purchases yet',
     'no_description' => 'No description',
     'no_bio' => 'No biography',
-    
+
     // ============ SETTINGS ============
     'settings' => 'Settings',
     'general_settings' => 'General Settings',
@@ -116,7 +116,11 @@ return [
     'address' => 'Address',
     'save_settings' => 'Save Settings',
     'settings_updated' => 'Settings updated successfully',
-    
+    'maintenance_mode' => 'Maintenance Mode',
+    'enable_maintenance_mode' => 'Enable Maintenance Mode',
+    'maintenance_message' => 'Maintenance Message',
+    'maintenance_placeholder' => 'We are currently performing maintenance. Please check back soon.',
+
     // ============ TYPE MANAGEMENT ============
     'type_management' => 'Type Management',
     'types' => 'Types',
@@ -159,7 +163,7 @@ return [
     'type_created' => 'Type Created Successfully',
     'type_updated' => 'Type Updated Successfully',
     'type_deleted' => 'Type Deleted Successfully',
-    
+
     // ============ AUTHOR MANAGEMENT ============
     'author_management' => 'Author Management',
     'authors' => 'Authors',
@@ -186,7 +190,7 @@ return [
     'author_deleted' => 'Author Deleted Successfully',
     'author_created' => 'Author Created Successfully',
     'author_updated' => 'Author Updated Successfully',
-    
+
     // ============ PUBLISHER MANAGEMENT ============
     'publisher_management' => 'Publisher Management',
     'publishers' => 'Publishers',
@@ -224,7 +228,7 @@ return [
     'books_by_publisher' => 'Books by Publisher',
     'publishers_deleted' => 'Publisher Deleted Successfully',
     'publishers_created' => 'Publisher Created Successfully',
-    
+
     // ============ BOOK MANAGEMENT ============
     'books_menu' => 'Books',
     'add_new_book' => 'Add New Book',
@@ -262,7 +266,7 @@ return [
     'discount' => 'Discount',
     'book_activated' => 'Book activated',
     'book_deactivated' => 'Book deactivated',
-    
+
     // ============ ORDER MANAGEMENT ============
     'orders_menu' => 'Orders',
     'order_details' => 'Order Details',
@@ -297,7 +301,7 @@ return [
     'export' => 'Export',
     'export_pdf' => 'Export PDF',
     'orders_exported' => 'Orders exported successfully',
-    
+
     // ============ CUSTOMER MANAGEMENT ============
     'customers_menu' => 'Customers',
     'customer_name' => 'Customer Name',
@@ -310,7 +314,8 @@ return [
     'registered_at' => 'Registered At',
     'total_customers' => 'Total Customers',
     'new_this_month' => 'New This Month',
-    
+    'customer_updated' => 'Customer updated successfully',
+
     // ============ COUPON MANAGEMENT ============
     'coupons_menu' => 'Coupons',
     'coupon_code' => 'Coupon Code',
@@ -324,7 +329,7 @@ return [
     'max_discount_amount' => 'Max Discount Amount',
     'coupon_activated' => 'Coupon activated',
     'coupon_deactivated' => 'Coupon deactivated',
-   
+
     'coupons_menu' => 'Coupons',
     'add_new_coupon' => 'Add New Coupon',
     'edit_coupon' => 'Edit Coupon',
@@ -345,7 +350,7 @@ return [
     'max_discount_hint' => 'Leave empty for no limit',
     'usage_limit_hint' => 'Leave empty for unlimited',
     'expires_at_hint' => 'Leave empty for no expiry',
-    
+
     // ============ BANNER MANAGEMENT ============
     'banners_menu' => 'Banners',
     'banner_title' => 'Banner Title',
@@ -383,7 +388,7 @@ return [
     'view_link' => 'View Link',
     'deactivate' => 'Deactivate',
     'activate' => 'Activate',
-    
+
     // ============ NOTIFICATION MANAGEMENT ============
     'notification_title' => 'Title',
     'notification_message' => 'Message',
@@ -411,7 +416,7 @@ return [
     'delete_all' => 'Delete All',
     'confirm_delete_all' => 'Are you sure you want to delete all notifications?',
     'user_hint' => 'Leave empty to send to all users',
-    
+
     // ============ MENU ============
     'menu' => 'Menu',
     'dashboard_menu' => 'Dashboard',
@@ -427,7 +432,7 @@ return [
     'settings_menu' => 'Settings',
     'profile_menu' => 'Profile',
     'logout_menu' => 'Logout',
-    
+
     // ============ LOGIN ============
     'login' => 'Login',
     'register' => 'Register',
@@ -436,7 +441,7 @@ return [
     'remember_me' => 'Remember Me',
     'forgot_password' => 'Forgot Password?',
     'confirm_password' => 'Confirm Password',
-    
+
     // ============ SORTING ============
     'sort_by' => 'Sort By',
     'name_asc' => 'Name A-Z',
@@ -446,7 +451,7 @@ return [
     'oldest' => 'Oldest',
     'price_low_high' => 'Price Low-High',
     'price_high_low' => 'Price High-Low',
-    
+
     // ============ PRINT SETTINGS ============
     'print_settings' => 'Print Settings',
     'print_type' => 'Print Type',
@@ -454,7 +459,7 @@ return [
     'print_quality' => 'Print Quality',
     'copies' => 'Copies',
     'color_mode' => 'Color Mode',
-    
+
     // ============ ORDER SETTINGS ============
     'order_settings' => 'Order Settings',
     'min_order_amount' => 'Min Order Amount',
@@ -462,7 +467,7 @@ return [
     'order_timeout' => 'Order Timeout (minutes)',
     'auto_confirm' => 'Auto Confirm',
     'payment_grace_period' => 'Payment Grace Period',
-    
+
     // ============ DISCOUNT SETTINGS ============
     'discount_settings' => 'Discount Settings',
     'default_discount' => 'Default Discount',
@@ -470,7 +475,7 @@ return [
     'discount_type' => 'Discount Type',
     'auto_apply' => 'Auto Apply',
     'min_order_for_discount' => 'Min Order for Discount',
-    
+
     // ============ COUPON SETTINGS ============
     'coupon_settings' => 'Coupon Settings',
     'coupon_duration' => 'Coupon Duration',
@@ -478,7 +483,7 @@ return [
     'coupon_auto_apply' => 'Auto Apply',
     'coupon_type' => 'Coupon Type',
     'min_order_for_coupon' => 'Min Order for Coupon',
-    
+
     // ============ NOTIFICATION SETTINGS ============
     'notification_settings' => 'Notification Settings',
     'email_notifications' => 'Email Notifications',
@@ -528,5 +533,5 @@ return [
 
 
 
-    
+
 ];

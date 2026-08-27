@@ -154,5 +154,6 @@ return [
     'try_different_search' => 'សូមសាកល្បងស្វែងរកផ្សេងទៀត',
     'reset_filters' => 'កំណត់ឡើងវិញ',
     'learn_more' => 'ស្វែងយល់ថ្មីៗបន្ថែម',
+    'books_by_author' => 'សៀវភៅរបស់អ្នកនិពន្ធ',
 
 ];

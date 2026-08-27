@@ -308,6 +308,7 @@ return [
     'registered_at' => 'ថ្ងៃចុះឈ្មោះ',
     'total_customers' => 'អតិថិជនសរុប',
     'new_this_month' => 'ថ្មីក្នុងខែនេះ',
+    'customer_updated' => 'ធ្វើបច្ចុប្បន្នភាពព័ត៌មានអតិថិជនជោគជ័យ',
     
     // ============ COUPON MANAGEMENT ============
     'coupons_menu' => 'ប័ណ្ណបញ្ចុះតម្លៃ',

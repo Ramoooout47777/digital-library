@@ -145,4 +145,5 @@ return [
     'try_different_search' => '请尝试其他搜索',
     'reset_filters' => '重置筛选',
     'learn_more' => '了解更多',
+    'books_by_author' => '按作者分类的图书',
 ];
