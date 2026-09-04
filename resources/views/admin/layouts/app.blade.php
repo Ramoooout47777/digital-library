@@ -482,11 +482,12 @@
         <!-- Brand -->
         <div class="p-4 border-b border-gray-800 flex items-center gap-3">
             <div class="brand-icon text-2xl text-blue-400">
-                <i class="fas fa-book-open"></i>
+                   <i class="fas fa-book-reader"></i>
             </div>
             <div class="brand-text">
                 <h1 class="text-lg font-bold">{{ __('admin.hero_badge') }}</h1>
-                <p class="text-xs text-gray-400">{{ __('admin.dashboard_menu') }}</p>
+                <p class="text-xs text-gray-400">{{ auth()->user()->name }}</p>
+                {{-- {{ __('admin.dashboard_menu') }} --}}
             </div>
         </div>
 

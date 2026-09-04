@@ -510,7 +510,7 @@
             <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-indigo-400 flex items-center justify-center shadow-xl shadow-cyan-500/10 group-hover:scale-105 transition">
                 <i class="fas fa-book-open text-slate-900 text-lg"></i>
             </div>
-            <span class="text-xl font-bold tracking-tight dark:text-slate-100 light:text-slate-800">{{ config('app.name') }}</span>
+            <span class="text-xl font-bold tracking-tight dark:text-slate-100 light:text-slate-800">{{ __('home.hero_badge') ?? 'Digital Library' }}</span>
         </a>
 
         <!-- Desktop Nav -->
@@ -1296,7 +1296,7 @@
                     <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-indigo-400 flex items-center justify-center">
                         <i class="fas fa-book-open text-slate-900 text-sm"></i>
                     </div>
-                    <span class="text-base font-bold dark:text-slate-100 light:text-slate-800">{{ config('app.name') }}</span>
+                    <span class="text-base font-bold dark:text-slate-100 light:text-slate-800">{{ __('home.hero_badge') ?? 'Digital Library' }}</span>
                 </div>
                 <p class="text-sm dark:text-slate-500 light:text-slate-500 leading-relaxed max-w-xs">
                     {{ __('home.footer_desc') ?? 'A modern digital library for the next generation of readers.' }}
@@ -1351,7 +1351,7 @@
         </div>
 
         <div class="mt-12 pt-8 border-t dark:border-slate-800/40 light:border-slate-200/60 text-center text-sm dark:text-slate-500 light:text-slate-500">
-            <p>&copy; {{ date('Y') }} {{ config('app.name') }}. {{ __('home.all_rights_reserved') ?? 'All rights reserved.' }}</p>
+            <p>&copy; {{ date('Y') }} {{ __('home.hero_badge') ?? 'Digital Library' }}. {{ __('home.all_rights_reserved') ?? 'All rights reserved.' }}</p>
         </div>
     </div>
 </footer>
