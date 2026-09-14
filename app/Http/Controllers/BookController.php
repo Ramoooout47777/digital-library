@@ -85,6 +85,12 @@ class BookController extends Controller
         $canRead = $book->is_free || (auth()->check() && auth()->user()->hasPurchased($book));
         $canBuy = auth()->check() && ! $book->is_free && ! auth()->user()->hasPurchased($book);
 
+        // Get reading progress
+        $progress = null;
+        if (auth()->check()) {
+            $progress = $book->userProgress(auth()->user());
+        }
+
         // Get related books
         $relatedBooks = Book::where('category_id', $book->category_id)
             ->where('id', '!=', $book->id)
@@ -95,7 +101,7 @@ class BookController extends Controller
         // Load reviews
         $reviews = $book->reviews()->with('user')->where('status', true)->latest()->paginate(10);
 
-        return view('books.show', compact('book', 'relatedBooks', 'canRead', 'canBuy', 'reviews'));
+        return view('books.show', compact('book', 'relatedBooks', 'canRead', 'canBuy', 'reviews', 'progress'));
     }
 
     /**
@@ -170,11 +176,46 @@ class BookController extends Controller
         // Increment views (reading counts as a view)
         $book->incrementViews();
 
-        $path = Storage::disk('public')->path($book->pdf_file);
+        $progress = null;
+        if (auth()->check()) {
+            $progress = \App\Models\ReadingProgress::firstOrCreate(
+                ['user_id' => auth()->id(), 'book_id' => $book->id],
+                ['current_page' => 1, 'total_pages' => $book->pages]
+            );
+        }
 
-        // Return file for inline viewing in browser
-        return response()->file($path, [
-            'Content-Type' => 'application/pdf',
+        $pdfUrl = asset('storage/' . $book->pdf_file);
+
+        return view('books.read', compact('book', 'progress', 'pdfUrl'));
+    }
+
+    /**
+     * Update reading progress via AJAX.
+     */
+    public function updateProgress(Request $request, Book $book)
+    {
+        $request->validate([
+            'current_page' => 'required|integer|min:1',
+            'total_pages' => 'nullable|integer|min:1',
+        ]);
+
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $progress = \App\Models\ReadingProgress::updateOrCreate(
+            ['user_id' => auth()->id(), 'book_id' => $book->id],
+            [
+                'current_page' => $request->current_page,
+                'total_pages' => $request->total_pages ?? $book->pages,
+                'percentage' => $request->total_pages ? ($request->current_page / $request->total_pages) * 100 : 0,
+                'last_read_at' => now()
+            ]
+        );
+
+        return response()->json([
+            'success' => true,
+            'progress' => $progress
         ]);
     }
 

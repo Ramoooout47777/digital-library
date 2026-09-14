@@ -524,11 +524,11 @@
         <!-- Right Side -->
         <div class="flex items-center gap-3">
            @auth
-                <a href="{{ route('admin.dashboard') }}" 
+                <a href="{{ route('admin.dashboard') }}"
                 class="admin-link hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-sm font-medium text-slate-700 hover:text-indigo-600 bg-white/80 hover:bg-indigo-50 border border-slate-200/80 hover:border-indigo-100 shadow-sm hover:shadow transition-all duration-200 group">
-                    
+
                     <i class="fas fa-tachometer-alt text-xs text-slate-400 group-hover:text-indigo-600 group-hover:scale-110 transition-transform duration-200"></i>
-                    
+
                     <span class="hidden md:inline group-hover:translate-x-0.5 transition-transform duration-200">
                         {{ __('home.dashboard') ?? 'Dashboard' }}
                     </span>
@@ -539,7 +539,7 @@
             <!-- CHAT ICON -->
             <!-- ============================================================ -->
             @auth
-                <a href="{{ route('chat.index') }}" 
+                <a href="{{ route('chat.index') }}"
                    class="neu-button w-11 h-11 rounded-xl flex items-center justify-center text-sm p-0 flex-shrink-0 relative">
                     <i class="fas fa-comment-dots text-lg"></i>
                     @if(isset($unreadChatCount) && $unreadChatCount > 0)
@@ -836,6 +836,55 @@
         </div>
     </div>
 </section>
+
+<!-- ============================================================ -->
+<!-- CURRENTLY READING SECTION -->
+<!-- ============================================================ -->
+@auth
+    @if(isset($currentlyReading) && $currentlyReading->count() > 0)
+    <section class="section-padding border-t dark:border-slate-800/40 light:border-slate-200/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <p class="text-sm font-medium text-cyan-400 tracking-[0.15em] uppercase mb-2">Resume</p>
+                    <h2 class="heading-lg dark:text-slate-100 light:text-slate-900">{{ __('home.currently_reading') ?? 'Currently Reading' }}</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach($currentlyReading as $progress)
+                    <div class="neu-card p-4 flex gap-4 items-center">
+                        <div class="w-20 h-28 flex-shrink-0 rounded-xl overflow-hidden shadow-lg">
+                            @if($progress->book->cover)
+                                <img src="{{ asset('storage/' . $progress->book->cover) }}" alt="{{ $progress->book->title }}" class="w-full h-full object-cover">
+                            @else
+                                <div class="w-full h-full bg-slate-800 flex items-center justify-center">
+                                    <i class="fas fa-book text-slate-600"></i>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold dark:text-slate-200 light:text-slate-800">{{ $progress->book->title }}</h4>
+                            <p class="text-xs dark:text-slate-500 light:text-slate-500 mb-2">{{ $progress->book->author->name ?? 'N/A' }}</p>
+
+                            <div class="w-full bg-slate-700 rounded-full h-2 mb-1">
+                                <div class="bg-cyan-500 h-2 rounded-full" style="width: {{ $progress->percentage }}%"></div>
+                            </div>
+                            <div class="flex justify-between text-[10px] dark:text-slate-400">
+                                <span>{{ round($progress->percentage) }}% complete</span>
+                                <span>Page {{ $progress->current_page }} of {{ $progress->total_pages }}</span>
+                            </div>
+                        </div>
+                        <a href="{{ route('books.read', $progress->book) }}" class="neu-button-primary w-12 h-12 flex items-center justify-center rounded-full flex-shrink-0">
+                            <i class="fas fa-play ml-1"></i>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
+@endauth
 
 <!-- ============================================================ -->
 <!-- FEATURES SECTION -->

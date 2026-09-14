@@ -102,7 +102,20 @@ class HomeController extends Controller
         // ============================================================
         $banners = Banner::active()->byPosition('home')->ordered()->get();
 
-        return view('home', compact('popularBooks', 'freeBooks', 'categories', 'stats', 'settings', 'banners'));
+        // ============================================================
+        // CURRENTLY READING (if auth)
+        // ============================================================
+        $currentlyReading = collect();
+        if (auth()->check()) {
+            $currentlyReading = \App\Models\ReadingProgress::with('book.author')
+                ->where('user_id', auth()->id())
+                ->where('percentage', '<', 100)
+                ->orderBy('last_read_at', 'desc')
+                ->limit(4)
+                ->get();
+        }
+
+        return view('home', compact('popularBooks', 'freeBooks', 'categories', 'stats', 'settings', 'banners', 'currentlyReading'));
     }
 
      // ============================================================

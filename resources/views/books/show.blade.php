@@ -349,12 +349,27 @@
 
                 @if($book->pdf_file && $canRead)
                     <!-- User can read the book (Free or Purchased) -->
-                    <button onclick="togglePDFViewer()"
-                            id="toggleReaderBtn"
-                            class="btn-animated w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
-                        <i class="fas fa-book-open" id="readerIcon"></i>
-                        <span id="readerBtnText">{{ __('book.read_online') ?? 'អានសៀវភៅ' }}</span>
-                    </button>
+                    <a href="{{ route('books.read', $book) }}"
+                       class="btn-animated w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
+                        <i class="fas fa-book-open"></i>
+                        @if($progress && $progress->current_page > 1)
+                            {{ __('book.continue_reading') ?? 'បន្តការអាន' }} ({{ $progress->current_page }})
+                        @else
+                            {{ __('book.read_online') ?? 'អានសៀវភៅ' }}
+                        @endif
+                    </a>
+
+                    @if($progress && $progress->percentage > 0)
+                        <div class="mt-2 px-1">
+                            <div class="flex justify-between text-[10px] mb-1 dark:text-gray-400">
+                                <span>{{ __('book.reading_progress') ?? 'វឌ្ឍនភាពនៃការអាន' }}</span>
+                                <span>{{ round($progress->percentage) }}%</span>
+                            </div>
+                            <div class="w-full bg-slate-700 rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-cyan-500 h-1.5 rounded-full transition-all duration-500" style="width: {{ $progress->percentage }}%"></div>
+                            </div>
+                        </div>
+                    @endif
                 @elseif($book->pdf_file && !$canRead)
                     <!-- User cannot read - Show Buy button -->
                     <div class="relative">

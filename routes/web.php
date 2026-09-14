@@ -140,6 +140,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Reviews
     Route::post('/books/{book}/reviews', [BookController::class, 'storeReview'])->name('books.reviews.store');
 
+    // Reading Progress
+    Route::post('/books/{book}/progress', [BookController::class, 'updateProgress'])->name('books.progress.update');
+
 });
 
 // ============================================================
@@ -272,7 +275,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
 
     // Notification Settings
     Route::put('/settings/notification', [AdminSettingsController::class, 'updateNotification'])->name('settings.notification');
-    
+
 });
 
 // ============================================================

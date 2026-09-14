@@ -27,7 +27,14 @@ class ProfileController extends Controller
         $reviewsCount = $user->reviews()->count();
 
         // Get recent purchased books
-        $purchasedBooks = $user->purchases()->whereHas('book')->with('book.author')->latest()->limit(5)->get();
+        $purchasedBooks = $user->purchases()
+            ->whereHas('book')
+            ->with(['book.author', 'book.readingProgress' => function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            }])
+            ->latest()
+            ->limit(5)
+            ->get();
 
         // Get recent orders
         $recentOrders = Order::where('user_id', $user->id)
@@ -138,9 +145,12 @@ class ProfileController extends Controller
     }
      public function purchasedBooks()
     {
-        $purchasedBooks = Auth::user()->purchases()
+        $user = Auth::user();
+        $purchasedBooks = $user->purchases()
             ->whereHas('book')
-            ->with('book.author')
+            ->with(['book.author', 'book.readingProgress' => function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            }])
             ->latest()
             ->paginate(12);
 
@@ -164,7 +174,7 @@ class ProfileController extends Controller
             abort(404, 'PDF file not found.');
         }
 
-        return view('profile.read-book', compact('purchase'));
+        return redirect()->route('books.read', $purchase->book);
     }
 
     /**

@@ -65,29 +65,29 @@ class Book extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($book) {
             if (empty($book->slug)) {
                 $book->slug = $book->generateUniqueSlug();
             }
-            
+
             // Calculate final price
             $book->final_price = $book->calculateFinalPrice();
         });
-        
+
         static::updating(function ($book) {
             // Regenerate slug if title changes
             if ($book->isDirty('title')) {
                 $book->slug = $book->generateUniqueSlug();
             }
-            
+
             // Recalculate final price when price or discount changes
             if ($book->isDirty(['price', 'discount', 'is_free'])) {
                 $book->final_price = $book->calculateFinalPrice();
             }
         });
     }
-    
+
     /**
      * Generate a unique slug from the title, with fallback for non-Latin characters
      */
@@ -95,21 +95,21 @@ class Book extends Model
     {
         // Try to create slug from title
         $slug = Str::slug($this->title);
-        
+
         // If slug is empty (non-Latin characters), use ID with a base
         if (empty($slug)) {
             $slug = 'book-' . ($this->id ?? Str::uuid());
         }
-        
+
         // Ensure uniqueness
         $count = static::where('slug', $slug)
             ->where('id', '!=', $this->id ?? null)
             ->count();
-        
+
         if ($count > 0) {
             $slug = $slug . '-' . ($count + 1);
         }
-        
+
         return $slug;
     }
 
@@ -154,6 +154,16 @@ class Book extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function readingProgress()
+    {
+        return $this->hasMany(ReadingProgress::class);
+    }
+
+    public function userProgress(User $user)
+    {
+        return $this->readingProgress()->where('user_id', $user->id)->first();
     }
 
     public function favorites()
@@ -206,10 +216,10 @@ class Book extends Model
         if ($this->is_free) {
             return 0;
         }
-        
+
         $price = $this->price ?? 0;
         $discount = $this->discount ?? 0;
-        
+
         return max(0, $price - $discount);
     }
 
@@ -218,7 +228,7 @@ class Book extends Model
         if ($this->is_free) {
             return true;
         }
-        
+
         return $user->purchases()
             ->where('book_id', $this->id)
             ->where('status', 'active')
@@ -230,7 +240,7 @@ class Book extends Model
         if ($this->is_free) {
             return true;
         }
-        
+
         return $this->isPurchasedBy($user);
     }
 
@@ -248,7 +258,7 @@ class Book extends Model
     {
         $this->load('reviews');
         $reviews = $this->reviews()->where('status', true);
-        
+
         $this->average_rating = $reviews->avg('rating') ?? 0;
         $this->total_ratings = $reviews->count();
         $this->save();

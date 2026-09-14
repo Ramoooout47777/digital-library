@@ -391,6 +391,9 @@ return [
 
     // ============ NOTIFICATION MANAGEMENT ============
     'notification_title' => 'Title',
+    'message' => 'Admin',
+    'type' => 'Type',
+    'user' => 'User',
     'notification_message' => 'Message',
     'notification_type' => 'Type',
     'send_notification' => 'Send Notification',

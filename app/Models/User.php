@@ -62,6 +62,16 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
+    public function readingProgress()
+    {
+        return $this->hasMany(ReadingProgress::class);
+    }
+
+    public function getProgress(Book $book)
+    {
+        return $this->readingProgress()->where('book_id', $book->id)->first();
+    }
+
     public function favorites()
     {
         return $this->belongsToMany(Book::class, 'favorites')->withTimestamps();
@@ -100,7 +110,7 @@ class User extends Authenticatable
         if ($book->is_free) {
             return true;
         }
-        
+
         return $this->hasPurchased($book);
     }
 }

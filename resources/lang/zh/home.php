@@ -146,4 +146,6 @@ return [
     'reset_filters' => '重置筛选',
     'learn_more' => '了解更多',
     'books_by_author' => '按作者分类的图书',
+    'currently_reading' => '目前正在閱讀',   
+
 ];

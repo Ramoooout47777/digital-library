@@ -15,7 +15,15 @@ class CustomerDashboardController extends Controller
 
         return view('home', [
             'orders' => $user->orders()->with('items.book')->latest()->limit(8)->get(),
-            'purchases' => $user->purchases()->with('book.author')->active()->latest()->limit(8)->get(),
+            'purchases' => $user->purchases()->with(['book.author', 'book.readingProgress' => function($q) use ($user) {
+                $q->where('user_id', $user->id);
+            }])->active()->latest()->limit(8)->get(),
+            'currentlyReading' => \App\Models\ReadingProgress::with('book.author')
+                ->where('user_id', $user->id)
+                ->where('percentage', '<', 100)
+                ->orderBy('last_read_at', 'desc')
+                ->limit(4)
+                ->get(),
             'recommendedBooks' => Book::with('author')->available()->where('is_free', true)->latest()->limit(6)->get(),
             'stats' => [
                 'orders' => $user->orders()->count(),

@@ -150,6 +150,8 @@ return [
     'reset_filters' => 'Reset Filters',
     'learn_more' => 'Learn More',   
     'books_by_author' => 'Books by Author',
+    'currently_reading' => 'Currenly Reading',  
+
 
 
 ];
