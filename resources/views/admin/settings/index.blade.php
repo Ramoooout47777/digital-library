@@ -45,6 +45,13 @@
                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
 
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.telegram_channel') ?? 'Telegram Channel URL' }}</label>
+                    <input type="url" name="telegram_channel" value="{{ old('telegram_channel', $settings['telegram_channel'] ?? '') }}"
+                           placeholder="https://t.me/your_channel"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
                 <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.address') }}</label>
                     <textarea name="address" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('address', $settings['address'] ?? '') }}</textarea>

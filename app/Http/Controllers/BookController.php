@@ -164,7 +164,7 @@ class BookController extends Controller
                 ->with('error', 'Please login to read this book');
         }
 
-        if (!$book->is_free && !auth()->user()->hasPurchased($book)) {
+        if (!$book->is_free && !auth()->user()->hasPurchased($book) && !auth()->user()->isAdmin()) {
             abort(403, 'You need to purchase this book to read it');
         }
 

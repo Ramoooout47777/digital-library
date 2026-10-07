@@ -340,8 +340,8 @@
                     if ($book->is_free) {
                         $canRead = true; // Free books are always readable
                     } elseif (auth()->check()) {
-                        // Check if user has purchased the book
-                        if (auth()->user()->hasPurchased($book)) {
+                        // Check if user has purchased the book or is admin
+                        if (auth()->user()->hasPurchased($book) || auth()->user()->isAdmin()) {
                             $canRead = true;
                         }
                     }

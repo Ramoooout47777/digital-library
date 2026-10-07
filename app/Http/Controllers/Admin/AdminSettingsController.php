@@ -72,6 +72,7 @@ class AdminSettingsController extends Controller
             'app_description' => ['nullable', 'string', 'max:500'],
             'contact_email' => ['required', 'email', 'max:255'],
             'contact_phone' => ['nullable', 'string', 'max:20'],
+            'telegram_channel' => ['nullable', 'url', 'max:255'],
             'address' => ['nullable', 'string', 'max:500'],
             'maintenance_mode' => ['nullable', 'boolean'],
             'maintenance_message' => ['nullable', 'string', 'max:1000'],

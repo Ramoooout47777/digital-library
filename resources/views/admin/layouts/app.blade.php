@@ -674,7 +674,7 @@
             <div class="absolute right-0 z-50 mt-2 w-40 origin-top-right rounded-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-md p-1.5 shadow-xl ring-1 ring-slate-900/5 dark:ring-slate-700/50 border border-slate-100 dark:border-slate-700/60 focus:outline-none transition-all">
                 <div class="space-y-0.5">
                     <!-- Khmer -->
-                    <a href="{{ route('admin.switch-language', 'km') }}" 
+                    <a href="{{ route('admin.switch-language', 'km') }}"
                     class="flex items-center justify-between px-3 py-2 text-xs font-medium rounded-xl transition-all duration-150 group/item {{ $currentLocale == 'km' ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white' }}">
                         <div class="flex items-center gap-2.5">
                             <img src="https://flagcdn.com/w40/kh.png" alt="Cambodia" class="w-5 h-3.5 object-cover rounded-[3px] shadow-xs group-hover/item:scale-105 transition-transform">
@@ -686,7 +686,7 @@
                     </a>
 
                     <!-- English -->
-                    <a href="{{ route('admin.switch-language', 'en') }}" 
+                    <a href="{{ route('admin.switch-language', 'en') }}"
                     class="flex items-center justify-between px-3 py-2 text-xs font-medium rounded-xl transition-all duration-150 group/item {{ $currentLocale == 'en' ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white' }}">
                         <div class="flex items-center gap-2.5">
                             <img src="https://flagcdn.com/w40/gb.png" alt="English" class="w-5 h-3.5 object-cover rounded-[3px] shadow-xs group-hover/item:scale-105 transition-transform">
@@ -698,7 +698,7 @@
                     </a>
 
                     <!-- Chinese -->
-                    <a href="{{ route('admin.switch-language', 'zh') }}" 
+                    <a href="{{ route('admin.switch-language', 'zh') }}"
                     class="flex items-center justify-between px-3 py-2 text-xs font-medium rounded-xl transition-all duration-150 group/item {{ $currentLocale == 'zh' ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white' }}">
                         <div class="flex items-center gap-2.5">
                             <img src="https://flagcdn.com/w40/cn.png" alt="China" class="w-5 h-3.5 object-cover rounded-[3px] shadow-xs group-hover/item:scale-105 transition-transform">
@@ -723,7 +723,9 @@
                     <button id="notification-toggle" class="text-gray-600 hover:text-gray-800 relative p-2 rounded-full hover:bg-gray-100 transition">
                         <i class="fas fa-bell text-xl"></i>
                         @php
-                            $unreadCount = \App\Models\Notification::where('is_read', false)->count();
+                            $unreadCount = \App\Models\Notification::where(function($q) {
+                                $q->where('user_id', auth()->id())->orWhereNull('user_id');
+                            })->where('is_read', false)->count();
                         @endphp
                         @if($unreadCount > 0)
                             <span class="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
@@ -747,7 +749,9 @@
                         </div>
                         <div class="max-h-80 overflow-y-auto">
                             @php
-                                $notifications = \App\Models\Notification::latest()->limit(5)->get();
+                                $notifications = \App\Models\Notification::where(function($q) {
+                                    $q->where('user_id', auth()->id())->orWhereNull('user_id');
+                                })->latest()->limit(5)->get();
                             @endphp
                             @forelse($notifications as $notification)
                                 <a href="#" class="dropdown-item {{ $notification->is_read ? '' : 'bg-blue-50' }}">
@@ -782,11 +786,11 @@
         <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->name) . '&background=6366f1&color=fff&size=32' }}"
              alt="{{ auth()->user()->name }}"
              class="w-8 h-8 rounded-lg object-cover ring-2 ring-indigo-500/20 dark:ring-indigo-400/30">
-        
+
         <span class="text-xs font-semibold text-slate-700 dark:text-slate-200 hidden sm:block">
             {{ auth()->user()->name }}
         </span>
-        
+
         <!-- Arrow rotates 180 deg when dropdown opens -->
         <i class="fas fa-chevron-down text-slate-400 dark:text-slate-500 text-[10px] hidden sm:block transition-transform duration-300 group-open:rotate-180"></i>
     </summary>
@@ -806,14 +810,14 @@
         <!-- Links -->
         <div class="space-y-0.5">
             <!-- Profile -->
-            <a href="{{ route('admin.profile') }}" 
+            <a href="{{ route('admin.profile') }}"
                class="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all duration-150 group/item">
                 <i class="fas fa-user w-4 text-slate-400 dark:text-slate-500 group-hover/item:text-indigo-600 dark:group-hover/item:text-indigo-400 transition-colors"></i>
                 <span>{{ __('admin.profile_menu') }}</span>
             </a>
 
             <!-- Settings -->
-            <a href="{{ route('admin.settings') }}" 
+            <a href="{{ route('admin.settings') }}"
                class="flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all duration-150 group/item">
                 <i class="fas fa-cog w-4 text-slate-400 dark:text-slate-500 group-hover/item:text-indigo-600 dark:group-hover/item:text-indigo-400 transition-colors"></i>
                 <span>{{ __('admin.settings_menu') }}</span>
@@ -825,7 +829,7 @@
             <!-- Logout -->
             <form action="{{ route('logout') }}" method="POST" class="m-0">
                 @csrf
-                <button type="submit" 
+                <button type="submit"
                         class="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-xl transition-all duration-150 group/item text-left cursor-pointer">
                     <i class="fa-solid fa-right-to-bracket w-4 text-red-500 dark:text-red-400 group-hover/item:scale-110 transition-transform"></i>
                     <span>{{ __('admin.logout_menu') }}</span>

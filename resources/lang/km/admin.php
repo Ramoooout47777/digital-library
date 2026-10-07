@@ -69,20 +69,20 @@ return [
     'processing' => 'កំពុងដំណើរការ',
     'approved' => 'បានអនុម័ត',
     'rejected' => 'បានបដិសេធ',
-    
+
     // ============ TOP CATEGORIES ============
     'top_categories' => 'ប្រភេទកំពូល',
     'category' => 'ប្រភេទ',
     'books_count' => 'ចំនួនសៀវភៅ',
     'revenue' => 'ចំណូល',
-    
+
     // ============ RECENT ORDERS ============
     'recent_orders' => 'ការកម្មង់ថ្មីៗ',
     'order_number' => 'លេខកម្មង់',
     'customer' => 'អតិថិជន',
     'total' => 'សរុប',
     'date' => 'កាលបរិច្ឆេទ',
-    
+
     // ============ POPULAR BOOKS ============
     'popular_books' => 'សៀវភៅពេញនិយម',
     'title' => 'ចំណងជើង',
@@ -101,7 +101,7 @@ return [
     'no_purchases' => 'មិនទាន់មានការទិញ',
     'no_description' => 'មិនមានការពិពណ៌នា',
     'no_bio' => 'មិនមានជីវប្រវត្តិ',
-    
+
     // ============ SETTINGS ============
     'settings' => 'ការកំណត់',
     'general_settings' => 'ការកំណត់ទូទៅ',
@@ -112,10 +112,11 @@ return [
     'name' => 'ឈ្មោះ',
     'contact_email' => 'អ៊ីមែលទំនាក់ទំនង',
     'contact_phone' => 'លេខទូរស័ព្ទ',
+    'telegram_channel' => 'តំណ Telegram Channel',
     'address' => 'អាសយដ្ឋាន',
     'save_settings' => 'រក្សាទុកការកំណត់',
     'settings_updated' => 'ការកំណត់ត្រូវបានធ្វើបច្ចុប្បន្នភាព',
-    
+
     // ============ TYPE MANAGEMENT ============
     'type_management' => 'ការគ្រប់គ្រងប្រភេទ',
     'types' => 'ប្រភេទ',
@@ -158,7 +159,7 @@ return [
     'type_created' => 'បង្កើតប្រភេទបានជោគជ័យ',
     'type_updated' => 'ធ្វើបច្ចុប្បន្នភាពប្រភេទបានជោគជ័យ',
     'type_deleted' => 'លុបប្រភេទបានជោគជ័យ',
-    
+
     // ============ AUTHOR MANAGEMENT ============
     'author_management' => 'ការគ្រប់គ្រងអ្នកនិពន្ធ',
     'authors' => 'អ្នកនិពន្ធ',
@@ -185,7 +186,7 @@ return [
     'author_deleted' => 'លុបអ្នកនិពន្ធបានជោគជ័យ',
     'author_created' => 'បង្កើតអ្នកនិពន្ធបានជោគជ័យ',
     'author_updated' => 'ធ្វើបច្ចុប្បន្នភាពអ្នកនិពន្ធបានជោគជ័យ',
-    
+
     // ============ PUBLISHER MANAGEMENT ============
     'publisher_management' => 'ការគ្រប់គ្រងគ្រឹះស្ថានបោះពុម្ព',
     'publishers' => 'គ្រឹះស្ថានបោះពុម្ព',
@@ -223,7 +224,7 @@ return [
     'books_by_publisher' => 'សៀវភៅតាមរោងពុម្ព',
     'publishers_deleted' => 'លុបរោងពុម្ពបានជោគជ័យ',
     'publishers_created' => 'បង្កើតរោងពុម្ពបានជោគជ័យ',
-    
+
     // ============ BOOK MANAGEMENT ============
     'books_menu' => 'សៀវភៅ',
     'add_new_book' => 'បន្ថែមសៀវភៅថ្មី',
@@ -261,7 +262,7 @@ return [
     'discount' => 'បញ្ចុះតម្លៃ',
     'book_activated' => 'សៀវភៅត្រូវបានបើក',
     'book_deactivated' => 'សៀវភៅត្រូវបានបិទ',
-    
+
     // ============ ORDER MANAGEMENT ============
     'orders_menu' => 'ការកម្មង់',
     'order_details' => 'ព័ត៌មានលម្អិតការកម្មង់',
@@ -295,7 +296,7 @@ return [
     'export' => 'នាំចេញ',
     'export_pdf' => 'នាំចេញ PDF',
     'orders_exported' => 'ការកម្មង់ត្រូវបាននាំចេញដោយជោគជ័យ',
-    
+
     // ============ CUSTOMER MANAGEMENT ============
     'customers_menu' => 'អតិថិជន',
     'customer_name' => 'ឈ្មោះអតិថិជន',
@@ -309,7 +310,7 @@ return [
     'total_customers' => 'អតិថិជនសរុប',
     'new_this_month' => 'ថ្មីក្នុងខែនេះ',
     'customer_updated' => 'ធ្វើបច្ចុប្បន្នភាពព័ត៌មានអតិថិជនជោគជ័យ',
-    
+
     // ============ COUPON MANAGEMENT ============
     'coupons_menu' => 'ប័ណ្ណបញ្ចុះតម្លៃ',
     'coupon_code' => 'កូដប័ណ្ណ',
@@ -343,7 +344,7 @@ return [
     'max_discount_hint' => 'ទុកចោលដើម្បីគ្មានកំណត់',
     'usage_limit_hint' => 'ទុកចោលដើម្បីគ្មានកំណត់',
     'expires_at_hint' => 'ទុកចោលដើម្បីមិនផុតកំណត់',
-    
+
     // ============ BANNER MANAGEMENT ============
     'banners_menu' => 'បដិបក្ខ',
     'banner_title' => 'ចំណងជើងបដិបក្ខ',
@@ -385,6 +386,7 @@ return [
     // ============ NOTIFICATION MANAGEMENT ============
     'notifications_menu' => 'ការជូនដំណឹង',
     'notification_title' => 'ចំណងជើង',
+    'message' => 'សារ',
     'notification_message' => 'សារ',
     'notification_type' => 'ប្រភេទ',
     'send_notification' => 'ផ្ញើការជូនដំណឹង',
@@ -411,7 +413,7 @@ return [
     'delete_all' => 'លុបទាំងអស់',
     'confirm_delete_all' => 'តើអ្នកចង់លុបការជូនដំណឹងទាំងអស់?',
     'user_hint' => 'ទុកចោលដើម្បីផ្ញើទៅកាន់អ្នកប្រើទាំងអស់',
-    
+
     // ============ MENU ============
     'menu' => 'ម៉ឺនុយ',
     'dashboard_menu' => 'ផ្ទាំងគ្រប់គ្រង',
@@ -427,7 +429,7 @@ return [
     'settings_menu' => 'ការកំណត់',
     'profile_menu' => 'ប្រវត្តិរូប',
     'logout_menu' => 'ចាកចេញ',
-    
+
     // ============ LOGIN ============
     'login' => 'ចូលប្រើប្រាស់',
     'register' => 'ចុះឈ្មោះ',
@@ -436,7 +438,7 @@ return [
     'remember_me' => 'ចងចាំខ្ញុំ',
     'forgot_password' => 'ភ្លេចពាក្យសម្ងាត់?',
     'confirm_password' => 'បញ្ជាក់ពាក្យសម្ងាត់',
-    
+
     // ============ SORTING ============
     'sort_by' => 'តម្រៀបតាម',
     'name_asc' => 'ឈ្មោះ ក-អ',
@@ -446,7 +448,7 @@ return [
     'oldest' => 'ចាស់ជាងគេ',
     'price_low_high' => 'តម្លៃថោក-ថ្លៃ',
     'price_high_low' => 'តម្លៃថ្លៃ-ថោក',
-    
+
     // ============ PRINT SETTINGS ============
     'print_settings' => 'ការកំណត់បោះពុម្ព',
     'print_type' => 'ប្រភេទបោះពុម្ព',
@@ -454,7 +456,7 @@ return [
     'print_quality' => 'គុណភាពបោះពុម្ព',
     'copies' => 'ចំនួនច្បាប់ចម្លង',
     'color_mode' => 'របៀបពណ៌',
-    
+
     // ============ ORDER SETTINGS ============
     'order_settings' => 'ការកំណត់ការកម្មង់',
     'min_order_amount' => 'ចំនួនអប្បបរមា',
@@ -462,7 +464,7 @@ return [
     'order_timeout' => 'រយៈពេលកំណត់ (នាទី)',
     'auto_confirm' => 'បញ្ជាក់ដោយស្វ័យប្រវត្តិ',
     'payment_grace_period' => 'រយៈពេលទូទាត់',
-    
+
     // ============ DISCOUNT SETTINGS ============
     'discount_settings' => 'ការកំណត់បញ្ចុះតម្លៃ',
     'default_discount' => 'បញ្ចុះតម្លៃលំនាំដើម',
@@ -470,7 +472,7 @@ return [
     'discount_type' => 'ប្រភេទបញ្ចុះតម្លៃ',
     'auto_apply' => 'អនុវត្តដោយស្វ័យប្រវត្តិ',
     'min_order_for_discount' => 'ចំនួនអប្បបរមាសម្រាប់បញ្ចុះតម្លៃ',
-    
+
     // ============ COUPON SETTINGS ============
     'coupon_settings' => 'ការកំណត់ប័ណ្ណបញ្ចុះតម្លៃ',
     'coupon_duration' => 'រយៈពេលប័ណ្ណ',
@@ -478,7 +480,7 @@ return [
     'coupon_auto_apply' => 'អនុវត្តដោយស្វ័យប្រវត្តិ',
     'coupon_type' => 'ប្រភេទប័ណ្ណ',
     'min_order_for_coupon' => 'ចំនួនអប្បបរមាសម្រាប់ប័ណ្ណ',
-    
+
     // ============ NOTIFICATION SETTINGS ============
     'notification_settings' => 'ការកំណត់ការជូនដំណឹង',
     'email_notifications' => 'ជូនដំណឹងតាមអ៊ីមែល',

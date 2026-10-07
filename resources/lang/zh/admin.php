@@ -69,20 +69,20 @@ return [
     'processing' => '处理中',
     'approved' => '已批准',
     'rejected' => '已拒绝',
-    
+
     // ============ TOP CATEGORIES ============
     'top_categories' => '热门分类',
     'category' => '分类',
     'books_count' => '图书数量',
     'revenue' => '营收',
-    
+
     // ============ RECENT ORDERS ============
     'recent_orders' => '最近订单',
     'order_number' => '订单号',
     'customer' => '客户',
     'total' => '总计',
     'date' => '日期',
-    
+
     // ============ POPULAR BOOKS ============
     'popular_books' => '热门图书',
     'title' => '标题',
@@ -101,7 +101,7 @@ return [
     'no_purchases' => '暂无购买',
     'no_description' => '暂无描述',
     'no_bio' => '暂无简介',
-    
+
     // ============ SETTINGS ============
     'settings' => '设置',
     'general_settings' => '常规设置',
@@ -112,10 +112,11 @@ return [
     'name' => '姓名',
     'contact_email' => '联系邮箱',
     'contact_phone' => '联系电话',
+    'telegram_channel' => 'Telegram 频道链接',
     'address' => '地址',
     'save_settings' => '保存设置',
     'settings_updated' => '设置已更新',
-    
+
     // ============ TYPE MANAGEMENT ============
     'type_management' => '类型管理',
     'types' => '类型',
@@ -158,7 +159,7 @@ return [
     'type_created' => '成功创建类型',
     'type_updated' => '成功更新类型',
     'type_deleted' => '成功删除类型',
-    
+
     // ============ AUTHOR MANAGEMENT ============
     'author_management' => '作者管理',
     'authors' => '作者',
@@ -185,7 +186,7 @@ return [
     'author_deleted' => '成功删除作者',
     'author_created' => '成功创建作者',
     'author_updated' => '成功更新作者',
-    
+
     // ============ PUBLISHER MANAGEMENT ============
     'publisher_management' => '出版商管理',
     'publishers' => '出版商',
@@ -223,7 +224,7 @@ return [
     'books_by_publisher' => '按出版商分类的图书',
     'publishers_deleted' => '成功删除出版商',
     'publishers_created' => '成功创建出版商',
-    
+
     // ============ BOOK MANAGEMENT ============
     'books_menu' => '图书',
     'add_new_book' => '添加新图书',
@@ -261,14 +262,14 @@ return [
     'discount' => '折扣',
     'book_activated' => '图书已激活',
     'book_deactivated' => '图书已停用',
-    
+
     // ============ ORDER MANAGEMENT ============
     'orders_menu' => '订单',
     'order_details' => '订单详情',
     'order_date' => '订单日期',
     'payment_method' => '支付方式',
     'payment_status' => '支付状态',
-    'payment_qr_code' => '支付二维码', 
+    'payment_qr_code' => '支付二维码',
     'subtotal' => '小计',
     'coupon' => '优惠券',
     'order' => '幻灯片编号',
@@ -295,7 +296,7 @@ return [
     'export' => '导出',
     'export_pdf' => '导出 PDF',
     'orders_exported' => '订单导出成功',
-    
+
     // ============ CUSTOMER MANAGEMENT ============
     'customers_menu' => '客户',
     'customer_name' => '客户姓名',
@@ -309,7 +310,7 @@ return [
     'total_customers' => '客户总数',
     'new_this_month' => '本月新增',
     'customer_updated' => '客户信息更新成功',
-    
+
     // ============ COUPON MANAGEMENT ============
     'coupons_menu' => '优惠券',
     'coupon_code' => '优惠券代码',
@@ -343,7 +344,7 @@ return [
     'max_discount_hint' => '留空表示无限制',
     'usage_limit_hint' => '留空表示无限',
     'expires_at_hint' => '留空表示永不过期',
-    
+
     // ============ BANNER MANAGEMENT ============
     'banners_menu' => '横幅',
     'banner_title' => '横幅标题',
@@ -381,7 +382,7 @@ return [
     'deactivate' => '停用',
     'activate' => '激活',
     'select_all' => '全选',
-    
+
     // ============ NOTIFICATION MANAGEMENT ============
     'notifications_menu' => '通知',
     'notification_title' => '标题',
@@ -410,7 +411,7 @@ return [
     'delete_all' => '删除全部',
     'confirm_delete_all' => '您确定要删除所有通知吗？',
     'user_hint' => '留空以发送给所有用户',
-        
+
     // ============ MENU ============
     'menu' => '菜单',
     'dashboard_menu' => '仪表盘',
@@ -426,7 +427,7 @@ return [
     'settings_menu' => '设置',
     'profile_menu' => '个人资料',
     'logout_menu' => '退出',
-    
+
     // ============ LOGIN ============
     'login' => '登录',
     'register' => '注册',
@@ -435,7 +436,7 @@ return [
     'remember_me' => '记住我',
     'forgot_password' => '忘记密码？',
     'confirm_password' => '确认密码',
-    
+
     // ============ SORTING ============
     'sort_by' => '排序方式',
     'name_asc' => '名称 A-Z',
@@ -445,7 +446,7 @@ return [
     'oldest' => '最旧',
     'price_low_high' => '价格低-高',
     'price_high_low' => '价格高-低',
-    
+
     // ============ PRINT SETTINGS ============
     'print_settings' => '打印设置',
     'print_type' => '打印类型',
@@ -453,7 +454,7 @@ return [
     'print_quality' => '打印质量',
     'copies' => '份数',
     'color_mode' => '颜色模式',
-    
+
     // ============ ORDER SETTINGS ============
     'order_settings' => '订单设置',
     'min_order_amount' => '最低订单金额',
@@ -461,7 +462,7 @@ return [
     'order_timeout' => '订单超时(分钟)',
     'auto_confirm' => '自动确认',
     'payment_grace_period' => '付款宽限期',
-    
+
     // ============ DISCOUNT SETTINGS ============
     'discount_settings' => '折扣设置',
     'default_discount' => '默认折扣',
@@ -469,7 +470,7 @@ return [
     'discount_type' => '折扣类型',
     'auto_apply' => '自动应用',
     'min_order_for_discount' => '最低订单金额',
-    
+
     // ============ COUPON SETTINGS ============
     'coupon_settings' => '优惠券设置',
     'coupon_duration' => '优惠券有效期',
@@ -477,7 +478,7 @@ return [
     'coupon_auto_apply' => '自动应用',
     'coupon_type' => '优惠券类型',
     'min_order_for_coupon' => '最低订单金额',
-    
+
     // ============ NOTIFICATION SETTINGS ============
     'notification_settings' => '通知设置',
     'email_notifications' => '邮件通知',

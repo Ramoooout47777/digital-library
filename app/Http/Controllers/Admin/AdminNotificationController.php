@@ -94,27 +94,9 @@ class AdminNotificationController extends Controller
     /**
      * Mark a notification as read (AJAX).
      */
-    public function markAsRead($id)
+    public function markAsRead(Notification $notification)
     {
         try {
-            // Find notification with error handling
-            $notification = Notification::find($id);
-            
-            if (!$notification) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Notification not found',
-                ], 404);
-            }
-            
-            // Check if user has permission (optional)
-            // if ($notification->user_id && $notification->user_id !== auth()->id()) {
-            //     return response()->json([
-            //         'success' => false,
-            //         'message' => 'Unauthorized',
-            //     ], 403);
-            // }
-            
             $notification->markAsRead();
 
             return response()->json([
@@ -130,12 +112,13 @@ class AdminNotificationController extends Controller
     }
 
     /**
-     * Mark all notifications as read (AJAX).
+     * Mark all notifications as read for the current user (AJAX).
      */
     public function markAllAsRead(Request $request)
     {
         try {
-            Notification::where('is_read', false)
+            Notification::where('user_id', auth()->id())
+                ->where('is_read', false)
                 ->update(['is_read' => true, 'read_at' => now()]);
 
             return response()->json([
@@ -153,19 +136,9 @@ class AdminNotificationController extends Controller
     /**
      * Delete a notification (AJAX).
      */
-    public function destroy($id)
+    public function destroy(Notification $notification)
     {
         try {
-            // Find notification with error handling
-            $notification = Notification::find($id);
-            
-            if (!$notification) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Notification not found',
-                ], 404);
-            }
-            
             $notification->delete();
 
             return response()->json([
@@ -207,7 +180,7 @@ class AdminNotificationController extends Controller
     public function getNotifications(Request $request)
     {
         $userId = $request->user()?->id;
-        
+
         $notifications = Notification::where('user_id', $userId)
             ->orWhereNull('user_id')
             ->orderBy('created_at', 'desc')

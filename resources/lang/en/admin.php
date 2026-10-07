@@ -113,6 +113,7 @@ return [
     'name' => 'Name',
     'contact_email' => 'Contact Email',
     'contact_phone' => 'Contact Phone',
+    'telegram_channel' => 'Telegram Channel URL',
     'address' => 'Address',
     'save_settings' => 'Save Settings',
     'settings_updated' => 'Settings updated successfully',
@@ -391,7 +392,7 @@ return [
 
     // ============ NOTIFICATION MANAGEMENT ============
     'notification_title' => 'Title',
-    'message' => 'Admin',
+    'message' => 'Message',
     'type' => 'Type',
     'user' => 'User',
     'notification_message' => 'Message',

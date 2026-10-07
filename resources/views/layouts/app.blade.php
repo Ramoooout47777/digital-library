@@ -525,6 +525,25 @@
         <!-- Right Side -->
         <div class="flex items-center gap-3">
             @auth
+                <!-- Notifications -->
+                <div class="relative group" id="notification-wrapper">
+                    <button id="notification-btn" class="neu-button w-11 h-11 rounded-xl flex items-center justify-center text-sm p-0 flex-shrink-0 relative">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span id="unread-count" class="hidden absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] flex items-center justify-center font-bold">0</span>
+                    </button>
+
+                    <div id="notification-dropdown" class="hidden absolute right-0 mt-2 w-80 neu-card p-0 z-50 overflow-hidden">
+                        <div class="p-4 border-b dark:border-slate-800/40 flex justify-between items-center">
+                            <h3 class="font-bold text-sm dark:text-white">Notifications</h3>
+                            <a href="{{ route('notifications.index') }}" class="text-[10px] text-cyan-400 hover:underline">View All</a>
+                        </div>
+                        <div id="notification-list" class="max-h-96 overflow-y-auto">
+                            <!-- Ajax loaded -->
+                            <div class="p-8 text-center text-xs dark:text-gray-500">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
                 <a href="{{ route('admin.dashboard') }}" class="admin-link hidden sm:flex">
                     <i class="fas fa-tachometer-alt text-xs"></i>
                     <span class="hidden md:inline ml-2">{{ __('home.dashboard') ?? 'Dashboard' }}</span>
@@ -781,6 +800,56 @@
             document.getElementById('mobile-menu')?.classList.add('hidden');
         }
     });
+
+    // ─── Notifications Dropdown ───
+    @auth
+    const notifBtn = document.getElementById('notification-btn');
+    const notifDropdown = document.getElementById('notification-dropdown');
+    const notifList = document.getElementById('notification-list');
+    const unreadBadge = document.getElementById('unread-count');
+
+    function fetchNotifications() {
+        fetch('{{ route("notifications.recent") }}')
+            .then(res => res.json())
+            .then(data => {
+                if (data.unread_count > 0) {
+                    unreadBadge.textContent = data.unread_count > 9 ? '9+' : data.unread_count;
+                    unreadBadge.classList.remove('hidden');
+                } else {
+                    unreadBadge.classList.add('hidden');
+                }
+
+                if (data.notifications.length === 0) {
+                    notifList.innerHTML = '<div class="p-8 text-center text-xs dark:text-gray-500">No new notifications</div>';
+                } else {
+                    notifList.innerHTML = data.notifications.map(n => `
+                        <div class="p-4 border-b dark:border-slate-800/40 hover:bg-slate-800/30 transition cursor-pointer ${n.is_read ? 'opacity-60' : ''}" onclick="window.location.href='/notifications'">
+                            <p class="text-xs font-bold dark:text-white mb-1">${n.title}</p>
+                            <p class="text-[10px] dark:text-gray-400 line-clamp-2">${n.message}</p>
+                            <p class="text-[9px] dark:text-gray-600 mt-1">${new Date(n.created_at).toLocaleString()}</p>
+                        </div>
+                    `).join('');
+                }
+            });
+    }
+
+    if (notifBtn) {
+        notifBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notifDropdown.classList.toggle('hidden');
+            fetchNotifications();
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!notifDropdown.contains(e.target) && e.target !== notifBtn) {
+                notifDropdown.classList.add('hidden');
+            }
+        });
+    }
+
+    // Initial check
+    fetchNotifications();
+    @endauth
 </script>
 
 @stack('scripts')

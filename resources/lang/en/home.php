@@ -4,6 +4,7 @@
 return [
     // ============ NAVIGATION ============
     'welcome' => 'Welcome',
+    'digitel' => 'Library',
     'home' => 'Home',
     'books' => 'Books',
     'categories' => 'Categories',
@@ -14,7 +15,7 @@ return [
     'logout' => 'Logout',
     'dashboard' => 'Dashboard',
     'website' => 'Website',
-    
+
     // ============ HERO ============
     'hero_badge' => 'Digital Library',
     'hero_title' => 'Discover. Read.',
@@ -22,7 +23,7 @@ return [
     'hero_subtitle' => 'A curated digital library with thousands of books. Read anywhere, anytime.',
     'hero_quote' => 'Reading is to the mind what exercise is to the body.',
     'hero_image_alt' => 'Reading books',
-    
+
     // ============ BUTTONS ============
     'explore_books' => 'Explore Books',
     'view_categories' => 'View Categories',
@@ -32,13 +33,13 @@ return [
     'enter_email' => 'Enter your email',
     'email' => 'Email',
 
-    
+
     // ============ STATISTICS ============
     'total_books' => 'Total Books',
     'total_users' => 'Readers',
     'total_authors' => 'Authors',
     'total_orders' => 'Orders',
-    
+
     // ============ FEATURES ============
     'why_choose_us' => 'Why Choose Us?',
     'features_subtitle' => 'Designed for the modern reader.',
@@ -50,7 +51,7 @@ return [
     'feature_download_desc' => 'Download and read offline.',
     'feature_quality' => 'Premium Quality',
     'feature_quality_desc' => 'Carefully curated content.',
-    
+
     // ============ BOOKS ============
     'popular_books' => 'Popular Books',
     'free_books' => 'Free Books',
@@ -62,7 +63,7 @@ return [
     'popular' => 'Popular',
     'filter' => 'Filter',
     'reset' => 'Reset',
-    
+
     // ============ CATEGORIES ============
     'categories_subtitle' => 'Find your next read by category.',
     'no_categories' => 'No categories available.',
@@ -96,11 +97,16 @@ return [
     'about_point3' => 'Download books for offline reading.',
     'about_point4' => 'Affordable pricing with free books available.',
     'about_image_alt' => 'Library',
-    
-    // ============ NEWSLETTER ============
+
+    // ============ NEWSLETTER & TELEGRAM ============
     'newsletter_title' => 'Stay in the Loop',
-    'newsletter_subtitle' => 'Get the latest book releases and exclusive offers.',
-    
+    'newsletter_subtitle' => 'Get the latest book releases and exclusive offers directly in your inbox.',
+    'join_telegram' => 'Join Our Telegram Channel',
+    'telegram_subtitle' => 'Get instant updates, free book drops, and community discussions directly on Telegram.',
+    'join_now' => 'Join Now',
+    'telegram_community' => 'Telegram Community',
+    'telegram_members' => 'Join 5,000+ Readers',
+
     // ============ FOOTER ============
     'quick_links' => 'Quick Links',
     'support' => 'Support',
@@ -148,9 +154,9 @@ return [
     'no_books_found' => 'No books found',
     'try_different_search' => 'Please try a different search',
     'reset_filters' => 'Reset Filters',
-    'learn_more' => 'Learn More',   
+    'learn_more' => 'Learn More',
     'books_by_author' => 'Books by Author',
-    'currently_reading' => 'Currenly Reading',  
+    'currently_reading' => 'Currenly Reading',
 
 
 

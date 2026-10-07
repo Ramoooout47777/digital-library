@@ -140,6 +140,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Reviews
     Route::post('/books/{book}/reviews', [BookController::class, 'storeReview'])->name('books.reviews.store');
 
+    // Notifications
+    Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/recent', [\App\Http\Controllers\NotificationController::class, 'getRecent'])->name('notifications.recent');
+    Route::patch('/notifications/{notification}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-read');
+    Route::post('/notifications/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-read');
+
     // Reading Progress
     Route::post('/books/{book}/progress', [BookController::class, 'updateProgress'])->name('books.progress.update');
 
