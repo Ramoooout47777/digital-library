@@ -21,9 +21,9 @@ class BookService
     /**
      * Create a new book
      */
-    public function createBook(array $data, $cover = null, $pdf = null)
+    public function createBook(array $data, $cover = null, $pdf = null, $samplePdf = null)
     {
-        return DB::transaction(function () use ($data, $cover, $pdf) {
+        return DB::transaction(function () use ($data, $cover, $pdf, $samplePdf) {
             // Upload cover
             if ($cover) {
                 $coverPath = $this->uploadService->uploadImage(
@@ -44,6 +44,15 @@ class BookService
                 $data['pdf_file'] = $pdfPath;
             }
 
+            // Upload Sample PDF
+            if ($samplePdf) {
+                $samplePdfPath = $this->uploadService->uploadPdf(
+                    $samplePdf,
+                    'books/sample'
+                );
+                $data['sample_pdf'] = $samplePdfPath;
+            }
+
             // Calculate final price
             $data['final_price'] = $this->calculateFinalPrice($data['price'] ?? 0, $data['discount'] ?? 0, $data['is_free'] ?? false);
 
@@ -54,9 +63,9 @@ class BookService
     /**
      * Update a book
      */
-    public function updateBook(Book $book, array $data, $cover = null, $pdf = null)
+    public function updateBook(Book $book, array $data, $cover = null, $pdf = null, $samplePdf = null)
     {
-        return DB::transaction(function () use ($book, $data, $cover, $pdf) {
+        return DB::transaction(function () use ($book, $data, $cover, $pdf, $samplePdf) {
             // Update cover
             if ($cover) {
                 $coverPath = $this->uploadService->uploadImage(
@@ -64,12 +73,12 @@ class BookService
                     'books/cover',
                     ['width' => 400, 'height' => 600, 'quality' => 85]
                 );
-                
+
                 // Delete old cover
                 if ($book->cover) {
                     $this->uploadService->delete($book->cover);
                 }
-                
+
                 $data['cover'] = $coverPath;
             }
 
@@ -80,13 +89,27 @@ class BookService
                     'books/pdf',
                     ['generate_preview' => true]
                 );
-                
+
                 // Delete old PDF
                 if ($book->pdf_file) {
                     $this->uploadService->delete($book->pdf_file);
                 }
-                
+
                 $data['pdf_file'] = $pdfPath;
+            }
+
+            // Update Sample PDF
+            if ($samplePdf) {
+                $samplePdfPath = $this->uploadService->uploadPdf(
+                    $samplePdf,
+                    'books/sample'
+                );
+
+                if ($book->sample_pdf) {
+                    $this->uploadService->delete($book->sample_pdf);
+                }
+
+                $data['sample_pdf'] = $samplePdfPath;
             }
 
             // Calculate final price
@@ -99,10 +122,10 @@ class BookService
             }
 
             $book->update($data);
-            
+
             // Clear cache
             $this->clearCache($book->id);
-            
+
             return $book;
         });
     }
@@ -117,23 +140,23 @@ class BookService
             if ($book->cover) {
                 $this->uploadService->delete($book->cover);
             }
-            
+
             // Delete PDF
             if ($book->pdf_file) {
                 $this->uploadService->delete($book->pdf_file);
             }
-            
+
             // Delete sample PDF
             if ($book->sample_pdf) {
                 $this->uploadService->delete($book->sample_pdf);
             }
-            
+
             // Delete book (soft delete)
             $book->delete();
-            
+
             // Clear cache
             $this->clearCache($book->id);
-            
+
             return true;
         });
     }
@@ -144,7 +167,7 @@ class BookService
     public function getBookWithCache($id)
     {
         $cacheKey = "book_{$id}";
-        
+
         return Cache::remember($cacheKey, 3600, function () use ($id) {
             return Book::with(['category', 'author', 'publisher', 'reviews'])
                 ->findOrFail($id);
@@ -157,7 +180,7 @@ class BookService
     public function getUserLibrary($userId)
     {
         $cacheKey = "user_library_{$userId}";
-        
+
         return Cache::remember($cacheKey, 3600, function () use ($userId) {
             return Purchase::with(['book'])
                 ->where('user_id', $userId)
@@ -184,15 +207,15 @@ class BookService
     public function getBookWithPermissions($bookId, $userId = null)
     {
         $book = $this->getBookWithCache($bookId);
-        
+
         $book->is_purchased = false;
         $book->can_download = false;
-        
+
         if ($userId) {
             $book->is_purchased = $this->hasUserPurchased($userId, $bookId);
             $book->can_download = $book->is_free || $book->is_purchased;
         }
-        
+
         return $book;
     }
 
@@ -215,7 +238,7 @@ class BookService
     public function getBookStats($bookId)
     {
         $book = Book::findOrFail($bookId);
-        
+
         return [
             'views' => $book->views_count,
             'downloads' => $book->downloads_count,
@@ -231,7 +254,7 @@ class BookService
     public function getRelatedBooks($bookId, $limit = 6)
     {
         $book = Book::findOrFail($bookId);
-        
+
         return Book::where('category_id', $book->category_id)
             ->where('id', '!=', $bookId)
             ->available()
@@ -247,7 +270,7 @@ class BookService
         if ($isFree) {
             return 0;
         }
-        
+
         return max(0, $price - $discount);
     }
 

@@ -222,8 +222,12 @@ return [
     'change_logo' => 'ផ្លាស់ប្តូរឡូហ្គោ',
     'website' => 'គេហទំព័រ',
     'books_by_publisher' => 'សៀវភៅតាមរោងពុម្ព',
-    'publishers_deleted' => 'លុបរោងពុម្ពបានជោគជ័យ',
-    'publishers_created' => 'បង្កើតរោងពុម្ពបានជោគជ័យ',
+    'publisher_created' => 'បង្កើតគ្រឹះស្ថានបោះពុម្ពបានជោគជ័យ',
+    'publisher_updated' => 'ធ្វើបច្ចុប្បន្នភាពគ្រឹះស្ថានបោះពុម្ពបានជោគជ័យ',
+    'publisher_deleted' => 'លុបគ្រឹះស្ថានបោះពុម្ពបានជោគជ័យ',
+    'publishers_created' => 'បង្កើតគ្រឹះស្ថានបោះពុម្ពបានជោគជ័យ',
+    'publishers_updated' => 'ធ្វើបច្ចុប្បន្នភាពគ្រឹះស្ថានបោះពុម្ពបានជោគជ័យ',
+    'publishers_deleted' => 'លុបគ្រឹះស្ថានបោះពុម្ពបានជោគជ័យ',
 
     // ============ BOOK MANAGEMENT ============
     'books_menu' => 'សៀវភៅ',

@@ -53,6 +53,7 @@ Route::post('/newsletter/subscribe', [HomeController::class, 'subscribe'])->name
 // BOOK ROUTES (Frontend)
 // ============================================================
 Route::get('/books', [BookController::class, 'index'])->name('books.index');
+Route::get('/books/search/ajax', [BookController::class, 'ajaxSearch'])->name('books.search.ajax');
 Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
 Route::get('/books/{book}/download', [BookController::class, 'download'])->name('books.download');
 Route::get('/books/{book}/preview', [BookController::class, 'preview'])->name('books.preview');
@@ -111,7 +112,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::match(['put', 'patch'], '/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar'])->name('profile.avatar');
     Route::delete('/profile/avatar', [ProfileController::class, 'destroyAvatar'])->name('profile.avatar.destroy');
@@ -179,13 +180,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin']
     Route::put('/profile/password', [AdminProfileController::class, 'updatePassword'])->name('profile.password');
 
     // ============ BOOKS MANAGEMENT ============
-    Route::resource('books', AdminBookController::class);
-    Route::post('books/{book}/toggle-status', [AdminBookController::class, 'toggleStatus'])->name('books.toggle-status');
+    Route::get('books/export', [AdminBookController::class, 'export'])->name('books.export');
+    Route::post('books/bulk-upload', [AdminBookController::class, 'bulkUpload'])->name('books.bulk-upload');
     Route::post('books/bulk-status', [AdminBookController::class, 'bulkStatus'])->name('books.bulk-status');
     Route::patch('books/{id}/restore', [AdminBookController::class, 'restore'])->name('books.restore');
     Route::delete('books/{id}/force-delete', [AdminBookController::class, 'forceDelete'])->name('books.force-delete');
-    Route::post('books/bulk-upload', [AdminBookController::class, 'bulkUpload'])->name('books.bulk-upload');
-    Route::get('books/export', [AdminBookController::class, 'export'])->name('books.export');
+    Route::post('books/{book}/toggle-status', [AdminBookController::class, 'toggleStatus'])->name('books.toggle-status');
+    Route::resource('books', AdminBookController::class);
 
     // ============ CATEGORIES MANAGEMENT ============
     Route::resource('categories', AdminCategoryController::class);

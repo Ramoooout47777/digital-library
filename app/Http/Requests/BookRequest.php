@@ -20,6 +20,7 @@ class BookRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255', Rule::unique('books', 'title')->ignore($bookId)],
             'category_id' => ['required', 'exists:categories,id'],
+            'type_id' => ['nullable', 'exists:types,id'],
             'author_id' => ['required', 'exists:authors,id'],
             'publisher_id' => ['required', 'exists:publishers,id'],
             'description' => ['nullable', 'string'],
@@ -84,7 +85,7 @@ class BookRequest extends FormRequest
             $price = (float) $this->price;
             $discount = (float) ($this->discount ?? 0);
             $isFree = (bool) ($this->is_free ?? false);
-            
+
             $finalPrice = $isFree ? 0 : max(0, $price - $discount);
             $this->merge(['final_price' => $finalPrice]);
         }

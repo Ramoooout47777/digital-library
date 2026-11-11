@@ -14,6 +14,7 @@ class Book extends Model
 
     protected $fillable = [
         'category_id',
+        'type_id',
         'author_id',
         'publisher_id',
         'uploaded_by_id',
@@ -62,26 +63,20 @@ class Book extends Model
         'deleted_at' => 'datetime'
     ];
 
-    protected static function boot()
+    protected static function booted(): void
     {
-        parent::boot();
-
-        static::creating(function ($book) {
+        static::creating(function (Book $book) {
             if (empty($book->slug)) {
                 $book->slug = $book->generateUniqueSlug();
             }
-
-            // Calculate final price
             $book->final_price = $book->calculateFinalPrice();
         });
 
-        static::updating(function ($book) {
-            // Regenerate slug if title changes
+        static::updating(function (Book $book) {
             if ($book->isDirty('title')) {
                 $book->slug = $book->generateUniqueSlug();
             }
 
-            // Recalculate final price when price or discount changes
             if ($book->isDirty(['price', 'discount', 'is_free'])) {
                 $book->final_price = $book->calculateFinalPrice();
             }
@@ -113,10 +108,27 @@ class Book extends Model
         return $slug;
     }
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where($field ?? 'slug', $value)
+            ->orWhere('id', $value)
+            ->firstOrFail();
+    }
+
     // Relationships
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
     }
 
     public function author()
@@ -300,6 +312,11 @@ class Book extends Model
     public function scopeByCategory($query, $categoryId)
     {
         return $query->where('category_id', $categoryId);
+    }
+
+    public function scopeByType($query, $typeId)
+    {
+        return $query->where('type_id', $typeId);
     }
 
     public function scopeByAuthor($query, $authorId)

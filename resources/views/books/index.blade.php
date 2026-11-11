@@ -7,7 +7,7 @@
 @push('styles')
 <style>
     /* ─── KEYFRAME ANIMATIONS ─── */
-    
+
     /* 1. Fade In Up */
     @keyframes fadeInUp {
         from {
@@ -22,7 +22,7 @@
     .animate-fade-in-up {
         animation: fadeInUp 0.8s ease-out forwards;
     }
-    
+
     /* 2. Scale In */
     @keyframes scaleIn {
         from {
@@ -37,7 +37,7 @@
     .animate-scale-in {
         animation: scaleIn 0.6s ease-out forwards;
     }
-    
+
     /* 3. Slide In Left */
     @keyframes slideInLeft {
         from {
@@ -52,7 +52,7 @@
     .animate-slide-left {
         animation: slideInLeft 0.6s ease-out forwards;
     }
-    
+
     /* 4. Slide In Right */
     @keyframes slideInRight {
         from {
@@ -67,7 +67,7 @@
     .animate-slide-right {
         animation: slideInRight 0.6s ease-out forwards;
     }
-    
+
     /* 5. Pulse Glow */
     @keyframes pulseGlow {
         0%, 100% {
@@ -80,7 +80,7 @@
     .animate-pulse-glow {
         animation: pulseGlow 3s ease-in-out infinite;
     }
-    
+
     /* 6. Float */
     @keyframes float {
         0%, 100% {
@@ -93,7 +93,7 @@
     .animate-float {
         animation: float 4s ease-in-out infinite;
     }
-    
+
     /* 7. Shimmer */
     @keyframes shimmer {
         0% {
@@ -112,7 +112,7 @@
         background-size: 200% 100%;
         animation: shimmer 4s ease-in-out infinite;
     }
-    
+
     /* 8. Rotate */
     @keyframes rotate {
         from {
@@ -125,7 +125,7 @@
     .animate-rotate {
         animation: rotate 8s linear infinite;
     }
-    
+
     /* 9. Heart Beat */
     @keyframes heartBeat {
         0%, 100% {
@@ -147,7 +147,7 @@
     .animate-heart-beat {
         animation: heartBeat 1.2s ease-in-out infinite;
     }
-    
+
     /* 10. Bounce In */
     @keyframes bounceIn {
         0% {
@@ -168,7 +168,7 @@
     .animate-bounce-in {
         animation: bounceIn 0.8s ease-out forwards;
     }
-    
+
     /* 11. Blur In */
     @keyframes blurIn {
         from {
@@ -185,7 +185,7 @@
     .animate-blur-in {
         animation: blurIn 0.7s ease-out forwards;
     }
-    
+
     /* 12. Stagger Children */
     .stagger-children > * {
         opacity: 0;
@@ -205,7 +205,7 @@
     .stagger-children > *:nth-child(13) { animation: fadeInUp 0.6s ease-out 0.65s forwards; }
     .stagger-children > *:nth-child(14) { animation: fadeInUp 0.6s ease-out 0.7s forwards; }
     .stagger-children > *:nth-child(15) { animation: fadeInUp 0.6s ease-out 0.75s forwards; }
-    
+
     /* ─── Book Card Hover Effects ─── */
     .book-card-3d {
         transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -216,7 +216,7 @@
         transform: translateY(-8px) rotateY(2deg) scale(1.02);
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
-    
+
     .book-card-glow {
         position: relative;
         overflow: hidden;
@@ -233,12 +233,12 @@
     .book-card-glow:hover::before {
         opacity: 1;
     }
-    
+
     /* ─── Filter Section Animation ─── */
     .filter-section {
         animation: slideInLeft 0.6s ease-out forwards;
     }
-    
+
     /* ─── Stat Cards Animation ─── */
     .stat-card {
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -247,7 +247,7 @@
         transform: translateY(-6px);
         box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
     }
-    
+
     /* ─── Heart Pulse Animation ─── */
     @keyframes heart-pulse {
         0%, 100% { transform: scale(1); }
@@ -277,25 +277,46 @@
                 {{ __('home.books') ?? 'សៀវភៅ' }} {{ __('home.available') ?? 'មាន' }}
             </p>
         </div>
-        
-        <form action="{{ route('books.index') }}" method="GET" class="flex gap-2 animate-slide-right">
-            <input type="text" name="search" value="{{ request('search') }}" 
-                   placeholder="{{ __('home.search_books') ?? 'ស្វែងរកសៀវភៅ...' }}" 
-                   class="px-4 py-2 dark:bg-slate-800/50 light:bg-white border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 w-48 sm:w-64 transition-all duration-300 focus:scale-105">
-            <button type="submit" class="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-cyan-500/20">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
+
+        <div class="relative animate-slide-right">
+            <form action="{{ route('books.index') }}" method="GET" class="flex gap-2">
+                <div class="relative w-48 sm:w-72">
+                    <input type="text" id="live-search-input" name="search" value="{{ request('search') }}"
+                           placeholder="{{ __('home.search_books') ?? 'ស្វែងរកសៀវភៅ...' }}"
+                           autocomplete="off"
+                           class="w-full px-4 py-2 pr-8 dark:bg-slate-800/50 light:bg-white border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 transition-all duration-300">
+                    <button type="button" id="clear-search-btn" onclick="clearLiveSearch()"
+                            class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs {{ request('search') ? '' : 'hidden' }}">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                </div>
+                <button type="submit" class="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-cyan-500/20 flex items-center gap-1.5">
+                    <i class="fas fa-search"></i>
+                    <span class="hidden sm:inline">{{ __('home.search') ?? 'ស្វែងរក' }}</span>
+                </button>
+            </form>
+
+            <!-- Live Search Autocomplete Popup Dropdown -->
+            <div id="live-search-popup" class="absolute right-0 top-full mt-2 w-72 sm:w-96 bg-slate-900/95 backdrop-blur-xl border border-slate-700/80 rounded-2xl shadow-2xl z-50 hidden overflow-hidden transition-all duration-200">
+                <div id="live-search-loading" class="p-4 text-center text-xs text-slate-400 hidden">
+                    <i class="fas fa-circle-notch fa-spin text-cyan-400 mr-2"></i> {{ __('home.searching') ?? 'កំពុងស្វែងរក...' }}
+                </div>
+                <div id="live-search-results" class="max-h-80 overflow-y-auto divide-y divide-slate-800"></div>
+            </div>
+        </div>
     </div>
 
     <!-- ============================================================ -->
     <!-- FILTERS -->
     <!-- ============================================================ -->
     <div class="filter-section dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-4 mb-6">
-        <form action="{{ route('books.index') }}" method="GET" class="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <form id="books-filter-form" action="{{ route('books.index') }}" method="GET" class="grid grid-cols-2 md:grid-cols-5 gap-4">
+            @if(request('search'))
+                <input type="hidden" name="search" value="{{ request('search') }}">
+            @endif
             <div class="animate-fade-in-up" style="animation-delay: 0.1s;">
                 <label class="block text-sm font-medium dark:text-slate-300 light:text-slate-700 mb-1">{{ __('home.categories') ?? 'ប្រភេទ' }}</label>
-                <select name="category_id" class="w-full px-3 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 transition-all duration-300 focus:scale-105">
+                <select name="category_id" onchange="this.form.submit()" class="w-full px-3 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 transition-all duration-300">
                     <option value="">{{ __('home.all_categories') ?? 'ប្រភេទទាំងអស់' }}</option>
                     @foreach(\App\Models\Category::where('status', true)->get() as $category)
                         <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
@@ -304,10 +325,10 @@
                     @endforeach
                 </select>
             </div>
-            
+
             <div class="animate-fade-in-up" style="animation-delay: 0.2s;">
                 <label class="block text-sm font-medium dark:text-slate-300 light:text-slate-700 mb-1">{{ __('home.authors') ?? 'អ្នកនិពន្ធ' }}</label>
-                <select name="author_id" class="w-full px-3 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 transition-all duration-300 focus:scale-105">
+                <select name="author_id" onchange="this.form.submit()" class="w-full px-3 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 transition-all duration-300">
                     <option value="">{{ __('home.all_authors') ?? 'អ្នកនិពន្ធទាំងអស់' }}</option>
                     @foreach(\App\Models\Author::where('status', true)->get() as $author)
                         <option value="{{ $author->id }}" {{ request('author_id') == $author->id ? 'selected' : '' }}>
@@ -316,20 +337,20 @@
                     @endforeach
                 </select>
             </div>
-            
+
             <div class="animate-fade-in-up" style="animation-delay: 0.3s;">
                 <label class="block text-sm font-medium dark:text-slate-300 light:text-slate-700 mb-1">{{ __('home.price_range') ?? 'តម្លៃ' }}</label>
                 <div class="flex gap-1">
-                    <input type="number" name="price_min" value="{{ request('price_min') }}" placeholder="{{ __('home.min') ?? 'អប្បបរមា' }}" 
-                           class="w-1/2 px-2 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 text-sm transition-all duration-300 focus:scale-105">
-                    <input type="number" name="price_max" value="{{ request('price_max') }}" placeholder="{{ __('home.max') ?? 'អតិបរមា' }}" 
-                           class="w-1/2 px-2 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 text-sm transition-all duration-300 focus:scale-105">
+                    <input type="number" name="price_min" value="{{ request('price_min') }}" placeholder="{{ __('home.min') ?? 'អប្បបរមា' }}"
+                           class="w-1/2 px-2 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 text-sm transition-all duration-300">
+                    <input type="number" name="price_max" value="{{ request('price_max') }}" placeholder="{{ __('home.max') ?? 'អតិបរមា' }}"
+                           class="w-1/2 px-2 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 text-sm transition-all duration-300">
                 </div>
             </div>
-            
+
             <div class="animate-fade-in-up" style="animation-delay: 0.4s;">
                 <label class="block text-sm font-medium dark:text-slate-300 light:text-slate-700 mb-1">{{ __('home.sort_by') ?? 'តម្រៀប' }}</label>
-                <select name="sort" class="w-full px-3 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 transition-all duration-300 focus:scale-105">
+                <select name="sort" onchange="this.form.submit()" class="w-full px-3 py-2 dark:bg-slate-900/50 light:bg-slate-100 border dark:border-slate-700/50 light:border-slate-200/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 dark:text-slate-200 light:text-slate-800 transition-all duration-300">
                     <option value="created_at" {{ request('sort') == 'created_at' ? 'selected' : '' }}>{{ __('home.newest') ?? 'ថ្មីជាងគេ' }}</option>
                     <option value="title" {{ request('sort') == 'title' ? 'selected' : '' }}>{{ __('home.title_asc') ?? 'ចំណងជើង ក-អ' }}</option>
                     <option value="price" {{ request('sort') == 'price' ? 'selected' : '' }}>{{ __('home.price_low_high') ?? 'តម្លៃថោក-ថ្លៃ' }}</option>
@@ -337,7 +358,7 @@
                     <option value="views_count" {{ request('sort') == 'views_count' ? 'selected' : '' }}>{{ __('home.popular') ?? 'ពេញនិយម' }}</option>
                 </select>
             </div>
-            
+
             <div class="flex items-end gap-2 animate-fade-in-up" style="animation-delay: 0.5s;">
                 <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-cyan-500/20">
                     <i class="fas fa-filter mr-2"></i>{{ __('home.filter') ?? 'ច្រោះ' }}
@@ -360,8 +381,8 @@
                     <div class="relative">
                         <a href="{{ route('books.show', $book) }}" class="block">
                             @if($book->cover)
-                                <img src="{{ asset('storage/' . $book->cover) }}" 
-                                     alt="{{ $book->title }}" 
+                                <img src="{{ asset('storage/' . $book->cover) }}"
+                                     alt="{{ $book->title }}"
                                      class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition duration-500">
                             @else
                                 <div class="w-full aspect-[3/4] dark:bg-slate-700/50 light:bg-slate-100 flex items-center justify-center">
@@ -369,14 +390,14 @@
                                 </div>
                             @endif
                         </a>
-                        
+
                         <!-- Favorite Button -->
                         @auth
-                            <button onclick="toggleFavorite({{ $book->id }}, this)" 
+                            <button onclick="toggleFavorite({{ $book->id }}, this)"
                                     class="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm hover:bg-black/60 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg z-10"
                                     title="{{ auth()->user()->isFavorited($book->id) ? 'Remove from favorites' : 'Add to favorites' }}">
-                                <i class="fas fa-heart text-sm 
-                                    @if(auth()->user()->isFavorited($book->id)) 
+                                <i class="fas fa-heart text-sm
+                                    @if(auth()->user()->isFavorited($book->id))
                                         text-red-500 animate-heart-beat
                                     @else
                                         text-white/60 hover:text-red-400
@@ -385,7 +406,7 @@
                                 </i>
                             </button>
                         @endauth
-                        
+
                         <!-- Badges -->
                         <div class="absolute top-2 left-2 flex flex-col gap-1">
                             @if($book->is_free)
@@ -406,10 +427,17 @@
                             @endif
                         </div>
                     </div>
-                    
+
                     <div class="p-3.5">
+                        @php
+                            $searchKey = request('search');
+                            $titleHtml = e($book->title);
+                            if (!empty($searchKey)) {
+                                $titleHtml = preg_replace('/(' . preg_quote($searchKey, '/') . ')/iu', '<mark class="bg-amber-400/30 text-amber-300 font-semibold px-1 rounded">$1</mark>', $titleHtml);
+                            }
+                        @endphp
                         <a href="{{ route('books.show', $book) }}" class="block">
-                            <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate group-hover:text-cyan-400 transition-colors duration-300">{{ $book->title }}</h4>
+                            <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate group-hover:text-cyan-400 transition-colors duration-300">{!! $titleHtml !!}</h4>
                         </a>
                         <p class="text-xs text-slate-500 dark:text-slate-400 light:text-slate-500 mt-0.5 truncate">{{ $book->author->name ?? 'N/A' }}</p>
                         <div class="flex justify-between items-center mt-2.5">
@@ -438,7 +466,7 @@
             <i class="fas fa-book-open text-6xl dark:text-slate-600 light:text-slate-300 block mb-4 animate-float"></i>
             <h3 class="text-xl font-semibold dark:text-slate-200 light:text-slate-800">{{ __('home.no_books_found') ?? 'មិនមានសៀវភៅ' }}</h3>
             <p class="text-slate-500 dark:text-slate-400 light:text-slate-500 mt-2">{{ __('home.try_different_search') ?? 'សូមសាកល្បងស្វែងរកផ្សេងទៀត' }}</p>
-            <a href="{{ route('books.index') }}" 
+            <a href="{{ route('books.index') }}"
                class="inline-block mt-4 px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-lg shadow-cyan-500/20">
                 <i class="fas fa-undo mr-2"></i> {{ __('home.reset_filters') ?? 'កំណត់ឡើងវិញ' }}
             </a>
@@ -449,12 +477,107 @@
 @push('scripts')
 <script>
     // ============================================================
+    // LIVE AUTOCOMPLETE SEARCH FUNCTIONALITY
+    // ============================================================
+    const liveSearchInput = document.getElementById('live-search-input');
+    const liveSearchPopup = document.getElementById('live-search-popup');
+    const liveSearchResults = document.getElementById('live-search-results');
+    const liveSearchLoading = document.getElementById('live-search-loading');
+    const clearSearchBtn = document.getElementById('clear-search-btn');
+    let searchDebounceTimer = null;
+
+    if (liveSearchInput) {
+        liveSearchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+
+            if (clearSearchBtn) {
+                clearSearchBtn.classList.toggle('hidden', query.length === 0);
+            }
+
+            if (query.length < 2) {
+                liveSearchPopup.classList.add('hidden');
+                return;
+            }
+
+            clearTimeout(searchDebounceTimer);
+            if (liveSearchLoading) liveSearchLoading.classList.remove('hidden');
+            if (liveSearchPopup) liveSearchPopup.classList.remove('hidden');
+            if (liveSearchResults) liveSearchResults.innerHTML = '';
+
+            searchDebounceTimer = setTimeout(() => {
+                fetch('{{ route("books.search.ajax") }}?q=' + encodeURIComponent(query))
+                    .then(res => res.json())
+                    .then(res => {
+                        if (liveSearchLoading) liveSearchLoading.classList.add('hidden');
+                        const data = res.data || [];
+
+                        if (data.length === 0) {
+                            if (liveSearchResults) {
+                                liveSearchResults.innerHTML = `<div class="p-4 text-center text-xs text-slate-400">មិនមានសៀវភៅពាក់ព័ន្ធនឹង "${escapeHtml(query)}"</div>`;
+                            }
+                            return;
+                        }
+
+                        if (liveSearchResults) {
+                            liveSearchResults.innerHTML = data.map(book => `
+                                <a href="${book.url}" class="p-3 flex items-center gap-3 hover:bg-slate-800/80 transition group">
+                                    <img src="${book.cover_url}" alt="${escapeHtml(book.title)}" class="w-10 h-14 object-cover rounded-md flex-shrink-0 shadow-sm">
+                                    <div class="min-w-0 flex-1">
+                                        <h5 class="text-xs font-bold text-slate-200 group-hover:text-cyan-400 truncate">${highlightText(book.title, query)}</h5>
+                                        <p class="text-[11px] text-slate-400 truncate mt-0.5">${escapeHtml(book.author)} • <span class="text-slate-500">${escapeHtml(book.category)}</span></p>
+                                    </div>
+                                    <span class="text-xs font-bold ${book.is_free ? 'text-emerald-400' : 'text-cyan-400'} flex-shrink-0 ml-2">${book.price_text}</span>
+                                </a>
+                            `).join('');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Search error:', err);
+                        if (liveSearchLoading) liveSearchLoading.classList.add('hidden');
+                    });
+            }, 250);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (liveSearchInput && liveSearchPopup && !liveSearchInput.contains(e.target) && !liveSearchPopup.contains(e.target)) {
+                liveSearchPopup.classList.add('hidden');
+            }
+        });
+
+        liveSearchInput.addEventListener('focus', function() {
+            if (this.value.trim().length >= 2 && liveSearchResults && liveSearchResults.children.length > 0) {
+                liveSearchPopup.classList.remove('hidden');
+            }
+        });
+    }
+
+    function clearLiveSearch() {
+        if (liveSearchInput) {
+            liveSearchInput.value = '';
+            if (clearSearchBtn) clearSearchBtn.classList.add('hidden');
+            if (liveSearchPopup) liveSearchPopup.classList.add('hidden');
+            liveSearchInput.focus();
+        }
+    }
+
+    function highlightText(text, query) {
+        if (!query) return escapeHtml(text);
+        const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`(${escapedQuery})`, 'gi');
+        return escapeHtml(text).replace(regex, '<mark class="bg-amber-400/30 text-amber-300 px-1 rounded font-bold">$1</mark>');
+    }
+
+    function escapeHtml(str) {
+        return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // ============================================================
     // TOGGLE FAVORITE FUNCTION
     // ============================================================
     function toggleFavorite(bookId, button) {
         const icon = button.querySelector('i');
         const isFavorited = icon.classList.contains('text-red-500');
-        
+
         // Optimistic UI update
         if (isFavorited) {
             icon.classList.remove('text-red-500', 'animate-heart-beat');
@@ -465,13 +588,13 @@
             icon.classList.add('text-red-500', 'animate-heart-beat');
             button.title = 'Remove from favorites';
         }
-        
+
         // Add pulse animation
         icon.classList.add('heart-pulse');
         setTimeout(() => {
             icon.classList.remove('heart-pulse');
         }, 300);
-        
+
         // Send request to server
         fetch('{{ route("favorites.toggle") }}', {
             method: 'POST',
@@ -487,7 +610,6 @@
         .then(response => response.json())
         .then(data => {
             if (!data.success) {
-                // Revert on error
                 if (isFavorited) {
                     icon.classList.remove('text-white/60');
                     icon.classList.add('text-red-500', 'animate-heart-beat');
@@ -499,7 +621,6 @@
             }
         })
         .catch(error => {
-            // Revert on error
             if (isFavorited) {
                 icon.classList.remove('text-white/60');
                 icon.classList.add('text-red-500', 'animate-heart-beat');

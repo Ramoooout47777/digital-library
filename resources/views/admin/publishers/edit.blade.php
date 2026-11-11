@@ -9,7 +9,7 @@
     <form action="{{ route('admin.publishers.update', $publisher) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Left Column -->
             <div class="space-y-4">
@@ -18,58 +18,58 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">
                         {{ __('admin.publisher_name') }} <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="name" value="{{ old('name', $publisher->name) }}" 
+                    <input type="text" name="name" value="{{ old('name', $publisher->name) }}"
                            class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('name') border-red-500 @enderror"
                            required>
                     @error('name')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Address -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.publisher_address') }}</label>
-                    <textarea name="address" rows="3" 
+                    <textarea name="address" rows="3"
                               class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('address') border-red-500 @enderror">{{ old('address', $publisher->address) }}</textarea>
                     @error('address')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Phone -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.publisher_phone') }}</label>
-                    <input type="text" name="phone" value="{{ old('phone', $publisher->phone) }}" 
+                    <input type="text" name="phone" value="{{ old('phone', $publisher->phone) }}"
                            class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('phone') border-red-500 @enderror">
                     @error('phone')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
-            
+
             <!-- Right Column -->
             <div class="space-y-4">
                 <!-- Email -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.email') }}</label>
-                    <input type="email" name="email" value="{{ old('email', $publisher->email) }}" 
+                    <input type="email" name="email" value="{{ old('email', $publisher->email) }}"
                            class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('email') border-red-500 @enderror">
                     @error('email')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Website -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.website') }}</label>
-                    <input type="url" name="website" value="{{ old('website', $publisher->website) }}" 
+                    <input type="url" name="website" value="{{ old('website', $publisher->website) }}"
                            class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('website') border-red-500 @enderror"
                            placeholder="https://example.com">
                     @error('website')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Current Logo -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.current_logo') }}</label>
@@ -80,7 +80,7 @@
                             <i class="fas fa-building text-gray-400 text-3xl"></i>
                         </div>
                     @endif
-                    
+
                     <label class="block text-sm font-medium text-gray-700 mb-1 mt-2">{{ __('admin.change_logo') }}</label>
                     <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-blue-500 transition cursor-pointer"
                          onclick="document.getElementById('logo').click()">
@@ -98,7 +98,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Status -->
                 <div>
                     <label class="flex items-center gap-2 mt-2">
@@ -108,7 +108,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Submit Buttons -->
         <div class="flex items-center gap-3 mt-8 pt-6 border-t">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition">
@@ -117,16 +117,12 @@
             <a href="{{ route('admin.publishers.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
                 <i class="fas fa-times mr-2"></i>{{ __('admin.cancel') }}
             </a>
-            
+
             @if($publisher->books()->count() == 0)
-                <form action="{{ route('admin.publishers.destroy', $publisher) }}" method="POST" class="inline ml-auto">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition"
-                            onclick="return confirm('{{ __('admin.confirm_delete') }}')">
-                        <i class="fas fa-trash mr-2"></i>{{ __('admin.delete') }}
-                    </button>
-                </form>
+                <button type="button" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition ml-auto"
+                        onclick="if(confirm('{{ __('admin.confirm_delete') }}')) document.getElementById('delete-publisher-form').submit();">
+                    <i class="fas fa-trash mr-2"></i>{{ __('admin.delete') }}
+                </button>
             @else
                 <span class="ml-auto text-sm text-yellow-600">
                     <i class="fas fa-exclamation-triangle mr-1"></i>
@@ -135,6 +131,14 @@
             @endif
         </div>
     </form>
+
+    <!-- Separate Delete Form Outside Main Form -->
+    @if($publisher->books()->count() == 0)
+        <form id="delete-publisher-form" action="{{ route('admin.publishers.destroy', $publisher) }}" method="POST" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
+    @endif
 </div>
 
 @push('scripts')
@@ -149,7 +153,7 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-    
+
     function removeLogo() {
         document.getElementById('logo').value = '';
         document.getElementById('logo-preview').classList.add('hidden');

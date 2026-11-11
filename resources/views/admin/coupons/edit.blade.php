@@ -9,7 +9,7 @@
     <form action="{{ route('admin.coupons.update', $coupon) }}" method="POST">
         @csrf
         @method('PUT')
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Left Column -->
             <div class="space-y-4">
@@ -19,7 +19,7 @@
                         {{ __('admin.coupon_code') }} <span class="text-red-500">*</span>
                     </label>
                     <div class="flex gap-2">
-                        <input type="text" name="code" value="{{ old('code', $coupon->code) }}" 
+                        <input type="text" name="code" value="{{ old('code', $coupon->code) }}"
                                class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('code') border-red-500 @enderror"
                                required>
                         <button type="button" onclick="generateCode()" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg transition whitespace-nowrap">
@@ -30,7 +30,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Discount Type -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -44,7 +44,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Discount Value -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -62,7 +62,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Min Order Amount -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.min_order_amount') }}</label>
@@ -76,7 +76,7 @@
                     @enderror
                 </div>
             </div>
-            
+
             <!-- Right Column -->
             <div class="space-y-4">
                 <!-- Max Discount Amount -->
@@ -91,7 +91,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Usage Limit -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.usage_limit') }}</label>
@@ -101,14 +101,14 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Used Count (Read Only) -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.used_count') }}</label>
-                    <input type="number" value="{{ $coupon->used_count }}" 
+                    <input type="number" value="{{ $coupon->used_count }}"
                            class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed" readonly>
                 </div>
-                
+
                 <!-- Expires At -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.expires_at') }}</label>
@@ -118,7 +118,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Status -->
                 <div>
                     <label class="flex items-center gap-2 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition cursor-pointer">
@@ -130,7 +130,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Submit Buttons -->
         <div class="flex items-center gap-3 mt-8 pt-6 border-t">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition">
@@ -139,16 +139,17 @@
             <a href="{{ route('admin.coupons.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition">
                 <i class="fas fa-times mr-2"></i>{{ __('admin.cancel') }}
             </a>
-            
-            <form action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" class="inline ml-auto">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition"
-                        onclick="return confirm('{{ __('admin.confirm_delete') }}')">
-                    <i class="fas fa-trash mr-2"></i>{{ __('admin.delete') }}
-                </button>
-            </form>
+
+            <button type="button" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg transition ml-auto"
+                    onclick="if(confirm('{{ __('admin.confirm_delete') }}')) document.getElementById('delete-coupon-form').submit();">
+                <i class="fas fa-trash mr-2"></i>{{ __('admin.delete') }}
+            </button>
         </div>
+    </form>
+
+    <form id="delete-coupon-form" action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
     </form>
 </div>
 
@@ -162,7 +163,7 @@
         }
         document.querySelector('input[name="code"]').value = code;
     }
-    
+
     // Update discount symbol based on type
     document.getElementById('discount_type')?.addEventListener('change', function() {
         const symbol = document.getElementById('discount_symbol');

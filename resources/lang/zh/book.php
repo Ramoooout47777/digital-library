@@ -61,5 +61,15 @@ return [
     'write_comment' => '撰写评论',
     'submit_review' => '提交评价',
     'no_reviews' => '暂无评价',
-   
+    'dark_theme' => '深色',
+    'sepia_theme' => '护眼',
+    'light_theme' => '浅色',
+    'sound' => '音效',
+    'other_books' => '相关图书',
+    'progress_saved' => '进度已保存',
+    'reading_progress' => '阅读进度',
+    'books_of_type_desc' => '此类型的图书，您可以打开阅读',
+    'read' => '阅读',
+    'searching' => '正在搜索...',
+    'no_results_found' => '未找到相关图书',
 ];

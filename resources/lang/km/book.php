@@ -62,5 +62,15 @@ return [
     'write_comment' => 'សរសេរមតិយោបល់',
     'submit_review' => 'បញ្ជូនការវាយតម្លៃ',
     'no_reviews' => 'មិនទាន់មានការវាយតម្លៃ',
-    
+    'dark_theme' => 'ងងឹត',
+    'sepia_theme' => 'ពណ៌សេភា',
+    'light_theme' => 'ភ្លឺ',
+    'sound' => 'សំឡេង',
+    'other_books' => 'សៀវភៅផ្សេងទៀត',
+    'progress_saved' => 'បានរក្សាទុកវឌ្ឍនភាព',
+    'reading_progress' => 'វឌ្ឍនភាពអាន',
+    'books_of_type_desc' => 'សៀវភៅប្រភេទនេះដែលអ្នកអាចបើកអានបាន',
+    'read' => 'អាន',
+    'searching' => 'កំពុងស្វែងរក...',
+    'no_results_found' => 'មិនមានសៀវភៅដែលស្វែងរកទេ',
 ];

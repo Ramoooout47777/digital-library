@@ -1,5 +1,4 @@
 <?php
-// app/Traits/Slugable.php
 
 namespace App\Traits;
 

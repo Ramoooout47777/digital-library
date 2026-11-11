@@ -9,6 +9,23 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        mocha: {
+                            50: '#faf5f0',
+                            100: '#f2e5d8',
+                            800: '#332824',
+                            900: '#1a1412',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -30,6 +47,128 @@
         .light ::-webkit-scrollbar-track { background: #f1f5f9; }
         .light ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .light ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* ─── DARK MODE HIGH-CONTRAST TEXT & UI FIXES ─── */
+        html.dark, body.dark {
+            background-color: #0b0f19 !important;
+            color: #f1f5f9 !important;
+        }
+
+        .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+            color: #f8fafc !important;
+        }
+
+        .dark p, .dark span, .dark label, .dark a {
+            color: #cbd5e1;
+        }
+
+        .dark .text-slate-900,
+        .dark .text-slate-800,
+        .dark .text-slate-700,
+        .dark .text-gray-900,
+        .dark .text-gray-800,
+        .dark .text-black {
+            color: #f1f5f9 !important;
+        }
+
+        .dark .text-slate-600,
+        .dark .text-slate-500,
+        .dark .text-gray-600,
+        .dark .text-gray-500 {
+            color: #94a3b8 !important;
+        }
+
+        .dark input, .dark select, .dark textarea {
+            background-color: #1e293b !important;
+            color: #f8fafc !important;
+            border-color: #334155 !important;
+        }
+
+        .dark input::placeholder, .dark textarea::placeholder {
+            color: #64748b !important;
+        }
+
+        .dark select option {
+            background-color: #0f172a !important;
+            color: #f8fafc !important;
+        }
+
+        /* ─── MOCHA THEME HIGH-CONTRAST FIXES ─── */
+        html.mocha, body.mocha {
+            background-color: #1a1412 !important;
+            color: #f5e8dd !important;
+        }
+
+        .mocha h1, .mocha h2, .mocha h3, .mocha h4, .mocha h5, .mocha h6 {
+            color: #fcf5ee !important;
+        }
+
+        .mocha .text-slate-900,
+        .mocha .text-slate-800,
+        .mocha .text-slate-700,
+        .mocha .text-gray-900,
+        .mocha .text-gray-800,
+        .mocha .text-black {
+            color: #f5e8dd !important;
+        }
+
+        .mocha .text-slate-600,
+        .mocha .text-slate-500,
+        .mocha .text-gray-600,
+        .mocha .text-gray-500 {
+            color: #c4b0a3 !important;
+        }
+
+        .mocha input, .mocha select, .mocha textarea {
+            background-color: #2d221e !important;
+            color: #f5e8dd !important;
+            border-color: #4d3c36 !important;
+        }
+
+        .mocha select option {
+            background-color: #241c19 !important;
+            color: #f5e8dd !important;
+        }
+
+        .mocha .dark\:bg-slate-900,
+        .mocha .dark\:bg-slate-900\/60,
+        .mocha .dark\:bg-slate-900\/50,
+        .mocha .dark\:bg-slate-900\/80,
+        .mocha .dark\:bg-slate-900\/90,
+        .mocha .dark\:bg-slate-900\/95,
+        .mocha .bg-slate-900 {
+            background-color: #241c19 !important;
+        }
+        .mocha .dark\:bg-slate-800,
+        .mocha .dark\:bg-slate-800\/50,
+        .mocha .dark\:bg-slate-800\/60,
+        .mocha .dark\:bg-slate-800\/80,
+        .mocha .bg-slate-800 {
+            background-color: #332824 !important;
+        }
+        .mocha .dark\:border-slate-700,
+        .mocha .dark\:border-slate-700\/50,
+        .mocha .dark\:border-slate-700\/60,
+        .mocha .dark\:border-slate-800 {
+            border-color: #4d3c36 !important;
+        }
+        .mocha .text-cyan-400 {
+            color: #e39a5c !important;
+        }
+        .mocha .bg-cyan-500 {
+            background-color: #d1823f !important;
+        }
+        }
+        .mocha .dark\:text-slate-400,
+        .mocha .dark\:text-slate-500 {
+            color: #c4b0a3 !important;
+        }
+        .mocha .text-cyan-400 {
+            color: #e39a5c !important;
+        }
+        .mocha .bg-cyan-500 {
+            background-color: #d1823f !important;
+        }
 
         /* ─── Language Select Custom Styles ─── */
         .lang-select {
@@ -710,33 +849,25 @@
 <!-- SCRIPTS -->
 <!-- ============================================================ -->
 <script>
-    // ─── Theme Toggle ───
+    // ─── Theme Toggle (Dark -> Mocha -> Light -> Dark) ───
     function toggleTheme() {
         const html = document.documentElement;
         const body = document.getElementById('app');
         const icon = document.getElementById('theme-icon');
-        let theme = 'dark';
+        let currentTheme = 'dark';
 
         if (html.classList.contains('dark')) {
-            html.classList.remove('dark');
-            body.classList.remove('dark');
-            body.classList.add('light');
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
-            theme = 'light';
+            currentTheme = 'mocha';
+        } else if (html.classList.contains('mocha')) {
+            currentTheme = 'light';
         } else {
-            html.classList.add('dark');
-            body.classList.remove('light');
-            body.classList.add('dark');
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
-            theme = 'dark';
+            currentTheme = 'dark';
         }
 
-        localStorage.setItem('theme', theme);
+        applyTheme(currentTheme);
+        localStorage.setItem('theme', currentTheme);
 
-        // Sync with backend
-        fetch(`/switch-theme/${theme}`, {
+        fetch(`/switch-theme/${currentTheme}`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
@@ -745,26 +876,33 @@
         });
     }
 
-    // ─── Load Theme from LocalStorage ───
-    document.addEventListener('DOMContentLoaded', function() {
-        const savedTheme = localStorage.getItem('theme') || 'dark';
+    function applyTheme(theme) {
         const html = document.documentElement;
         const body = document.getElementById('app');
         const icon = document.getElementById('theme-icon');
 
-        if (savedTheme === 'light') {
-            html.classList.remove('dark');
-            body.classList.remove('dark');
-            body.classList.add('light');
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
-        } else {
-            html.classList.add('dark');
-            body.classList.remove('light');
-            body.classList.add('dark');
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
+        html.classList.remove('dark', 'mocha', 'light');
+        body.classList.remove('dark', 'mocha', 'light');
+
+        html.classList.add(theme);
+        body.classList.add(theme);
+
+        if (icon) {
+            icon.className = 'fas text-lg';
+            if (theme === 'mocha') {
+                icon.classList.add('fa-mug-hot', 'text-amber-500');
+            } else if (theme === 'light') {
+                icon.classList.add('fa-sun', 'text-amber-400');
+            } else {
+                icon.classList.add('fa-moon', 'text-cyan-400');
+            }
         }
+    }
+
+    // ─── Load Theme from LocalStorage ───
+    document.addEventListener('DOMContentLoaded', function() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        applyTheme(savedTheme);
     });
 
     // ─── Mobile Menu ───

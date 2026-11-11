@@ -222,8 +222,12 @@ return [
     'change_logo' => '更改图标',
     'website' => '网站',
     'books_by_publisher' => '按出版商分类的图书',
-    'publishers_deleted' => '成功删除出版商',
-    'publishers_created' => '成功创建出版商',
+    'publisher_created' => '成功创建出版社',
+    'publisher_updated' => '成功更新出版社',
+    'publisher_deleted' => '成功删除出版社',
+    'publishers_created' => '成功创建出版社',
+    'publishers_updated' => '成功更新出版社',
+    'publishers_deleted' => '成功删除出版社',
 
     // ============ BOOK MANAGEMENT ============
     'books_menu' => '图书',

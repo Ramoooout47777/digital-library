@@ -73,7 +73,13 @@ class ProfileController extends Controller
             'address' => ['nullable', 'string', 'max:500'],
         ]);
 
-        $user->update($request->only(['name', 'email', 'phone', 'address']));
+        $user->fill($request->only(['name', 'email', 'phone', 'address']));
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
 
         return redirect()->route('profile.index')
             ->with('success', __('profile.updated') ?? 'Profile updated successfully!');
@@ -208,11 +214,11 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request)
     {
-        $user = Auth::user();
-
-        $request->validate([
+        $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
+
+        $user = Auth::user();
 
         Auth::logout();
         $user->delete();

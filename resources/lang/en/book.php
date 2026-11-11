@@ -60,6 +60,15 @@ return [
     'write_comment' => 'Write a Comment',
     'submit_review' => 'Submit Review',
     'no_reviews' => 'No Reviews Yet',
-       
-
+    'dark_theme' => 'Dark',
+    'sepia_theme' => 'Sepia',
+    'light_theme' => 'Light',
+    'sound' => 'Sound',
+    'other_books' => 'Other Books',
+    'progress_saved' => 'Progress Saved',
+    'reading_progress' => 'Reading Progress',
+    'books_of_type_desc' => 'Books of this type you can open & read',
+    'read' => 'Read',
+    'searching' => 'Searching...',
+    'no_results_found' => 'No matching books found',
 ];

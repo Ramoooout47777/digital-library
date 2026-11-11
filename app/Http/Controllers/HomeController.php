@@ -148,11 +148,11 @@ class HomeController extends Controller
     }
 
     /**
-     * Switch application theme (dark/light)
+     * Switch application theme (dark/mocha/sepia/light)
      */
     public function switchTheme($theme)
     {
-        if (in_array($theme, ['dark', 'light'])) {
+        if (in_array($theme, ['dark', 'mocha', 'sepia', 'light'])) {
             session(['theme' => $theme]);
         }
 

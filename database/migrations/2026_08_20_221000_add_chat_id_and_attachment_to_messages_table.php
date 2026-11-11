@@ -9,20 +9,29 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->foreignId('chat_id')
-                ->nullable()
-                ->after('id')
-                ->constrained('chats')
-                ->nullOnDelete();
-            $table->string('attachment')->nullable()->after('type');
+            if (!Schema::hasColumn('messages', 'chat_id')) {
+                $table->foreignId('chat_id')
+                    ->nullable()
+                    ->after('id')
+                    ->constrained('chats')
+                    ->nullOnDelete();
+            }
+            if (!Schema::hasColumn('messages', 'attachment')) {
+                $table->string('attachment')->nullable()->after('type');
+            }
         });
     }
 
     public function down(): void
     {
         Schema::table('messages', function (Blueprint $table) {
-            $table->dropForeign(['chat_id']);
-            $table->dropColumn(['chat_id', 'attachment']);
+            if (Schema::hasColumn('messages', 'chat_id')) {
+                $table->dropForeign(['chat_id']);
+                $table->dropColumn('chat_id');
+            }
+            if (Schema::hasColumn('messages', 'attachment')) {
+                $table->dropColumn('attachment');
+            }
         });
     }
 };

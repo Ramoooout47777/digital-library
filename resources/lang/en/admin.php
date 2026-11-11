@@ -227,8 +227,12 @@ return [
     'change_logo' => 'Change Logo',
     'website' => 'Website',
     'books_by_publisher' => 'Books by Publisher',
-    'publishers_deleted' => 'Publisher Deleted Successfully',
-    'publishers_created' => 'Publisher Created Successfully',
+    'publisher_created' => 'Publisher created successfully',
+    'publisher_updated' => 'Publisher updated successfully',
+    'publisher_deleted' => 'Publisher deleted successfully',
+    'publishers_created' => 'Publisher created successfully',
+    'publishers_updated' => 'Publisher updated successfully',
+    'publishers_deleted' => 'Publisher deleted successfully',
 
     // ============ BOOK MANAGEMENT ============
     'books_menu' => 'Books',

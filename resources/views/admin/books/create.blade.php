@@ -8,7 +8,7 @@
 <div class="bg-white rounded-lg shadow p-6">
     <form action="{{ route('admin.books.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Left Column -->
             <div class="space-y-4">
@@ -17,14 +17,14 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">
                         {{ __('admin.book_title') }} <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="title" value="{{ old('title') }}" 
+                    <input type="text" name="title" value="{{ old('title') }}"
                            class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('title') border-red-500 @enderror"
                            required>
                     @error('title')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Category -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -42,7 +42,25 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
+                <!-- Book Type -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ __('admin.types_menu') ?? 'ប្រភេទសៀវភៅ (Book Type)' }}
+                    </label>
+                    <select name="type_id" class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('type_id') border-red-500 @enderror">
+                        <option value="">{{ __('admin.select_type') ?? 'ជ្រើសរើសប្រភេទសៀវភៅ' }}</option>
+                        @foreach($types as $type)
+                            <option value="{{ $type->id }}" {{ old('type_id') == $type->id ? 'selected' : '' }}>
+                                {{ $type->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('type_id')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Author -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -60,7 +78,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Publisher -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -78,11 +96,11 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- ISBN -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.isbn') }}</label>
-                    <input type="text" name="isbn" value="{{ old('isbn') }}" 
+                    <input type="text" name="isbn" value="{{ old('isbn') }}"
                            class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('isbn') border-red-500 @enderror"
                            placeholder="978-3-16-148410-0">
                     @error('isbn')
@@ -90,19 +108,19 @@
                     @enderror
                 </div>
             </div>
-            
+
             <!-- Right Column -->
             <div class="space-y-4">
                 <!-- Description -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.book_description') }}</label>
-                    <textarea name="description" rows="4" 
+                    <textarea name="description" rows="4"
                               class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 @error('description') border-red-500 @enderror">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Price -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -115,7 +133,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Discount -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.discount') }}</label>
@@ -125,7 +143,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Stock & Pages -->
                 <div class="grid grid-cols-2 gap-4">
                     <div>
@@ -139,7 +157,7 @@
                             <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-                    
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">
                             {{ __('admin.pages') }} <span class="text-red-500">*</span>
@@ -152,7 +170,7 @@
                         @enderror
                     </div>
                 </div>
-                
+
                 <!-- Language -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -167,7 +185,7 @@
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
-                
+
                 <!-- Published At -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.published_at') }}</label>
@@ -179,7 +197,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- File Uploads -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <!-- Cover Image -->
@@ -202,7 +220,7 @@
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
-            
+
             <!-- PDF File -->
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">
@@ -226,25 +244,25 @@
                 @enderror
             </div>
         </div>
-        
+
         <!-- Options -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
             <label class="flex items-center gap-2">
                 <input type="checkbox" name="is_free" value="1" {{ old('is_free') ? 'checked' : '' }}>
                 <span class="text-sm">{{ __('admin.is_free') }}</span>
             </label>
-            
+
             <label class="flex items-center gap-2">
                 <input type="checkbox" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }}>
                 <span class="text-sm">{{ __('admin.is_featured') }}</span>
             </label>
-            
+
             <label class="flex items-center gap-2">
                 <input type="checkbox" name="status" value="1" {{ old('status', true) ? 'checked' : '' }}>
                 <span class="text-sm">{{ __('admin.active') }}</span>
             </label>
         </div>
-        
+
         <!-- Submit Buttons -->
         <div class="flex items-center gap-3 mt-8 pt-6 border-t">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition">
@@ -269,17 +287,17 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-    
+
     function removeCover() {
         document.getElementById('cover').value = '';
         document.getElementById('cover-preview').classList.add('hidden');
     }
-    
+
     function removePdf() {
         document.getElementById('pdf_file').value = '';
         document.getElementById('pdf-preview').classList.add('hidden');
     }
-    
+
     // Show PDF file name when selected
     document.getElementById('pdf_file').addEventListener('change', function() {
         if (this.files && this.files[0]) {

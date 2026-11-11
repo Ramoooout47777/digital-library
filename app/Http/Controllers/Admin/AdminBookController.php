@@ -9,6 +9,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Publisher;
+use App\Models\Type;
 use App\Services\BookService;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,7 @@ class AdminBookController extends Controller
 
     public function index(Request $request)
     {
-        $books = Book::with(['category', 'author', 'publisher'])
+        $books = Book::with(['category', 'type', 'author', 'publisher'])
             ->when($request->search, fn ($query, $term) => $query->search($term))
             ->latest()
             ->paginate(15);
@@ -40,7 +41,12 @@ class AdminBookController extends Controller
         $data = $request->validated();
         $data['uploaded_by_id'] = $request->user()->id;
 
-        $this->books->createBook($data, $request->file('cover'), $request->file('pdf_file'));
+        $this->books->createBook(
+            $data,
+            $request->file('cover'),
+            $request->file('pdf_file'),
+            $request->file('sample_pdf')
+        );
 
         return $this->stored('admin.books.index', 'Book created successfully.');
     }
@@ -48,7 +54,7 @@ class AdminBookController extends Controller
     public function show(Book $book)
     {
         return $this->viewOrJson('admin.books.show', [
-            'book' => $book->load(['category', 'author', 'publisher', 'reviews.user']),
+            'book' => $book->load(['category', 'type', 'author', 'publisher', 'reviews.user']),
         ]);
     }
 
@@ -59,7 +65,13 @@ class AdminBookController extends Controller
 
     public function update(BookRequest $request, Book $book)
     {
-        $this->books->updateBook($book, $request->validated(), $request->file('cover'), $request->file('pdf_file'));
+        $this->books->updateBook(
+            $book,
+            $request->validated(),
+            $request->file('cover'),
+            $request->file('pdf_file'),
+            $request->file('sample_pdf')
+        );
 
         return $this->stored('admin.books.index', 'Book updated successfully.');
     }
@@ -123,10 +135,47 @@ class AdminBookController extends Controller
         return back()->with('success', 'Bulk upload file received.');
     }
 
+    public function export()
+    {
+        $books = Book::with(['category', 'author', 'publisher'])->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="books_export_' . date('Y-m-d_H-i-s') . '.csv"',
+        ];
+
+        $callback = function () use ($books) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, ['ID', 'Title', 'ISBN', 'Category', 'Author', 'Publisher', 'Price', 'Discount', 'Final Price', 'Stock', 'Status', 'Created At']);
+
+            foreach ($books as $book) {
+                fputcsv($file, [
+                    $book->id,
+                    $book->title,
+                    $book->isbn,
+                    $book->category?->name,
+                    $book->author?->name,
+                    $book->publisher?->name,
+                    $book->price,
+                    $book->discount,
+                    $book->final_price,
+                    $book->stock,
+                    $book->status ? 'Active' : 'Inactive',
+                    $book->created_at?->format('Y-m-d H:i:s'),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
     private function formData(): array
     {
         return [
             'categories' => Category::active()->oldest('name')->get(),
+            'types' => Type::where('status', true)->oldest('name')->get(),
             'authors' => Author::active()->oldest('name')->get(),
             'publishers' => Publisher::active()->oldest('name')->get(),
         ];

@@ -34,7 +34,10 @@ class BookController extends Controller
 
         $books = $query->latest('published_at')->paginate($request->integer('per_page', 12));
 
-        return response()->json(BookResource::collection($books)->response()->getData(true));
+        $data = BookResource::collection($books)->response()->getData(true);
+        $data['success'] = true;
+
+        return response()->json($data);
     }
 
     public function featured(): JsonResponse

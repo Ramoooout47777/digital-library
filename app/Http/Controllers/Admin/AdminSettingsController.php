@@ -15,6 +15,7 @@ use App\Models\Author;
 use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Lang;
 
 class AdminSettingsController extends Controller
 {
@@ -108,8 +109,8 @@ class AdminSettingsController extends Controller
             );
         }
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.settings_updated'));
+        return redirect()->route('admin.settings.tab', 'general')
+            ->with('success', Lang::has('admin.settings_updated') ? __('admin.settings_updated') : 'Settings updated successfully');
     }
 
     // ================================================================
@@ -130,8 +131,8 @@ class AdminSettingsController extends Controller
             'status' => $request->has('status'),
         ]);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.type_created') ?? 'Type created successfully');
+        return redirect()->route('admin.settings.tab', 'types')
+            ->with('success', Lang::has('admin.type_created') ? __('admin.type_created') : 'Type created successfully');
     }
 
     public function updateType(Request $request, Type $type)
@@ -149,16 +150,16 @@ class AdminSettingsController extends Controller
             'status' => $request->has('status'),
         ]);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.type_updated') ?? 'Type updated successfully');
+        return redirect()->route('admin.settings.tab', 'types')
+            ->with('success', Lang::has('admin.type_updated') ? __('admin.type_updated') : 'Type updated successfully');
     }
 
     public function destroyType(Type $type)
     {
         $type->delete();
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.type_deleted') ?? 'Type deleted successfully');
+        return redirect()->route('admin.settings.tab', 'types')
+            ->with('success', Lang::has('admin.type_deleted') ? __('admin.type_deleted') : 'Type deleted successfully');
     }
 
     // ================================================================
@@ -166,6 +167,8 @@ class AdminSettingsController extends Controller
     // ================================================================
     public function storeAuthor(Request $request)
     {
+        $this->normalizeUrlInput($request, 'website');
+
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:authors'],
             'email' => ['nullable', 'email', 'max:255', 'unique:authors'],
@@ -185,12 +188,14 @@ class AdminSettingsController extends Controller
 
         Author::create($data);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.author_created') ?? 'Author created successfully');
+        return redirect()->route('admin.settings.tab', 'authors')
+            ->with('success', Lang::has('admin.author_created') ? __('admin.author_created') : 'Author created successfully');
     }
 
     public function updateAuthor(Request $request, Author $author)
     {
+        $this->normalizeUrlInput($request, 'website');
+
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:authors,name,' . $author->id],
             'email' => ['nullable', 'email', 'max:255', 'unique:authors,email,' . $author->id],
@@ -213,15 +218,15 @@ class AdminSettingsController extends Controller
 
         $author->update($data);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.author_updated') ?? 'Author updated successfully');
+        return redirect()->route('admin.settings.tab', 'authors')
+            ->with('success', Lang::has('admin.author_updated') ? __('admin.author_updated') : 'Author updated successfully');
     }
 
     public function destroyAuthor(Author $author)
     {
         if ($author->books()->count() > 0) {
-            return redirect()->route('admin.settings')
-                ->with('error', __('admin.cannot_delete_has_books'));
+            return redirect()->route('admin.settings.tab', 'authors')
+                ->with('error', Lang::has('admin.cannot_delete_has_books') ? __('admin.cannot_delete_has_books') : 'Cannot delete author that has books');
         }
 
         if ($author->image) {
@@ -230,8 +235,8 @@ class AdminSettingsController extends Controller
 
         $author->delete();
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.author_deleted') ?? 'Author deleted successfully');
+        return redirect()->route('admin.settings.tab', 'authors')
+            ->with('success', Lang::has('admin.author_deleted') ? __('admin.author_deleted') : 'Author deleted successfully');
     }
 
     // ================================================================
@@ -239,6 +244,8 @@ class AdminSettingsController extends Controller
     // ================================================================
     public function storePublisher(Request $request)
     {
+        $this->normalizeUrlInput($request, 'website');
+
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:publishers'],
             'address' => ['nullable', 'string', 'max:500'],
@@ -259,12 +266,14 @@ class AdminSettingsController extends Controller
 
         Publisher::create($data);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.publisher_created') ?? 'Publisher created successfully');
+        return redirect()->route('admin.settings.tab', 'publishers')
+            ->with('success', Lang::has('admin.publisher_created') ? __('admin.publisher_created') : 'Publisher created successfully');
     }
 
     public function updatePublisher(Request $request, Publisher $publisher)
     {
+        $this->normalizeUrlInput($request, 'website');
+
         $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:publishers,name,' . $publisher->id],
             'address' => ['nullable', 'string', 'max:500'],
@@ -288,15 +297,15 @@ class AdminSettingsController extends Controller
 
         $publisher->update($data);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.publisher_updated') ?? 'Publisher updated successfully');
+        return redirect()->route('admin.settings.tab', 'publishers')
+            ->with('success', Lang::has('admin.publisher_updated') ? __('admin.publisher_updated') : 'Publisher updated successfully');
     }
 
     public function destroyPublisher(Publisher $publisher)
     {
         if ($publisher->books()->count() > 0) {
-            return redirect()->route('admin.settings')
-                ->with('error', __('admin.cannot_delete_has_books'));
+            return redirect()->route('admin.settings.tab', 'publishers')
+                ->with('error', Lang::has('admin.cannot_delete_has_books') ? __('admin.cannot_delete_has_books') : 'Cannot delete publisher that has books');
         }
 
         if ($publisher->logo) {
@@ -305,8 +314,8 @@ class AdminSettingsController extends Controller
 
         $publisher->delete();
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.publisher_deleted') ?? 'Publisher deleted successfully');
+        return redirect()->route('admin.settings.tab', 'publishers')
+            ->with('success', Lang::has('admin.publisher_deleted') ? __('admin.publisher_deleted') : 'Publisher deleted successfully');
     }
 
     // ================================================================
@@ -323,8 +332,8 @@ class AdminSettingsController extends Controller
 
         $settings->update($data);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.settings_updated'));
+        return redirect()->route('admin.settings.tab', 'print')
+            ->with('success', Lang::has('admin.settings_updated') ? __('admin.settings_updated') : 'Print settings updated successfully');
     }
 
     // ================================================================
@@ -343,8 +352,8 @@ class AdminSettingsController extends Controller
 
         $settings->update($data);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.settings_updated'));
+        return redirect()->route('admin.settings.tab', 'order')
+            ->with('success', Lang::has('admin.settings_updated') ? __('admin.settings_updated') : 'Order settings updated successfully');
     }
 
     // ================================================================
@@ -360,8 +369,8 @@ class AdminSettingsController extends Controller
 
         $settings->update($data);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.settings_updated'));
+        return redirect()->route('admin.settings.tab', 'discount')
+            ->with('success', Lang::has('admin.settings_updated') ? __('admin.settings_updated') : 'Discount settings updated successfully');
     }
 
     // ================================================================
@@ -377,8 +386,8 @@ class AdminSettingsController extends Controller
 
         $settings->update($data);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.settings_updated'));
+        return redirect()->route('admin.settings.tab', 'coupon')
+            ->with('success', Lang::has('admin.settings_updated') ? __('admin.settings_updated') : 'Coupon settings updated successfully');
     }
 
     // ================================================================
@@ -404,8 +413,18 @@ class AdminSettingsController extends Controller
 
         $settings->update($data);
 
-        return redirect()->route('admin.settings')
-            ->with('success', __('admin.settings_updated'));
+        return redirect()->route('admin.settings.tab', 'notification')
+            ->with('success', Lang::has('admin.settings_updated') ? __('admin.settings_updated') : 'Notification settings updated successfully');
     }
 
+    /**
+     * Prepend scheme to URL inputs if missing.
+     */
+    private function normalizeUrlInput(Request $request, string $field)
+    {
+        $value = trim($request->input($field, ''));
+        if ($value && !preg_match('~^https?://~i', $value)) {
+            $request->merge([$field => 'https://' . $value]);
+        }
+    }
 }
