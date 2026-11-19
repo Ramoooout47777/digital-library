@@ -440,3 +440,30 @@ it('can update notification settings', function () {
         'sms_notifications' => 1,
     ]);
 });
+
+// ============================================================
+// ADMIN SEARCH TESTS
+// ============================================================
+it('allows admin to perform global ajax search', function () {
+    $admin = getAdminUser();
+    $book = \App\Models\Book::factory()->create(['title' => 'Mastering Admin Search']);
+    $author = Author::factory()->create(['name' => 'Search Master Author']);
+    $category = \App\Models\Category::factory()->create(['name' => 'Search Category']);
+
+    $response = $this->actingAs($admin)->get('/admin/search/ajax?q=Search');
+
+    $response->assertSuccessful();
+    $response->assertJsonFragment(['title' => 'Mastering Admin Search']);
+    $response->assertJsonFragment(['name' => 'Search Master Author']);
+    $response->assertJsonFragment(['name' => 'Search Category']);
+});
+
+it('allows admin to filter and search categories', function () {
+    $admin = getAdminUser();
+    $category = \App\Models\Category::factory()->create(['name' => 'Unique Category Name']);
+
+    $response = $this->actingAs($admin)->get('/admin/categories?search=Unique');
+
+    $response->assertSuccessful();
+    $response->assertSee('Unique Category Name');
+});

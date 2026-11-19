@@ -13,10 +13,30 @@ class AdminCategoryController extends Controller
 {
     use RespondsWithAdminViews;
 
-    public function index()
+    public function index(Request $request)
     {
+        $query = Category::with('parent')->withCount('books');
+
+        if ($request->filled('search')) {
+            $query->search($request->search);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status === 'active');
+        }
+
+        if ($request->filled('parent_id')) {
+            if ($request->parent_id === 'null') {
+                $query->whereNull('parent_id');
+            } else {
+                $query->where('parent_id', $request->parent_id);
+            }
+        }
+
+        $categories = $query->oldest('order')->paginate(20)->withQueryString();
+
         return $this->viewOrJson('admin.categories.index', [
-            'categories' => Category::with('parent')->withCount('books')->oldest('order')->paginate(20),
+            'categories' => $categories,
         ]);
     }
 

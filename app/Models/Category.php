@@ -29,7 +29,7 @@ class Category extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($category) {
             if (empty($category->slug)) {
                 $category->slug = Str::slug($category->name);
@@ -83,6 +83,20 @@ class Category extends Model
     {
         return $query->whereHas('books', function($q) {
             $q->available();
+        });
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = trim($term ?? '');
+        if ($term === '') {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($term) {
+            $q->where('name', 'LIKE', "%{$term}%")
+              ->orWhere('description', 'LIKE', "%{$term}%")
+              ->orWhere('slug', 'LIKE', "%{$term}%");
         });
     }
 }

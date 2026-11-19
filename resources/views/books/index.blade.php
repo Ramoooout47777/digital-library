@@ -307,8 +307,49 @@
     </div>
 
     <!-- ============================================================ -->
-    <!-- FILTERS -->
+    <!-- FILTERS & ACTIVE SEARCH -->
     <!-- ============================================================ -->
+    @if(request('search') || request('category_id') || request('author_id') || request('price_min') || request('price_max'))
+        <div class="mb-4 flex flex-wrap items-center gap-2 animate-fade-in-up">
+            <span class="text-xs text-slate-400">{{ __('home.active_filters') ?? 'លទ្ធផលស្វែងរក:' }}</span>
+            @if(request('search'))
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-semibold border border-cyan-500/20">
+                    <i class="fas fa-search text-[10px]"></i>
+                    "{{ request('search') }}"
+                    <a href="{{ route('books.index', request()->except('search')) }}" class="hover:text-red-400 ml-1">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </span>
+            @endif
+            @if(request('category_id'))
+                @php $cat = \App\Models\Category::find(request('category_id')); @endphp
+                @if($cat)
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-semibold border border-blue-500/20">
+                        <i class="fas fa-folder text-[10px]"></i>
+                        {{ $cat->name }}
+                        <a href="{{ route('books.index', request()->except('category_id')) }}" class="hover:text-red-400 ml-1">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </span>
+                @endif
+            @endif
+            @if(request('author_id'))
+                @php $aut = \App\Models\Author::find(request('author_id')); @endphp
+                @if($aut)
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 text-purple-400 text-xs font-semibold border border-purple-500/20">
+                        <i class="fas fa-user-feather text-[10px]"></i>
+                        {{ $aut->name }}
+                        <a href="{{ route('books.index', request()->except('author_id')) }}" class="hover:text-red-400 ml-1">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </span>
+                @endif
+            @endif
+            <a href="{{ route('books.index') }}" class="text-xs text-red-400 hover:underline ml-2">
+                {{ __('home.clear_all') ?? 'សម្អាតទាំងអស់' }}
+            </a>
+        </div>
+    @endif
     <div class="filter-section dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-4 mb-6">
         <form id="books-filter-form" action="{{ route('books.index') }}" method="GET" class="grid grid-cols-2 md:grid-cols-5 gap-4">
             @if(request('search'))
@@ -553,10 +594,17 @@
 
     function clearLiveSearch() {
         if (liveSearchInput) {
+            const hasActiveSearchParam = '{{ request("search") }}' !== '';
             liveSearchInput.value = '';
             if (clearSearchBtn) clearSearchBtn.classList.add('hidden');
             if (liveSearchPopup) liveSearchPopup.classList.add('hidden');
-            liveSearchInput.focus();
+            if (hasActiveSearchParam) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('search');
+                window.location.href = url.toString();
+            } else {
+                liveSearchInput.focus();
+            }
         }
     }
 

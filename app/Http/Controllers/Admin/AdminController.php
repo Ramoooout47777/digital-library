@@ -154,4 +154,106 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
+
+    public function ajaxSearch(Request $request)
+    {
+        $term = trim($request->get('q', $request->get('search', '')));
+        if (strlen($term) < 2) {
+            return response()->json([
+                'books' => [],
+                'authors' => [],
+                'categories' => [],
+                'publishers' => [],
+                'customers' => [],
+                'orders' => [],
+            ]);
+        }
+
+        $books = Book::with(['author', 'category'])
+            ->search($term)
+            ->limit(5)
+            ->get()
+            ->map(fn ($b) => [
+                'id' => $b->id,
+                'title' => $b->title,
+                'author' => $b->author?->name ?? 'N/A',
+                'category' => $b->category?->name ?? 'N/A',
+                'cover_url' => $b->cover_url ?? asset('images/default-cover.png'),
+                'price_text' => $b->is_free ? 'FREE' : '$' . number_format($b->final_price, 2),
+                'url' => route('admin.books.edit', $b),
+            ]);
+
+        $authors = Author::search($term)
+            ->limit(5)
+            ->get()
+            ->map(fn ($a) => [
+                'id' => $a->id,
+                'name' => $a->name,
+                'books_count' => $a->books()->count(),
+                'image_url' => $a->image_url ?? asset('images/default-avatar.png'),
+                'url' => route('admin.authors.edit', $a),
+            ]);
+
+        $categories = Category::search($term)
+            ->limit(5)
+            ->get()
+            ->map(fn ($c) => [
+                'id' => $c->id,
+                'name' => $c->name,
+                'books_count' => $c->books()->count(),
+                'url' => route('admin.categories.edit', $c),
+            ]);
+
+        $publishers = Publisher::search($term)
+            ->limit(5)
+            ->get()
+            ->map(fn ($p) => [
+                'id' => $p->id,
+                'name' => $p->name,
+                'books_count' => $p->books()->count(),
+                'url' => route('admin.publishers.edit', $p),
+            ]);
+
+        $customers = User::where(function ($q) use ($term) {
+                $q->where('name', 'LIKE', "%{$term}%")
+                  ->orWhere('email', 'LIKE', "%{$term}%")
+                  ->orWhere('phone', 'LIKE', "%{$term}%");
+            })
+            ->limit(5)
+            ->get()
+            ->map(fn ($u) => [
+                'id' => $u->id,
+                'name' => $u->name,
+                'email' => $u->email,
+                'url' => route('admin.customers.show', $u),
+            ]);
+
+        $orders = Order::with('user')
+            ->where(function ($q) use ($term) {
+                $q->where('order_number', 'LIKE', "%{$term}%")
+                  ->orWhereHas('user', function ($uq) use ($term) {
+                      $uq->where('name', 'LIKE', "%{$term}%")
+                         ->orWhere('email', 'LIKE', "%{$term}%");
+                  });
+            })
+            ->limit(5)
+            ->get()
+            ->map(fn ($o) => [
+                'id' => $o->id,
+                'order_number' => $o->order_number,
+                'customer' => $o->user?->name ?? 'Guest',
+                'status' => ucfirst($o->order_status ?? $o->status),
+                'total_text' => '$' . number_format($o->total, 2),
+                'url' => route('admin.orders.show', $o),
+            ]);
+
+        return response()->json([
+            'books' => $books,
+            'authors' => $authors,
+            'categories' => $categories,
+            'publishers' => $publishers,
+            'customers' => $customers,
+            'orders' => $orders,
+        ]);
+    }
 }

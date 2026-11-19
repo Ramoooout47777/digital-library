@@ -30,15 +30,6 @@
             </button>
         </div>
     </div>
-
-    <form action="{{ route('admin.books.index') }}" method="GET" class="flex gap-2">
-        <input type="text" name="search" value="{{ request('search') }}"
-               placeholder="{{ __('admin.search') }}..."
-               class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-        <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition">
-            <i class="fas fa-search"></i>
-        </button>
-    </form>
 </div>
 
 <!-- Import Form (Hidden) -->
@@ -47,12 +38,35 @@
     <input type="file" name="file" accept=".csv,.xlsx" onchange="this.form.submit()">
 </form>
 
-<!-- Filters -->
-<div class="bg-white rounded-lg shadow-sm p-4 mb-6">
-    <form action="{{ route('admin.books.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<!-- Search & Filters -->
+<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 mb-6 border dark:border-slate-700">
+    <form action="{{ route('admin.books.index') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.categories_menu') }}</label>
-            <select name="category_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('admin.search') }}</label>
+            <div class="relative">
+                <input type="text" id="admin-search-input" name="search" value="{{ request('search') }}"
+                       placeholder="{{ __('admin.search') }}..."
+                       autocomplete="off"
+                       class="w-full pl-9 pr-8 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                <button type="button" id="admin-clear-search-btn" onclick="clearAdminBookSearch()"
+                        class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xs {{ request('search') ? '' : 'hidden' }}">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+
+                <!-- Admin Live Search Autocomplete Popup Dropdown -->
+                <div id="admin-live-search-popup" class="absolute left-0 top-full mt-2 w-72 sm:w-96 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 hidden overflow-hidden transition-all duration-200">
+                    <div id="admin-live-search-loading" class="p-3 text-center text-xs text-gray-500 dark:text-gray-400 hidden">
+                        <i class="fas fa-circle-notch fa-spin text-blue-500 mr-2"></i> {{ __('admin.searching') ?? 'Searching...' }}
+                    </div>
+                    <div id="admin-live-search-results" class="max-h-80 overflow-y-auto divide-y divide-gray-100 dark:divide-slate-800"></div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('admin.categories_menu') }}</label>
+            <select name="category_id" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">{{ __('admin.view_all') }}</option>
                 @foreach($categories ?? [] as $category)
                     <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
@@ -63,8 +77,8 @@
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.status') }}</label>
-            <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('admin.status') }}</label>
+            <select name="status" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">{{ __('admin.view_all') }}</option>
                 <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>{{ __('admin.active') }}</option>
                 <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>{{ __('admin.inactive') }}</option>
@@ -73,8 +87,8 @@
         </div>
 
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">{{ __('admin.language') }}</label>
-            <select name="language" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('admin.language') }}</label>
+            <select name="language" class="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 dark:bg-slate-900 dark:text-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">{{ __('admin.view_all') }}</option>
                 <option value="km" {{ request('language') == 'km' ? 'selected' : '' }}>ភាសាខ្មែរ</option>
                 <option value="en" {{ request('language') == 'en' ? 'selected' : '' }}>English</option>
@@ -84,10 +98,26 @@
 
         <div class="flex items-end gap-2">
             <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition w-full">
-                <i class="fas fa-filter mr-2"></i>{{ __('admin.filter') }}
+                <i class="fas fa-search mr-2"></i>{{ __('admin.filter') }}
             </button>
             <a href="{{ route('admin.books.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition w-full text-center">
                 <i class="fas fa-undo mr-2"></i>{{ __('admin.reset') }}
+            </a>
+        </div>
+    </form>
+</div>
+
+@if(request('search'))
+    <div class="mb-4 flex items-center gap-2">
+        <span class="text-xs text-gray-500 dark:text-gray-400">Search results for:</span>
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 text-xs font-semibold">
+            "{{ request('search') }}"
+            <a href="{{ route('admin.books.index', request()->except('search')) }}" class="hover:text-red-500 ml-1">
+                <i class="fas fa-times"></i>
+            </a>
+        </span>
+    </div>
+@endif
             </a>
         </div>
     </form>
@@ -323,6 +353,106 @@
             console.error('Error:', error);
             alert('{{ __("admin.error_occurred") }}');
         });
+    }
+
+    // Live Search Autocomplete for Admin Books Index
+    const adminSearchInput = document.getElementById('admin-search-input');
+    const adminSearchPopup = document.getElementById('admin-live-search-popup');
+    const adminSearchResults = document.getElementById('admin-live-search-results');
+    const adminSearchLoading = document.getElementById('admin-live-search-loading');
+    const adminClearSearchBtn = document.getElementById('admin-clear-search-btn');
+    let adminSearchDebounceTimer = null;
+
+    if (adminSearchInput) {
+        adminSearchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+
+            if (adminClearSearchBtn) {
+                adminClearSearchBtn.classList.toggle('hidden', query.length === 0);
+            }
+
+            if (query.length < 2) {
+                if (adminSearchPopup) adminSearchPopup.classList.add('hidden');
+                return;
+            }
+
+            clearTimeout(adminSearchDebounceTimer);
+            if (adminSearchLoading) adminSearchLoading.classList.remove('hidden');
+            if (adminSearchPopup) adminSearchPopup.classList.remove('hidden');
+            if (adminSearchResults) adminSearchResults.innerHTML = '';
+
+            adminSearchDebounceTimer = setTimeout(() => {
+                fetch('{{ route("admin.search.ajax") }}?q=' + encodeURIComponent(query))
+                    .then(res => res.json())
+                    .then(res => {
+                        if (adminSearchLoading) adminSearchLoading.classList.add('hidden');
+                        const books = res.books || [];
+
+                        if (books.length === 0) {
+                            if (adminSearchResults) {
+                                adminSearchResults.innerHTML = `<div class="p-3 text-center text-xs text-gray-500 dark:text-gray-400">មិនមានសៀវភៅពាក់ព័ន្ធនឹង "${escapeHtmlAdmin(query)}"</div>`;
+                            }
+                            return;
+                        }
+
+                        if (adminSearchResults) {
+                            adminSearchResults.innerHTML = books.map(book => `
+                                <a href="${book.url}" class="p-3 flex items-center gap-3 hover:bg-gray-50 dark:hover:bg-slate-800 transition group">
+                                    <img src="${book.cover_url}" alt="${escapeHtmlAdmin(book.title)}" class="w-9 h-12 object-cover rounded shadow-sm flex-shrink-0">
+                                    <div class="min-w-0 flex-1">
+                                        <h5 class="text-xs font-bold text-gray-800 dark:text-gray-200 group-hover:text-blue-500 truncate">${highlightAdminText(book.title, query)}</h5>
+                                        <p class="text-[11px] text-gray-500 dark:text-gray-400 truncate mt-0.5">${escapeHtmlAdmin(book.author)} • <span class="text-gray-400">${escapeHtmlAdmin(book.category)}</span></p>
+                                    </div>
+                                    <span class="text-xs font-semibold text-blue-600 dark:text-blue-400 flex-shrink-0 ml-2">${book.price_text}</span>
+                                </a>
+                            `).join('');
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Admin search error:', err);
+                        if (adminSearchLoading) adminSearchLoading.classList.add('hidden');
+                    });
+            }, 250);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (adminSearchInput && adminSearchPopup && !adminSearchInput.contains(e.target) && !adminSearchPopup.contains(e.target)) {
+                adminSearchPopup.classList.add('hidden');
+            }
+        });
+
+        adminSearchInput.addEventListener('focus', function() {
+            if (this.value.trim().length >= 2 && adminSearchResults && adminSearchResults.children.length > 0) {
+                adminSearchPopup.classList.remove('hidden');
+            }
+        });
+    }
+
+    function clearAdminBookSearch() {
+        if (adminSearchInput) {
+            const hasActiveSearchParam = '{{ request("search") }}' !== '';
+            adminSearchInput.value = '';
+            if (adminClearSearchBtn) adminClearSearchBtn.classList.add('hidden');
+            if (adminSearchPopup) adminSearchPopup.classList.add('hidden');
+            if (hasActiveSearchParam) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('search');
+                window.location.href = url.toString();
+            } else {
+                adminSearchInput.focus();
+            }
+        }
+    }
+
+    function highlightAdminText(text, query) {
+        if (!query) return escapeHtmlAdmin(text);
+        const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`(${escapedQuery})`, 'gi');
+        return escapeHtmlAdmin(text).replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800/50 text-gray-900 dark:text-yellow-200 px-1 rounded font-semibold">$1</mark>');
+    }
+
+    function escapeHtmlAdmin(str) {
+        return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 </script>
 @endpush

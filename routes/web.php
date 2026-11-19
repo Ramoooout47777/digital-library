@@ -157,9 +157,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // ============================================================
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'admin'])->group(function () {
 
-    // ============ DASHBOARD ============
+    // ============ DASHBOARD & SEARCH ============
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/dashboard/chart-data', [AdminController::class, 'chartData'])->name('dashboard.chart-data');
+    Route::get('/search/ajax', [AdminController::class, 'ajaxSearch'])->name('search.ajax');
     Route::get('/switch-language/{locale}', [AdminController::class, 'switchLanguage'])->name('switch-language');
     // Theme Switch
     Route::post('/switch-theme', [App\Http\Controllers\Admin\ThemeController::class, 'switchTheme'])

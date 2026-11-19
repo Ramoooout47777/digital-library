@@ -15,11 +15,13 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $books = Book::with(['author', 'category'])
+        $books = Book::with(['author', 'category', 'type', 'publisher'])
             ->available()
             ->when($request->search, fn ($q, $term) => $q->search($term))
             ->when($request->category_id, fn ($q, $id) => $q->byCategory($id))
             ->when($request->author_id, fn ($q, $id) => $q->byAuthor($id))
+            ->when($request->type_id, fn ($q, $id) => $q->byType($id))
+            ->when($request->publisher_id, fn ($q, $id) => $q->byPublisher($id))
             ->when($request->price_min, fn ($q, $min) => $q->where('final_price', '>=', $min))
             ->when($request->price_max, fn ($q, $max) => $q->where('final_price', '<=', $max))
             ->when($request->boolean('free'), fn ($q) => $q->free())
@@ -29,6 +31,7 @@ class BookController extends Controller
                     'price' => $q->orderBy('final_price', 'asc'),
                     '-price' => $q->orderBy('final_price', 'desc'),
                     'views_count' => $q->orderBy('views_count', 'desc'),
+                    'rating' => $q->orderBy('average_rating', 'desc'),
                     default => $q->orderBy('created_at', 'desc'),
                 };
             }, fn ($q) => $q->orderBy('created_at', 'desc'))
@@ -227,7 +230,7 @@ class BookController extends Controller
             return response()->json(['data' => []]);
         }
 
-        $books = Book::with(['author', 'category'])
+        $books = Book::with(['author', 'category', 'type', 'publisher'])
             ->available()
             ->search($term)
             ->limit(8)

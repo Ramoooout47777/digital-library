@@ -29,7 +29,7 @@ class Publisher extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($publisher) {
             if (empty($publisher->slug)) {
                 $publisher->slug = Str::slug($publisher->name);
@@ -50,5 +50,20 @@ class Publisher extends Model
     public function scopeActive($query)
     {
         return $query->where('status', true);
+    }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = trim($term ?? '');
+        if ($term === '') {
+            return $query;
+        }
+
+        return $query->where(function ($q) use ($term) {
+            $q->where('name', 'LIKE', "%{$term}%")
+              ->orWhere('address', 'LIKE', "%{$term}%")
+              ->orWhere('email', 'LIKE', "%{$term}%")
+              ->orWhere('phone', 'LIKE', "%{$term}%");
+        });
     }
 }

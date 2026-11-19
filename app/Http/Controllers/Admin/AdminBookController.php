@@ -25,10 +25,28 @@ class AdminBookController extends Controller
     {
         $books = Book::with(['category', 'type', 'author', 'publisher'])
             ->when($request->search, fn ($query, $term) => $query->search($term))
+            ->when($request->category_id, fn ($query, $id) => $query->byCategory($id))
+            ->when($request->author_id, fn ($query, $id) => $query->byAuthor($id))
+            ->when($request->publisher_id, fn ($query, $id) => $query->byPublisher($id))
+            ->when($request->type_id, fn ($query, $id) => $query->byType($id))
+            ->when($request->language, fn ($query, $lang) => $query->where('language', $lang))
+            ->when($request->status, function ($query, $status) {
+                if ($status === 'active') {
+                    $query->where('status', true);
+                } elseif ($status === 'inactive') {
+                    $query->where('status', false);
+                } elseif ($status === 'trashed') {
+                    $query->onlyTrashed();
+                }
+            })
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
-        return $this->viewOrJson('admin.books.index', ['books' => $books]);
+        return $this->viewOrJson('admin.books.index', array_merge(
+            ['books' => $books],
+            $this->formData()
+        ));
     }
 
     public function create()

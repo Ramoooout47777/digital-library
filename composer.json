@@ -19,6 +19,15 @@
         "spatie/laravel-permission": "^8.3"
     },
 
+    "functions": {
+        "api/index.php": {
+            "runtime": "vercel-php@8.4"
+        }
+    },
+    "env": {
+        "PHP_VERSION": "8.4"
+    },
+
     "require-dev": {
         "fakerphp/faker": "^1.23",
         "laravel/boost": "^2.2",

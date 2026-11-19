@@ -302,10 +302,39 @@ class Book extends Model
 
     public function scopeSearch($query, $term)
     {
-        return $query->where(function($q) use ($term) {
-            $q->where('title', 'LIKE', "%{$term}%")
-              ->orWhere('description', 'LIKE', "%{$term}%")
-              ->orWhere('isbn', 'LIKE', "%{$term}%");
+        $term = trim($term ?? '');
+        if ($term === '') {
+            return $query;
+        }
+
+        $terms = array_filter(explode(' ', $term));
+
+        return $query->where(function ($q) use ($term, $terms) {
+            $q->where(function ($sub) use ($term) {
+                $sub->where('title', 'LIKE', "%{$term}%")
+                    ->orWhere('description', 'LIKE', "%{$term}%")
+                    ->orWhere('isbn', 'LIKE', "%{$term}%")
+                    ->orWhereHas('author', fn ($a) => $a->where('name', 'LIKE', "%{$term}%"))
+                    ->orWhereHas('category', fn ($c) => $c->where('name', 'LIKE', "%{$term}%"))
+                    ->orWhereHas('publisher', fn ($p) => $p->where('name', 'LIKE', "%{$term}%"))
+                    ->orWhereHas('type', fn ($t) => $t->where('name', 'LIKE', "%{$term}%"));
+            });
+
+            if (count($terms) > 1) {
+                $q->orWhere(function ($sub) use ($terms) {
+                    foreach ($terms as $word) {
+                        $sub->where(function ($w) use ($word) {
+                            $w->where('title', 'LIKE', "%{$word}%")
+                              ->orWhere('description', 'LIKE', "%{$word}%")
+                              ->orWhere('isbn', 'LIKE', "%{$word}%")
+                              ->orWhereHas('author', fn ($a) => $a->where('name', 'LIKE', "%{$word}%"))
+                              ->orWhereHas('category', fn ($c) => $c->where('name', 'LIKE', "%{$word}%"))
+                              ->orWhereHas('publisher', fn ($p) => $p->where('name', 'LIKE', "%{$word}%"))
+                              ->orWhereHas('type', fn ($t) => $t->where('name', 'LIKE', "%{$word}%"));
+                        });
+                    }
+                });
+            }
         });
     }
 

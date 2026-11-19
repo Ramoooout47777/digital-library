@@ -269,4 +269,99 @@ class BookTest extends TestCase
             'url' => route('books.show', $book),
         ]);
     }
+
+    public function test_user_can_search_books_by_author_name()
+    {
+        $author = Author::factory()->create(['name' => 'George Orwell']);
+        $book = Book::factory()->create([
+            'title' => '1984',
+            'author_id' => $author->id,
+            'status' => true,
+            'published_at' => now(),
+        ]);
+
+        $response = $this->get('/books?search=Orwell');
+
+        $response->assertStatus(200);
+        $response->assertSee('1984');
+    }
+
+    public function test_user_can_search_books_by_category_name()
+    {
+        $category = Category::factory()->create(['name' => 'Science Fiction']);
+        $book = Book::factory()->create([
+            'title' => 'Dune',
+            'category_id' => $category->id,
+            'status' => true,
+            'published_at' => now(),
+        ]);
+
+        $response = $this->get('/books?search=Science');
+
+        $response->assertStatus(200);
+        $response->assertSee('Dune');
+    }
+
+    public function test_user_can_search_books_by_publisher_name()
+    {
+        $publisher = Publisher::factory()->create(['name' => 'Penguin Books']);
+        $book = Book::factory()->create([
+            'title' => 'The Great Gatsby',
+            'publisher_id' => $publisher->id,
+            'status' => true,
+            'published_at' => now(),
+        ]);
+
+        $response = $this->get('/books?search=Penguin');
+
+        $response->assertStatus(200);
+        $response->assertSee('The Great Gatsby');
+    }
+
+    public function test_user_can_search_books_by_isbn()
+    {
+        $book = Book::factory()->create([
+            'title' => 'Clean Code',
+            'isbn' => '9780132350884',
+            'status' => true,
+            'published_at' => now(),
+        ]);
+
+        $response = $this->get('/books?search=9780132350884');
+
+        $response->assertStatus(200);
+        $response->assertSee('Clean Code');
+    }
+
+    public function test_user_can_search_books_with_multi_words()
+    {
+        $author = Author::factory()->create(['name' => 'Robert C. Martin']);
+        $book = Book::factory()->create([
+            'title' => 'Clean Architecture',
+            'author_id' => $author->id,
+            'status' => true,
+            'published_at' => now(),
+        ]);
+
+        $response = $this->get('/books?search=Clean+Martin');
+
+        $response->assertStatus(200);
+        $response->assertSee('Clean Architecture');
+    }
+
+    public function test_admin_can_filter_and_search_books()
+    {
+        $admin = $this->createAdminUser();
+        $category = Category::factory()->create(['name' => 'History']);
+        $book = Book::factory()->create([
+            'title' => 'Cambodian History',
+            'category_id' => $category->id,
+            'status' => true,
+        ]);
+
+        $response = $this->actingAs($admin)->get("/admin/books?search=Cambodian&category_id={$category->id}&status=active");
+
+        $response->assertStatus(200);
+        $response->assertSee('Cambodian History');
+    }
 }

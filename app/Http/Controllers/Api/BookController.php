@@ -22,13 +22,16 @@ class BookController extends Controller
     public function index(Request $request): JsonResponse
     {
         $query = Book::query()
-            ->with(['category', 'author', 'publisher'])
+            ->with(['category', 'author', 'publisher', 'type'])
             ->available();
 
         $query->when($request->search, fn ($query, $term) => $query->search($term));
         $query->when($request->category_id, fn ($query, $id) => $query->byCategory($id));
         $query->when($request->author_id, fn ($query, $id) => $query->byAuthor($id));
         $query->when($request->publisher_id, fn ($query, $id) => $query->byPublisher($id));
+        $query->when($request->type_id, fn ($query, $id) => $query->byType($id));
+        $query->when($request->price_min, fn ($query, $min) => $query->where('final_price', '>=', $min));
+        $query->when($request->price_max, fn ($query, $max) => $query->where('final_price', '<=', $max));
         $query->when($request->boolean('is_free'), fn ($query) => $query->free());
         $query->when($request->boolean('is_featured'), fn ($query) => $query->featured());
 
