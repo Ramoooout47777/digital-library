@@ -1,5 +1,5 @@
 <?php
-// resources/lang/en/orders.php
+
 return [
     'title' => 'My Orders',
     'total_orders' => 'total orders',
@@ -26,6 +26,7 @@ return [
     'completed' => 'Completed',
     'failed' => 'Failed',
     'refunded' => 'Refunded',
+    'cancelled' => 'Cancelled',
     'order' => 'Order',
     'order_details' => 'Order Details',
     'placed_on' => 'Placed on',
@@ -51,7 +52,6 @@ return [
     'packed' => 'Packed',
     'shipped' => 'Shipped',
     'delivered' => 'Delivered',
-    'completed' => 'Completed',
     'quick_actions' => 'Quick Actions',
     'view_all_orders' => 'View All Orders',
     'free' => 'Free',
@@ -59,7 +59,6 @@ return [
     'download' => 'Download',
     'total' => 'Total',
     'subtotal' => 'Subtotal',
-    'shipping' => 'Shipping',   
-    'download_invoice'   => 'Download Invoice',
-
+    'shipping' => 'Shipping',
+    'download_invoice' => 'Download Invoice',
 ];

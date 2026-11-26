@@ -47,86 +47,88 @@
         /* ─── Dark Mode ─── */
         .dark .cyber-bg {
             background: #0b1120;
-            background-image: radial-gradient(ellipse at 15% 50%, rgba(56, 189, 248, 0.05) 0%, transparent 65%),
-                              radial-gradient(ellipse at 85% 20%, rgba(168, 85, 247, 0.04) 0%, transparent 55%);
+            background-image: radial-gradient(ellipse at 15% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 65%),
+                              radial-gradient(ellipse at 85% 20%, rgba(168, 85, 247, 0.06) 0%, transparent 55%);
             min-height: 100vh;
         }
         .dark .neu-card {
             background: #0f172a;
             border-radius: 28px;
-            box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.7), -12px -12px 24px rgba(30, 41, 59, 0.4);
-            border: 1px solid rgba(51, 65, 85, 0.1);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+            border: 1px solid rgba(51, 65, 85, 0.2);
         }
         .dark .neu-card-inset {
             background: #0f172a;
             border-radius: 28px;
-            box-shadow: inset 8px 8px 16px rgba(0, 0, 0, 0.6), inset -8px -8px 16px rgba(30, 41, 59, 0.3);
+            box-shadow: inset 4px 4px 10px rgba(0, 0, 0, 0.5), inset -4px -4px 10px rgba(30, 41, 59, 0.25);
         }
         .dark .neu-button {
             background: #0f172a;
             border-radius: 18px;
-            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.6), -8px -8px 16px rgba(30, 41, 59, 0.4);
-            color: #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.06);
+            color: #f1f5f9;
         }
         .dark .neu-button:hover {
-            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5), -4px -4px 8px rgba(30, 41, 59, 0.3);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(56, 189, 248, 0.3);
             color: #ffffff;
         }
         .dark .neu-button-primary {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.6), -8px -8px 16px rgba(30, 41, 59, 0.4);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.1);
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.3);
+            color: #ffffff;
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }
         .dark .neu-button-primary:hover {
-            color: #60d0fa;
-            border-color: rgba(56, 189, 248, 0.3);
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.45);
+            border-color: rgba(56, 189, 248, 0.5);
         }
         .dark .neu-book {
             background: #0f172a;
             border-radius: 24px;
-            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.6), -8px -8px 16px rgba(30, 41, 59, 0.4);
-            border: 1px solid rgba(51, 65, 85, 0.08);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(51, 65, 85, 0.2);
         }
         .dark .neu-book:hover {
-            box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.7), -12px -12px 24px rgba(30, 41, 59, 0.5);
-            border-color: rgba(56, 189, 248, 0.15);
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(56, 189, 248, 0.3);
+            border-color: rgba(56, 189, 248, 0.3);
         }
         .dark .neu-input {
-            background: #0f172a;
+            background: #1e293b;
             border-radius: 18px;
-            box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.6), inset -6px -6px 12px rgba(30, 41, 59, 0.3);
-            color: #e2e8f0;
+            border: 1px solid #334155;
+            color: #f8fafc;
         }
         .dark .neu-input:focus {
-            box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.5), inset -4px -4px 8px rgba(30, 41, 59, 0.2);
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
         }
         .dark .neu-input::placeholder {
-            color: #475569;
+            color: #94a3b8;
         }
         .dark .neu-pill {
             background: #0f172a;
             border-radius: 100px;
-            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.5), -6px -6px 12px rgba(30, 41, 59, 0.3);
-            color: #94a3b8;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.06);
+            color: #cbd5e1;
         }
         .dark .neu-pill:hover {
-            color: #e2e8f0;
+            color: #ffffff;
         }
         .dark .neu-nav {
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(20px);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
-            border-bottom: 1px solid rgba(51, 65, 85, 0.1);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.2);
         }
         .dark .lang-select {
             background-color: #1e293b;
-            color: #e2e8f0;
+            color: #f8fafc;
             border: 1px solid #334155;
         }
         .dark .lang-select option {
-            background-color: #1e293b;
-            color: #e2e8f0;
+            background-color: #0f172a;
+            color: #f8fafc;
         }
         .dark .lang-select:focus {
             border-color: #38bdf8;
@@ -135,37 +137,38 @@
         .dark .mobile-menu {
             background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(51, 65, 85, 0.1);
+            border: 1px solid rgba(51, 65, 85, 0.2);
         }
-        .dark .nav-link { color: #94a3b8; }
+        .dark .nav-link { color: #cbd5e1; }
         .dark .nav-link:hover { color: #f1f5f9; }
         .dark .nav-link::after { background: linear-gradient(90deg, #38bdf8, #818cf8); }
-        .dark .body-text { color: #94a3b8; }
-        .dark .body-text-sm { color: #64748b; }
+        .dark .body-text { color: #cbd5e1; }
+        .dark .body-text-sm { color: #94a3b8; }
         .dark .stat-digit {
-            background: linear-gradient(135deg, #e2e8f0, #94a3b8);
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .dark .stat-label { color: #475569; }
+        .dark .stat-label { color: #94a3b8; }
         .dark .neu-badge {
             background: #0f172a;
             border-radius: 100px;
-            box-shadow: inset 3px 3px 6px rgba(0,0,0,0.6), inset -3px -3px 6px rgba(30,41,59,0.3);
+            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.06);
         }
         .dark .admin-link {
-            background: rgba(56, 189, 248, 0.06);
+            background: rgba(56, 189, 248, 0.1);
             color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.08);
+            border: 1px solid rgba(56, 189, 248, 0.2);
         }
         .dark .admin-link:hover {
-            background: rgba(56, 189, 248, 0.12);
-            border-color: rgba(56, 189, 248, 0.15);
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.4);
         }
         .dark .profile-dropdown {
             background: #0f172a;
-            border: 1px solid rgba(51, 65, 85, 0.1);
+            border: 1px solid rgba(51, 65, 85, 0.2);
         }
 
         /* ─── Light Mode ─── */
@@ -568,6 +571,18 @@
                 </a>
             @endauth
 
+            <!-- Shopping Cart Icon -->
+            <a href="{{ route('cart.index') }}"
+               class="neu-button w-11 h-11 rounded-xl flex items-center justify-center text-sm p-0 flex-shrink-0 relative"
+               title="{{ __('cart.title') ?? 'Cart' }}">
+                <i class="fas fa-shopping-cart text-lg"></i>
+                @if(isset($cartCount) && $cartCount > 0)
+                    <span class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-cyan-500 text-white text-[10px] flex items-center justify-center font-bold">
+                        {{ $cartCount > 9 ? '9+' : $cartCount }}
+                    </span>
+                @endif
+            </a>
+
             <!-- Theme Toggle -->
             <button onclick="toggleTheme()" class="neu-button w-11 h-11 rounded-xl flex items-center justify-center text-sm p-0 flex-shrink-0">
                 <i id="theme-icon" class="fas fa-moon text-lg"></i>
@@ -579,9 +594,9 @@
                     <span class="lang-icon">🌐</span>
                     <select onchange="window.location.href = this.value;"
                             class="lang-select dark:lang-select light:lang-select pl-8 pr-8 py-1.5">
-                        <option value="{{ route('switch-language', 'km') }}" {{ $currentLocale == 'km' ? 'selected' : '' }}>ខ្មែរ</option>
-                        <option value="{{ route('switch-language', 'en') }}" {{ $currentLocale == 'en' ? 'selected' : '' }}>English</option>
-                        <option value="{{ route('switch-language', 'zh') }}" {{ $currentLocale == 'zh' ? 'selected' : '' }}>中文</option>
+                        <option value="{{ route('switch-language', 'km') }}" {{ $currentLocale == 'km' ? 'selected' : '' }}>🇰🇭 ខ្មែរ</option>
+                        <option value="{{ route('switch-language', 'en') }}" {{ $currentLocale == 'en' ? 'selected' : '' }}>🇬🇧 English</option>
+                        <option value="{{ route('switch-language', 'zh') }}" {{ $currentLocale == 'zh' ? 'selected' : '' }}>🇨🇳 中文</option>
                     </select>
                     <span class="lang-arrow text-gray-400 dark:text-gray-500">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -648,6 +663,12 @@
         <a href="#books" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.books') ?? 'Books' }}</a>
         <a href="#categories" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.categories') ?? 'Categories' }}</a>
         <a href="#about" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg">{{ __('home.about') ?? 'About' }}</a>
+        <a href="{{ route('cart.index') }}" class="block dark:text-slate-300 light:text-slate-700 hover:text-cyan-400 transition font-medium text-lg flex items-center justify-between">
+            <span><i class="fas fa-shopping-cart mr-2"></i> {{ __('cart.title') ?? 'Cart' }}</span>
+            @if(isset($cartCount) && $cartCount > 0)
+                <span class="px-2 py-0.5 rounded-full bg-cyan-500 text-white text-xs font-bold">{{ $cartCount }}</span>
+            @endif
+        </a>
 
         <div class="pt-4 border-t dark:border-slate-800/40 light:border-slate-200/60">
             <div class="lang-select-wrapper w-full">
@@ -655,7 +676,7 @@
                 <select onchange="window.location.href = this.value;"
                         class="lang-select w-full dark:lang-select light:lang-select pl-8 pr-8 py-2.5 text-base">
                     <option value="{{ route('switch-language', 'km') }}" {{ $currentLocale == 'km' ? 'selected' : '' }}>🇰🇭 ខ្មែរ</option>
-                    <option value="{{ route('switch-language', 'en') }}" {{ $currentLocale == 'en' ? 'selected' : '' }}>🇺🇸 English</option>
+                    <option value="{{ route('switch-language', 'en') }}" {{ $currentLocale == 'en' ? 'selected' : '' }}>🇬🇧 English</option>
                     <option value="{{ route('switch-language', 'zh') }}" {{ $currentLocale == 'zh' ? 'selected' : '' }}>🇨🇳 中文</option>
                 </select>
                 <span class="lang-arrow text-gray-400 dark:text-gray-500">
@@ -954,19 +975,22 @@
 <!-- ============================================================ -->
 <!-- DISCOUNTED BOOKS SECTION -->
 <!-- ============================================================ -->
+<!-- ============================================================ -->
+<!-- DISCOUNTED BOOKS SECTION -->
+<!-- ============================================================ -->
 @if(isset($discountedBooks) && $discountedBooks->count() > 0)
-<section id="books" class="section-padding border-t dark:border-slate-800/40 light:border-slate-200/60">
+<section id="discounted-books" class="section-padding border-t dark:border-slate-800/40 light:border-slate-200/60">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center mb-12">
             <div>
-                <p class="text-sm font-medium text-red-400 tracking-[0.15em] uppercase mb-2">Sale</p>
-                <h2 class="heading-lg dark:text-slate-100 light:text-slate-900">
-                    <i class="fas fa-tags text-red-400 mr-2"></i>
+                <p class="text-sm font-medium text-red-400 tracking-[0.15em] uppercase mb-2">{{ __('home.special_offers') ?? 'Special Offers' }}</p>
+                <h2 class="heading-lg dark:text-slate-100 light:text-slate-900 flex items-center gap-3">
+                    <i class="fas fa-tags text-red-400"></i>
                     {{ __('home.discounted_books') ?? 'Discounted Books' }}
                 </h2>
-                <p class="text-base dark:text-slate-400 light:text-slate-600 mt-1">Grab these deals before they're gone</p>
+                <p class="text-base dark:text-slate-400 light:text-slate-600 mt-1">{{ __('home.grab_deals') ?? 'Grab these limited-time deals before they\'re gone' }}</p>
             </div>
-            <a href="{{ route('books.index', ['discount' => 'true']) }}" class="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition flex items-center gap-2">
+            <a href="{{ route('books.index', ['sort' => '-price']) }}" class="text-sm font-medium text-cyan-400 hover:text-cyan-300 transition flex items-center gap-2">
                 {{ __('home.view_all') ?? 'View All' }}
                 <i class="fas fa-arrow-right"></i>
             </a>
@@ -974,7 +998,7 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach($discountedBooks as $book)
-                <div class="neu-book book-card group">
+                <div class="neu-book book-card group relative">
                     <div class="relative overflow-hidden rounded-t-2xl">
                         <a href="{{ route('books.show', $book) }}" class="block">
                             @if($book->cover)
@@ -994,7 +1018,8 @@
 
                         @auth
                             <button onclick="toggleFavorite({{ $book->id }}, this)"
-                                    class="absolute top-3 left-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm hover:bg-black/60 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg z-10">
+                                    class="absolute top-3 left-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm hover:bg-black/60 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg z-10"
+                                    title="{{ auth()->user()->isFavorited($book->id) ? 'Remove from favorites' : 'Add to favorites' }}">
                                 <i class="fas fa-heart text-sm
                                     @if(auth()->user()->isFavorited($book->id))
                                         text-red-500
@@ -1005,20 +1030,43 @@
                                 </i>
                             </button>
                         @endauth
+
+                        <!-- Hover Overlay Actions -->
+                        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 p-4">
+                            <a href="{{ route('books.show', $book) }}"
+                               class="w-full text-center neu-button text-xs font-semibold py-2.5 rounded-xl text-white hover:bg-white/10 transition">
+                                <i class="fas fa-eye mr-1.5"></i> {{ __('home.view_details') ?? 'View Details' }}
+                            </a>
+                            <form action="{{ route('cart.add', $book) }}" method="POST" class="w-full">
+                                @csrf
+                                <button type="submit" class="w-full neu-button-primary text-xs font-semibold py-2.5 rounded-xl flex items-center justify-center gap-1.5">
+                                    <i class="fas fa-cart-plus"></i> {{ __('home.add_to_cart') ?? 'Add to Cart' }}
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
                     <div class="p-4">
+                        <div class="flex items-center justify-between text-[11px] text-cyan-400 mb-1 font-medium">
+                            <span>{{ $book->category->name ?? 'General' }}</span>
+                            <div class="flex items-center gap-1 text-amber-400">
+                                <i class="fas fa-star text-[10px]"></i>
+                                <span class="dark:text-slate-400 light:text-slate-600 font-semibold">{{ number_format($book->average_rating, 1) }}</span>
+                            </div>
+                        </div>
                         <a href="{{ route('books.show', $book) }}" class="block">
-                            <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate">{{ $book->title }}</h4>
+                            <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate group-hover:text-cyan-400 transition">{{ $book->title }}</h4>
                         </a>
                         <p class="text-xs dark:text-slate-500 light:text-slate-500 mt-1 truncate">{{ $book->author->name ?? 'N/A' }}</p>
-                        <div class="flex items-center gap-2 mt-3">
-                            <span class="text-sm font-bold text-cyan-400">
-                                ${{ number_format($book->final_price, 2) }}
-                            </span>
-                            <span class="text-xs dark:text-slate-500 light:text-slate-400 line-through">
-                                ${{ number_format($book->price, 2) }}
-                            </span>
+                        <div class="flex items-center justify-between mt-3 pt-2 border-t dark:border-slate-800/40 light:border-slate-200/60">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm font-bold text-cyan-400">
+                                    ${{ number_format($book->final_price, 2) }}
+                                </span>
+                                <span class="text-xs dark:text-slate-500 light:text-slate-400 line-through">
+                                    ${{ number_format($book->price, 2) }}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1047,7 +1095,7 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             @forelse($popularBooks ?? [] as $index => $book)
-                <div class="neu-book book-card group">
+                <div class="neu-book book-card group relative">
                     <div class="relative overflow-hidden rounded-t-2xl">
                         <a href="{{ route('books.show', $book) }}" class="block">
                             @if($book->cover)
@@ -1081,34 +1129,47 @@
                                 <span class="neu-badge neu-badge-featured"><i class="fas fa-crown mr-1"></i> Featured</span>
                             @elseif($book->is_free)
                                 <span class="neu-badge neu-badge-free"><i class="fas fa-gift mr-1"></i> Free</span>
-                            @elseif($book->created_at->diffInDays(now()) < 7)
+                            @elseif($book->created_at && $book->created_at->diffInDays(now()) < 7)
                                 <span class="neu-badge neu-badge-new"><i class="fas fa-sparkles mr-1"></i> New</span>
+                            @endif
+                        </div>
+
+                        <!-- Hover Overlay Actions -->
+                        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2.5 p-4">
+                            <a href="{{ route('books.show', $book) }}"
+                               class="w-full text-center neu-button text-xs font-semibold py-2 rounded-xl text-white hover:bg-white/10 transition">
+                                <i class="fas fa-eye mr-1"></i> {{ __('home.view_details') ?? 'View' }}
+                            </a>
+                            @if($book->is_free)
+                                <a href="{{ route('books.read', $book) }}"
+                                   class="w-full text-center neu-button-primary text-xs font-semibold py-2 rounded-xl flex items-center justify-center gap-1">
+                                    <i class="fas fa-book-open"></i> {{ __('home.read_now') ?? 'Read Now' }}
+                                </a>
+                            @else
+                                <form action="{{ route('cart.add', $book) }}" method="POST" class="w-full">
+                                    @csrf
+                                    <button type="submit" class="w-full neu-button-primary text-xs font-semibold py-2 rounded-xl flex items-center justify-center gap-1">
+                                        <i class="fas fa-cart-plus"></i> {{ __('home.add_to_cart') ?? 'Add to Cart' }}
+                                    </button>
+                                </form>
                             @endif
                         </div>
                     </div>
 
                     <div class="p-4">
                         <a href="{{ route('books.show', $book) }}" class="block">
-                            <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate">{{ $book->title }}</h4>
+                            <h4 class="font-semibold dark:text-slate-100 light:text-slate-800 text-sm truncate group-hover:text-cyan-400 transition">{{ $book->title }}</h4>
                         </a>
-                        <p class="text-xs dark:text-slate-500 light:text-slate-500 mt-1 truncate">{{ $book->author->name ?? 'N/A' }}</p>
-                        <div class="flex justify-between items-center mt-3">
+                        <p class="text-xs dark:text-slate-400 light:text-slate-500 mt-1 truncate">{{ $book->author->name ?? 'N/A' }}</p>
+                        <div class="flex justify-between items-center mt-3 pt-2 border-t dark:border-slate-800/40 light:border-slate-200/60">
                             @if($book->is_free)
                                 <span class="text-emerald-400 font-bold text-sm">{{ __('home.free') ?? 'Free' }}</span>
                             @else
                                 <span class="text-cyan-400 font-bold text-sm">${{ number_format($book->final_price, 2) }}</span>
                             @endif
-                            <div class="flex items-center gap-2">
-                                <div class="flex items-center gap-0.5">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= round($book->average_rating))
-                                            <i class="fas fa-star text-amber-400/80 text-[10px]"></i>
-                                        @else
-                                            <i class="far fa-star dark:text-slate-600 light:text-slate-300 text-[10px]"></i>
-                                        @endif
-                                    @endfor
-                                </div>
-                                <span class="text-[10px] font-medium dark:text-slate-500 light:text-slate-500">{{ number_format($book->average_rating, 1) }}</span>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-star text-amber-400 text-[11px]"></i>
+                                <span class="text-xs font-medium dark:text-slate-300 light:text-slate-700">{{ number_format($book->average_rating, 1) }}</span>
                             </div>
                         </div>
                     </div>
@@ -1153,8 +1214,8 @@
                             <i class="fas fa-tag text-white text-3xl"></i>
                         </div>
                     @endif
-                    <h4 class="font-medium dark:text-slate-200 light:text-slate-800 text-sm mt-3 truncate">{{ $category->name }}</h4>
-                    <p class="text-xs dark:text-slate-500 light:text-slate-500 mt-1">
+                    <h4 class="font-medium dark:text-slate-100 light:text-slate-800 text-sm mt-3 truncate">{{ $category->name }}</h4>
+                    <p class="text-xs dark:text-slate-400 light:text-slate-500 mt-1">
                         {{ $category->books_count ?? 0 }} {{ __('home.books') ?? 'Books' }}
                     </p>
                 </a>
@@ -1188,7 +1249,7 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
             @foreach($freeBooks as $index => $book)
-                <div class="neu-book book-card group border-emerald-500/10">
+                <div class="neu-book book-card group border-emerald-500/10 relative">
                     <div class="relative overflow-hidden rounded-t-2xl">
                         <a href="{{ route('books.show', $book) }}" class="block">
                             @if($book->cover)
@@ -1204,7 +1265,8 @@
 
                         @auth
                             <button onclick="toggleFavorite({{ $book->id }}, this)"
-                                    class="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm hover:bg-black/60 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg z-10">
+                                    class="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm hover:bg-black/60 flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-lg z-10"
+                                    title="{{ auth()->user()->isFavorited($book->id) ? 'Remove from favorites' : 'Add to favorites' }}">
                                 <i class="fas fa-heart text-sm
                                     @if(auth()->user()->isFavorited($book->id))
                                         text-red-500
@@ -1219,14 +1281,26 @@
                         <div class="absolute top-3 left-3">
                             <span class="neu-badge neu-badge-free"><i class="fas fa-gift mr-1"></i> Free</span>
                         </div>
+
+                        <!-- Hover Overlay Actions -->
+                        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2.5 p-4">
+                            <a href="{{ route('books.show', $book) }}"
+                               class="w-full text-center neu-button text-xs font-semibold py-2 rounded-xl text-white hover:bg-white/10 transition">
+                                <i class="fas fa-eye mr-1"></i> {{ __('home.view_details') ?? 'View' }}
+                            </a>
+                            <a href="{{ route('books.read', $book) }}"
+                               class="w-full text-center neu-button-primary text-xs font-semibold py-2 rounded-xl flex items-center justify-center gap-1">
+                                <i class="fas fa-book-open"></i> {{ __('home.read_now') ?? 'Read Now' }}
+                            </a>
+                        </div>
                     </div>
 
                     <div class="p-4">
                         <a href="{{ route('books.show', $book) }}" class="block">
-                            <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate">{{ $book->title }}</h4>
+                            <h4 class="font-semibold dark:text-slate-200 light:text-slate-800 text-sm truncate group-hover:text-cyan-400 transition">{{ $book->title }}</h4>
                         </a>
                         <p class="text-xs dark:text-slate-500 light:text-slate-500 mt-1 truncate">{{ $book->author->name ?? 'N/A' }}</p>
-                        <div class="flex justify-between items-center mt-3">
+                        <div class="flex justify-between items-center mt-3 pt-2 border-t dark:border-slate-800/40 light:border-slate-200/60">
                             <span class="text-emerald-400 font-bold text-sm">{{ __('home.free') ?? 'Free' }}</span>
                             <div class="flex items-center gap-1">
                                 <i class="fas fa-download dark:text-slate-500 light:text-slate-400 text-xs"></i>

@@ -51,83 +51,39 @@
         /* ─── DARK MODE HIGH-CONTRAST TEXT & UI FIXES ─── */
         html.dark, body.dark {
             background-color: #0b0f19 !important;
-            color: #f1f5f9 !important;
-        }
-
-        .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
-            color: #f8fafc !important;
-        }
-
-        .dark p, .dark span, .dark label, .dark a {
-            color: #cbd5e1;
-        }
-
-        .dark .text-slate-900,
-        .dark .text-slate-800,
-        .dark .text-slate-700,
-        .dark .text-gray-900,
-        .dark .text-gray-800,
-        .dark .text-black {
-            color: #f1f5f9 !important;
-        }
-
-        .dark .text-slate-600,
-        .dark .text-slate-500,
-        .dark .text-gray-600,
-        .dark .text-gray-500 {
-            color: #94a3b8 !important;
+            color: #f1f5f9;
         }
 
         .dark input, .dark select, .dark textarea {
-            background-color: #1e293b !important;
-            color: #f8fafc !important;
-            border-color: #334155 !important;
+            background-color: #1e293b;
+            color: #f8fafc;
+            border-color: #334155;
         }
 
         .dark input::placeholder, .dark textarea::placeholder {
-            color: #64748b !important;
+            color: #64748b;
         }
 
         .dark select option {
-            background-color: #0f172a !important;
-            color: #f8fafc !important;
+            background-color: #0f172a;
+            color: #f8fafc;
         }
 
         /* ─── MOCHA THEME HIGH-CONTRAST FIXES ─── */
         html.mocha, body.mocha {
             background-color: #1a1412 !important;
-            color: #f5e8dd !important;
-        }
-
-        .mocha h1, .mocha h2, .mocha h3, .mocha h4, .mocha h5, .mocha h6 {
-            color: #fcf5ee !important;
-        }
-
-        .mocha .text-slate-900,
-        .mocha .text-slate-800,
-        .mocha .text-slate-700,
-        .mocha .text-gray-900,
-        .mocha .text-gray-800,
-        .mocha .text-black {
-            color: #f5e8dd !important;
-        }
-
-        .mocha .text-slate-600,
-        .mocha .text-slate-500,
-        .mocha .text-gray-600,
-        .mocha .text-gray-500 {
-            color: #c4b0a3 !important;
+            color: #f5e8dd;
         }
 
         .mocha input, .mocha select, .mocha textarea {
-            background-color: #2d221e !important;
-            color: #f5e8dd !important;
-            border-color: #4d3c36 !important;
+            background-color: #2d221e;
+            color: #f5e8dd;
+            border-color: #4d3c36;
         }
 
         .mocha select option {
-            background-color: #241c19 !important;
-            color: #f5e8dd !important;
+            background-color: #241c19;
+            color: #f5e8dd;
         }
 
         .mocha .dark\:bg-slate-900,
@@ -698,7 +654,7 @@
             <div class="hidden lg:flex items-center gap-1">
                 @php $currentLocale = app()->getLocale(); @endphp
                 <div class="lang-select-wrapper">
-                    <span class="lang-icon"></span>
+                    <span class="lang-icon">🌐</span>
                     <select onchange="window.location.href = this.value;"
                             class="lang-select dark:lang-select light:lang-select pl-8 pr-8 py-1.5">
                         <option value="{{ route('switch-language', 'km') }}" {{ $currentLocale == 'km' ? 'selected' : '' }}>🇰🇭 ខ្មែរ</option>
@@ -780,7 +736,7 @@
                 <select onchange="window.location.href = this.value;"
                         class="lang-select w-full dark:lang-select light:lang-select pl-8 pr-8 py-2.5 text-base">
                     <option value="{{ route('switch-language', 'km') }}" {{ $currentLocale == 'km' ? 'selected' : '' }}>🇰🇭 ខ្មែរ</option>
-                    <option value="{{ route('switch-language', 'en') }}" {{ $currentLocale == 'en' ? 'selected' : '' }}>🇺🇸 English</option>
+                    <option value="{{ route('switch-language', 'en') }}" {{ $currentLocale == 'en' ? 'selected' : '' }}>🇬🇧 English</option>
                     <option value="{{ route('switch-language', 'zh') }}" {{ $currentLocale == 'zh' ? 'selected' : '' }}>🇨🇳 中文</option>
                 </select>
                 <span class="lang-arrow text-gray-400 dark:text-gray-500">

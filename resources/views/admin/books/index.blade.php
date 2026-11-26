@@ -39,9 +39,9 @@
 </form>
 
 <!-- Search & Filters -->
-<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 mb-6 border dark:border-slate-700">
+<div class="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 mb-6 border dark:border-slate-700 relative z-30">
     <form action="{{ route('admin.books.index') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-        <div>
+        <div class="relative z-50">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('admin.search') }}</label>
             <div class="relative">
                 <input type="text" id="admin-search-input" name="search" value="{{ request('search') }}"
@@ -55,7 +55,7 @@
                 </button>
 
                 <!-- Admin Live Search Autocomplete Popup Dropdown -->
-                <div id="admin-live-search-popup" class="absolute left-0 top-full mt-2 w-72 sm:w-96 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl shadow-2xl z-50 hidden overflow-hidden transition-all duration-200">
+                <div id="admin-live-search-popup" class="absolute left-0 top-full mt-2 w-72 sm:w-96 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl shadow-2xl z-[9999] opacity-100 hidden overflow-hidden transition-all duration-200">
                     <div id="admin-live-search-loading" class="p-3 text-center text-xs text-gray-500 dark:text-gray-400 hidden">
                         <i class="fas fa-circle-notch fa-spin text-blue-500 mr-2"></i> {{ __('admin.searching') ?? 'Searching...' }}
                     </div>

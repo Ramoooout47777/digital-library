@@ -349,15 +349,18 @@
 
                 @if($book->pdf_file && $canRead)
                     <!-- User can read the book (Free or Purchased) -->
-                    <a href="{{ route('books.read', $book) }}"
-                       class="btn-animated w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2">
-                        <i class="fas fa-book-open"></i>
-                        @if($progress && $progress->current_page > 1)
-                            {{ __('book.continue_reading') ?? 'បន្តការអាន' }} ({{ $progress->current_page }})
-                        @else
-                            {{ __('book.read_online') ?? 'អានសៀវភៅ' }}
-                        @endif
-                    </a>
+                    <button type="button"
+                            onclick="togglePDFViewer()"
+                            class="btn-animated w-full bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2 cursor-pointer shadow-lg hover:shadow-cyan-500/25">
+                        <i class="fas fa-book-open" id="readerIcon"></i>
+                        <span id="readerBtnText">
+                            @if($progress && $progress->current_page > 1)
+                                {{ __('book.continue_reading') ?? 'បន្តការអាន' }} ({{ $progress->current_page }})
+                            @else
+                                {{ __('book.read_online') ?? 'អានសៀវភៅ' }}
+                            @endif
+                        </span>
+                    </button>
 
                     @if($progress && $progress->percentage > 0)
                         <div class="mt-2 px-1">
@@ -568,14 +571,20 @@
                 <div id="pdfViewerSection" class="hidden">
                     <div class="dark:bg-slate-800/50 light:bg-white rounded-xl shadow-sm overflow-hidden border dark:border-slate-700/50 light:border-slate-200/50 p-4 animate-fade-in-up">
                         <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-semibold text-lg dark:text-slate-200 light:text-slate-800">
-                                <i class="fas fa-book-open mr-2 text-cyan-400"></i>
-                                {{ __('book.reading') ?? 'កំពុងអាន' }}
+                            <h3 class="font-semibold text-lg dark:text-slate-200 light:text-slate-800 flex items-center gap-2">
+                                <i class="fas fa-book-open text-cyan-400"></i>
+                                <span>{{ __('book.reading') ?? 'កំពុងអាន' }}</span>
                             </h3>
-                            <button onclick="closePDFViewer()"
-                                    class="text-red-400 hover:text-red-300 transition">
-                                <i class="fas fa-times"></i> {{ __('book.close') ?? 'បិទ' }}
-                            </button>
+                            <div class="flex items-center gap-3">
+                                <a href="{{ route('books.read', $book) }}"
+                                   class="text-xs text-cyan-400 hover:text-cyan-300 transition flex items-center gap-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 px-3 py-1.5 rounded-lg border border-cyan-500/20 font-medium">
+                                    <i class="fas fa-expand"></i> {{ __('book.full_reader') ?? 'Full Reader' }}
+                                </a>
+                                <button onclick="closePDFViewer()"
+                                        class="text-red-400 hover:text-red-300 transition flex items-center gap-1 text-sm font-medium bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded-lg border border-red-500/20">
+                                    <i class="fas fa-times"></i> {{ __('book.close') ?? 'បិទ' }}
+                                </button>
+                            </div>
                         </div>
 
                         <!-- PDF Viewer with Page Flip Animation -->
@@ -789,6 +798,7 @@
 <script>
     // ─── PDF VIEWER TOGGLE WITH PAGE FLIP ───
     let isReaderOpen = false;
+    const defaultReadBtnText = `{{ $progress && $progress->current_page > 1 ? (__('book.continue_reading') ?? 'បន្តការអាន') . ' (' . $progress->current_page . ')' : (__('book.read_online') ?? 'អានសៀវភៅ') }}`;
 
     function togglePDFViewer() {
         const section = document.getElementById('pdfViewerSection');
@@ -797,17 +807,20 @@
         const icon = document.getElementById('readerIcon');
 
         if (!isReaderOpen) {
-            // Open PDF Viewer with Book Opening Animation
+            // Open PDF Viewer inline with Book Opening Animation
             section.classList.remove('hidden');
 
             // Add opening animation to wrapper
             wrapper.classList.remove('book-closing');
             wrapper.classList.add('book-opening');
 
-            // Update button
-            btnText.textContent = '{{ __('book.close_reader') ?? 'បិទអ្នកអាន' }}';
-            icon.className = 'fas fa-times';
+            // Update button text and icon
+            if (btnText) btnText.textContent = '{{ __('book.close_reader') ?? 'បិទអ្នកអាន' }}';
+            if (icon) icon.className = 'fas fa-times text-red-400';
             isReaderOpen = true;
+
+            // Scroll smoothly to the inline reader section without leaving/moving page
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
         } else {
             // Close PDF Viewer with Book Closing Animation
@@ -819,9 +832,9 @@
                 wrapper.classList.remove('book-closing');
                 isReaderOpen = false;
 
-                // Update button
-                btnText.textContent = '{{ __('book.read_online') ?? 'អានសៀវភៅ' }}';
-                icon.className = 'fas fa-book-open';
+                // Reset button text and icon
+                if (btnText) btnText.textContent = defaultReadBtnText;
+                if (icon) icon.className = 'fas fa-book-open';
             }, 500);
         }
     }

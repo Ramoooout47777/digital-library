@@ -69,6 +69,8 @@ return [
     'reading_progress' => 'Reading Progress',
     'books_of_type_desc' => 'Books of this type you can open & read',
     'read' => 'Read',
+    'continue_reading' => 'Continue Reading',
+    'full_reader' => 'Full Reader',
     'searching' => 'Searching...',
     'no_results_found' => 'No matching books found',
 ];

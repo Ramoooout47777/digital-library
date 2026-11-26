@@ -29,6 +29,17 @@ class HomeController extends Controller
             ->get();
 
         // ============================================================
+        // DISCOUNTED BOOKS
+        // ============================================================
+        $discountedBooks = Book::with(['author', 'category'])
+            ->available()
+            ->where('discount', '>', 0)
+            ->whereColumn('price', '>', 'final_price')
+            ->orderBy('discount', 'desc')
+            ->limit(8)
+            ->get();
+
+        // ============================================================
         // FREE BOOKS
         // ============================================================
         $freeBooks = Book::with(['author', 'category'])
@@ -39,18 +50,8 @@ class HomeController extends Controller
             ->get();
 
         // ============================================================
-        // CATEGORIES - FIXED FOR SQLITE
+        // CATEGORIES
         // ============================================================
-        // Method 1: Using Collection (Recommended for SQLite)
-        $categories = Category::withAvailableBooksCount()
-        ->where('status', true)
-        ->get()
-        ->filter(function($category) {
-            return $category->books_count > 0;
-        })
-        ->sortByDesc('books_count')
-        ->take(8)
-        ->values();
         $categories = Category::withCount(['books' => function($query) {
             $query->available();
         }])
@@ -62,25 +63,17 @@ class HomeController extends Controller
         ->limit(8)
         ->get();
 
-        // Method 2: Using DB Query Builder (Alternative)
-        /*
-        $categories = DB::table('categories')
-            ->select('categories.*', DB::raw('COUNT(books.id) as books_count'))
-            ->leftJoin('books', function($join) {
-                $join->on('categories.id', '=', 'books.category_id')
-                    ->where('books.status', true)
-                    ->where('books.stock', '>', 0)
-                    ->whereNotNull('books.published_at')
-                    ->where('books.published_at', '<=', now())
-                    ->whereNull('books.deleted_at');
-            })
-            ->where('categories.status', true)
-            ->groupBy('categories.id')
-            ->having('books_count', '>', 0)
-            ->orderBy('books_count', 'desc')
-            ->limit(8)
-            ->get();
-        */
+        // ============================================================
+        // SHOPPING CART COUNT
+        // ============================================================
+        $cartCount = 0;
+        if (auth()->check()) {
+            $cart = \App\Models\Cart::where('user_id', auth()->id())->first();
+            $cartCount = $cart ? $cart->items()->count() : 0;
+        } else {
+            $cart = \App\Models\Cart::where('session_id', session()->getId())->first();
+            $cartCount = $cart ? $cart->items()->count() : 0;
+        }
 
         // ============================================================
         // STATISTICS
@@ -115,7 +108,7 @@ class HomeController extends Controller
                 ->get();
         }
 
-        return view('home', compact('popularBooks', 'freeBooks', 'categories', 'stats', 'settings', 'banners', 'currentlyReading'));
+        return view('home', compact('popularBooks', 'discountedBooks', 'freeBooks', 'categories', 'stats', 'settings', 'banners', 'currentlyReading', 'cartCount'));
     }
 
      // ============================================================

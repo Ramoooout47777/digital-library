@@ -525,5 +525,15 @@ return [
     'admin'                    => '管理员',
     'cannot_delete_has_orders' => '无法删除，存在相关订单',
     'download_invoice'         => '下载发票',
+    'books'                    => '图书数量',
+    'maintenance_mode'         => '维护模式',
+    'enable_maintenance_mode'  => '启用维护模式',
+    'maintenance_message'      => '维护提示信息',
+    'maintenance_placeholder'  => '系统正在维护中，请稍后再试。',
+    'message'                  => '消息',
+    'type'                     => '类型',
+    'user'                     => '用户',
+    'profile_updated'          => '个人资料已更新',
+    'chat'                     => '即时通讯',
 ];
 

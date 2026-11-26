@@ -21,7 +21,7 @@ return [
     'hero_subtitle' => '一个精选的数字图书馆，拥有数千本书。随时随地阅读。',
     'hero_quote' => '阅读之于心灵，犹如运动之于身体。',
     'hero_image_alt' => '阅读图书',
-    
+
     // ============ BUTTONS ============
     'explore_books' => '探索图书',
     'view_categories' => '查看分类',
@@ -29,13 +29,13 @@ return [
     'subscribe' => '订阅',
     'enter_email' => '输入您的邮箱',
     'email' => '电子邮箱',
-    
+
     // ============ STATISTICS ============
     'total_books' => '图书总数',
     'total_users' => '读者',
     'total_authors' => '作者',
     'total_orders' => '订单',
-    
+
     // ============ FEATURES ============
     'why_choose_us' => '为什么选择我们？',
     'features_subtitle' => '专为现代读者设计。',
@@ -47,7 +47,7 @@ return [
     'feature_download_desc' => '下载后离线阅读。',
     'feature_quality' => '优质内容',
     'feature_quality_desc' => '精心策划的内容。',
-    
+
     // ============ BOOKS ============
     'popular_books' => '热门图书',
     'free_books' => '免费图书',
@@ -59,7 +59,7 @@ return [
     'popular' => '热门',
     'filter' => '筛选',
     'reset' => '重置',
-    
+
     // ============ CATEGORIES ============
     'categories_subtitle' => '按分类寻找下一本读物。',
     'no_categories' => '暂无分类。',
@@ -83,7 +83,7 @@ return [
     'no_categories_message' => '暂无图书分类',
     'available' => '可用',
     'back' => '后退',
-    
+
     // ============ ABOUT ============
     'about_title' => '关于我们的数字图书馆',
     'about_desc' => '为新一代读者打造的现代数字图书馆。',
@@ -92,11 +92,11 @@ return [
     'about_point3' => '下载图书以便离线阅读。',
     'about_point4' => '价格实惠，并提供免费图书。',
     'about_image_alt' => '图书馆',
-    
+
     // ============ NEWSLETTER ============
     'newsletter_title' => '订阅资讯',
     'newsletter_subtitle' => '获取最新图书发布和独家优惠。',
-    
+
     // ============ FOOTER ============
     'quick_links' => '快速链接',
     'support' => '支持',
@@ -146,6 +146,19 @@ return [
     'reset_filters' => '重置筛选',
     'learn_more' => '了解更多',
     'books_by_author' => '按作者分类的图书',
-    'currently_reading' => '目前正在閱讀',   
-
+    'currently_reading' => '目前正在閱讀',
+    'digitel' => '数字图书馆',
+    'authors' => '作者',
+    'join_telegram' => '加入我们的 Telegram 频道',
+    'telegram_subtitle' => '在 Telegram 上直接获取最新动态、免费赠书和社区讨论。',
+    'join_now' => '立即加入',
+    'telegram_community' => 'Telegram 社区',
+    'telegram_members' => '加入 5,000+ 读者群体',
+    'discounted_books' => '特价图书',
+    'special_offers' => '特别优惠',
+    'grab_deals' => '限时特惠，先到先得',
+    'view_details' => '查看详情',
+    'view_detail' => '查看详情',
+    'read_now' => '立即阅读',
+    'add_to_cart' => '添加到购物车',
 ];

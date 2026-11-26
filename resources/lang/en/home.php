@@ -156,8 +156,12 @@ return [
     'reset_filters' => 'Reset Filters',
     'learn_more' => 'Learn More',
     'books_by_author' => 'Books by Author',
-    'currently_reading' => 'Currenly Reading',
-
-
-
+    'currently_reading' => 'Currently Reading',
+    'discounted_books' => 'Discounted Books',
+    'special_offers' => 'Special Offers',
+    'grab_deals' => 'Grab these limited-time deals before they\'re gone',
+    'view_details' => 'View Details',
+    'view_detail' => 'View Detail',
+    'read_now' => 'Read Now',
+    'add_to_cart' => 'Add to Cart',
 ];

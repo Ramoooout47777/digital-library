@@ -264,7 +264,7 @@
     <!-- ============================================================ -->
     <!-- HEADER -->
     <!-- ============================================================ -->
-    <div class="flex flex-wrap justify-between items-center gap-4 mb-8 animate-fade-in-up">
+    <div class="flex flex-wrap justify-between items-center gap-4 mb-8 animate-fade-in-up relative z-30">
         <div>
             <h1 class="text-3xl font-bold dark:text-slate-100 light:text-slate-900">
                 <i class="fas fa-book text-cyan-400 mr-3"></i>
@@ -278,7 +278,7 @@
             </p>
         </div>
 
-        <div class="relative animate-slide-right">
+        <div class="relative z-50 animate-slide-right">
             <form action="{{ route('books.index') }}" method="GET" class="flex gap-2">
                 <div class="relative w-48 sm:w-72">
                     <input type="text" id="live-search-input" name="search" value="{{ request('search') }}"
@@ -297,11 +297,11 @@
             </form>
 
             <!-- Live Search Autocomplete Popup Dropdown -->
-            <div id="live-search-popup" class="absolute right-0 top-full mt-2 w-72 sm:w-96 bg-slate-900/95 backdrop-blur-xl border border-slate-700/80 rounded-2xl shadow-2xl z-50 hidden overflow-hidden transition-all duration-200">
-                <div id="live-search-loading" class="p-4 text-center text-xs text-slate-400 hidden">
+            <div id="live-search-popup" class="absolute right-0 top-full mt-2 w-72 sm:w-96 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 rounded-2xl shadow-2xl z-[9999] opacity-100 hidden overflow-hidden transition-all duration-200">
+                <div id="live-search-loading" class="p-4 text-center text-xs text-slate-500 dark:text-slate-400 hidden">
                     <i class="fas fa-circle-notch fa-spin text-cyan-400 mr-2"></i> {{ __('home.searching') ?? 'កំពុងស្វែងរក...' }}
                 </div>
-                <div id="live-search-results" class="max-h-80 overflow-y-auto divide-y divide-slate-800"></div>
+                <div id="live-search-results" class="max-h-80 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800"></div>
             </div>
         </div>
     </div>
@@ -554,20 +554,20 @@
 
                         if (data.length === 0) {
                             if (liveSearchResults) {
-                                liveSearchResults.innerHTML = `<div class="p-4 text-center text-xs text-slate-400">មិនមានសៀវភៅពាក់ព័ន្ធនឹង "${escapeHtml(query)}"</div>`;
+                                liveSearchResults.innerHTML = `<div class="p-4 text-center text-xs text-slate-500 dark:text-slate-400">មិនមានសៀវភៅពាក់ព័ន្ធនឹង "${escapeHtml(query)}"</div>`;
                             }
                             return;
                         }
 
                         if (liveSearchResults) {
                             liveSearchResults.innerHTML = data.map(book => `
-                                <a href="${book.url}" class="p-3 flex items-center gap-3 hover:bg-slate-800/80 transition group">
+                                <a href="${book.url}" class="p-3 flex items-center gap-3 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition group border-b border-slate-100 dark:border-slate-800/60">
                                     <img src="${book.cover_url}" alt="${escapeHtml(book.title)}" class="w-10 h-14 object-cover rounded-md flex-shrink-0 shadow-sm">
                                     <div class="min-w-0 flex-1">
-                                        <h5 class="text-xs font-bold text-slate-200 group-hover:text-cyan-400 truncate">${highlightText(book.title, query)}</h5>
-                                        <p class="text-[11px] text-slate-400 truncate mt-0.5">${escapeHtml(book.author)} • <span class="text-slate-500">${escapeHtml(book.category)}</span></p>
+                                        <h5 class="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-cyan-500 dark:group-hover:text-cyan-400 truncate">${highlightText(book.title, query)}</h5>
+                                        <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-0.5">${escapeHtml(book.author)} • <span class="text-slate-400 dark:text-slate-500">${escapeHtml(book.category)}</span></p>
                                     </div>
-                                    <span class="text-xs font-bold ${book.is_free ? 'text-emerald-400' : 'text-cyan-400'} flex-shrink-0 ml-2">${book.price_text}</span>
+                                    <span class="text-xs font-bold ${book.is_free ? 'text-emerald-500 dark:text-emerald-400' : 'text-cyan-500 dark:text-cyan-400'} flex-shrink-0 ml-2">${book.price_text}</span>
                                 </a>
                             `).join('');
                         }

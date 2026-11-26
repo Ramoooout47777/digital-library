@@ -307,7 +307,7 @@
                                         {{ __('orders.quantity') ?? 'Qty' }}: {{ $item->quantity }}
                                     </p>
                                     @if($order->status === 'completed' && $item->book && $item->book->pdf_file)
-                                        <a href="{{ route('books.read', $item->book) }}" target="_blank"
+                                        <a href="{{ route('books.read', $item->book) }}"
                                            class="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1">
                                             <i class="fas fa-book-reader"></i> {{ __('orders.read_now') ?? 'Read Now' }}
                                         </a>

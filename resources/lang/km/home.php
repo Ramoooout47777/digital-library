@@ -17,7 +17,7 @@ return [
     'my_orders' => 'ការកម្មង់របស់ខ្ញុំ',
     'favorites' => 'ចំណូលចិត្ត',
     'website' => 'គេហទំព័រ',
-    
+
     // HERO
     'hero_badge' => 'បណ្ណាល័យឌីជីថល',
     'hero_title' => 'ស្វែងរក និងអាន',
@@ -25,7 +25,7 @@ return [
     'hero_subtitle' => 'បណ្ណាល័យឌីជីថលដែលមានសៀវភៅរាប់ពាន់ក្បាល',
     'hero_quote' => 'ការអានគឺជាអ្វីដែលផ្តល់អាហារដល់គំនិត',
     'hero_image_alt' => 'ការអានសៀវភៅ',
-    
+
     // BUTTONS
     'explore_books' => 'ស្វែងរកសៀវភៅ',
     'view_categories' => 'មើលប្រភេទ',
@@ -40,13 +40,13 @@ return [
     'browse_books' => 'ស្វែងរកសៀវភៅ',
     'no_favorites' => 'មិនទាន់មានសៀវភៅចំណូលចិត្ត',
     'start_adding_favorites' => 'ចាប់ផ្តើមបន្ថែមសៀវភៅទៅក្នុងចំណូលចិត្ត',
-    
+
     // STATISTICS
     'total_books' => 'សៀវភៅសរុប',
     'total_users' => 'អ្នកប្រើប្រាស់',
     'total_authors' => 'អ្នកនិពន្ធ',
     'total_orders' => 'ការកម្មង់',
-    
+
     // FEATURES
     'why_choose_us' => 'ហេតុអ្វីជ្រើសរើសយើង?',
     'features_subtitle' => 'រចនាឡើងសម្រាប់អ្នកអានសម័យទំនើប',
@@ -58,7 +58,7 @@ return [
     'feature_download_desc' => 'ទាញយកនិងអានក្រៅបណ្តាញ',
     'feature_quality' => 'គុណភាពខ្ពស់',
     'feature_quality_desc' => 'មាតិកាដែលបានជ្រើសរើសយ៉ាងល្អិតល្អន់',
-    
+
     // BOOKS
     'popular_books' => 'សៀវភៅពេញនិយម',
     'free_books' => 'សៀវភៅឥតគិតថ្លៃ',
@@ -68,7 +68,7 @@ return [
     'try_different_search' => 'សូមសាកល្បងស្វែងរកផ្សេងទៀត',
     'reset_filters' => 'កំណត់ឡើងវិញ',
     'featured' => 'ពិសេស',
-    
+
     // CATEGORIES
     'categories_subtitle' => 'ស្វែងរកសៀវភៅបន្ទាប់របស់អ្នកតាមប្រភេទ',
     'no_categories' => 'មិនមានប្រភេទ',
@@ -101,11 +101,11 @@ return [
     'about_point3' => 'ទាញយកសៀវភៅសម្រាប់អានក្រៅបណ្តាញ',
     'about_point4' => 'តម្លៃសមរម្យជាមួយសៀវភៅឥតគិតថ្លៃ',
     'about_image_alt' => 'បណ្ណាល័យ',
-    
+
     // ============ NEWSLETTER ============
     'newsletter_title' => 'ចុះឈ្មោះទទួលព័ត៌មាន',
     'newsletter_subtitle' => 'ទទួលបានសៀវភៅថ្មីៗ និងការផ្សព្វផ្សាយពិសេស',
-    
+
     // ============ FOOTER ============
     'quick_links' => 'តំណរហ័ស',
     'support' => 'ជំនួយ',
@@ -156,5 +156,17 @@ return [
     'learn_more' => 'ស្វែងយល់ថ្មីៗបន្ថែម',
     'books_by_author' => 'សៀវភៅរបស់អ្នកនិពន្ធ',
     'currently_reading' => 'កំពុងអាន',
-
+    'digitel' => 'បណ្ណាល័យឌីជីថល',
+    'join_telegram' => 'ចូលរួមឆានែល Telegram របស់យើង',
+    'telegram_subtitle' => 'ទទួលព័ត៌មានបច្ចុប្បន្នភាព សៀវភៅឥតគិតថ្លៃ និងការពិភាក្សាក្នុងសហគមន៍ដោយផ្ទាល់នៅលើ Telegram',
+    'join_now' => 'ចូលរួមឥឡូវនេះ',
+    'telegram_community' => 'សហគមន៍ Telegram',
+    'telegram_members' => 'ចូលរួមជាមួយអ្នកអានជាង ៥,០០០+ នាក់',
+    'discounted_books' => 'សៀវភៅបញ្ចុះតម្លៃ',
+    'special_offers' => 'ការផ្តល់ជូនពិសេស',
+    'grab_deals' => 'ទទួលបានការផ្តល់ជូនដែលមានកំណត់ពេលទាំងនេះ មុនពេលផុតកំណត់',
+    'view_details' => 'មើលព័ត៌មានលម្អិត',
+    'view_detail' => 'មើលព័ត៌មានលម្អិត',
+    'read_now' => 'អានឥឡូវនេះ',
+    'add_to_cart' => 'បន្ថែមទៅកន្ត្រក',
 ];

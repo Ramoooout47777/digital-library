@@ -70,6 +70,8 @@ return [
     'reading_progress' => '阅读进度',
     'books_of_type_desc' => '此类型的图书，您可以打开阅读',
     'read' => '阅读',
+    'continue_reading' => '继续阅读',
+    'full_reader' => '全屏阅读',
     'searching' => '正在搜索...',
     'no_results_found' => '未找到相关图书',
 ];

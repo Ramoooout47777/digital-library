@@ -71,6 +71,8 @@ return [
     'reading_progress' => 'វឌ្ឍនភាពអាន',
     'books_of_type_desc' => 'សៀវភៅប្រភេទនេះដែលអ្នកអាចបើកអានបាន',
     'read' => 'អាន',
+    'continue_reading' => 'បន្តការអាន',
+    'full_reader' => 'របៀបអានពេញអេក្រង់',
     'searching' => 'កំពុងស្វែងរក...',
     'no_results_found' => 'មិនមានសៀវភៅដែលស្វែងរកទេ',
 ];

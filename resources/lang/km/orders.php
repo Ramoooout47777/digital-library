@@ -26,7 +26,7 @@ return [
     'completed' => 'បានបញ្ចប់',
     'failed' => 'បរាជ័យ',
     'refunded' => 'សងប្រាក់វិញ',
-
+    'cancelled' => 'បានបោះបង់',
     'order' => 'ការកម្មង់',
     'order_details' => 'ព័ត៌មានលម្អិតការកម្មង់',
     'placed_on' => 'បានកម្មង់នៅ',
@@ -43,7 +43,6 @@ return [
     'coupon' => 'ប័ណ្ណបញ្ចុះតម្លៃ',
     'payment_info' => 'ព័ត៌មានការទូទាត់',
     'payment_method' => 'វិធីបង់ប្រាក់',
-    'payment_status' => 'ស្ថានភាពការទូទាត់',
     'completed_at' => 'បានបញ្ចប់នៅ',
     'order_timeline' => 'ប្រវត្តិការកម្មង់',
     'placed' => 'បានកម្មង់',
@@ -52,7 +51,6 @@ return [
     'packed' => 'បានវេចខ្ចប់',
     'shipped' => 'បានដឹកជញ្ជូន',
     'delivered' => 'បានប្រគល់',
-    'completed' => 'បានបញ្ចប់',
     'quick_actions' => 'សកម្មភាពរហ័ស',
     'view_all_orders' => 'មើលការកម្មង់ទាំងអស់',
     'free' => 'ឥតគិតថ្លៃ',
@@ -61,6 +59,5 @@ return [
     'total' => 'សរុប',
     'subtotal' => 'សរុបរង',
     'shipping' => 'ថ្លៃដឹកជញ្ជូន',
-    'download_invoice'         => 'ទាញយកវិក្កយបត្រ',
-
+    'download_invoice' => 'ទាញយកវិក្កយបត្រ',
 ];
